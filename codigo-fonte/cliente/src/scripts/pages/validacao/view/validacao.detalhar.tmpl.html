@@ -1,0 +1,36 @@
+<form name="formRegistro" ng-submit="scope.persistir(scope.registro)" novalidate>
+
+    <div class="p-t-20" layout="row" layout-xs="column">
+
+        <md-input-container class="md-block" flex-gt-xs flex="50" required>
+            <label>
+                <sgr-glossario termo="Decisão"></sgr-glossario>
+            </label>
+            <md-select ng-model="scope.registro.decisao" ng-disabled="scope.apenasLeitura" ng-change="scope.registro.justificativa = null">
+                <md-option ng-value="item" ng-repeat="item in scope._decisoes">{{ item.nome }}</md-option>
+            </md-select>
+        </md-input-container>
+
+    </div>
+
+    <md-input-container class="md-block" flex-gt-xs flex="50" ng-if="scope.registro.decisao.nome == 'Recusar'">
+        <label>Justificativa</label>
+        <textarea style="border: solid 1px #DADAE0" ng-model="scope.registro.justificativa" maxlength="250" md-maxlength="250" rows="3" ng-disabled="scope.apenasLeitura" md-select-on-focus required></textarea>
+    </md-input-container>
+
+    <div class="sgr-container-buttons m-t-10 m-b-10" layout="row" layout-align="end">
+        <section layout="row center" layout-sm="column" layout-wrap>
+            <div layout="row" layout-align="space-around center">
+                <md-button class="md-primary" ui-sref="home">
+                    <md-icon md-font-set="material-icons">close</md-icon>
+                    <sgr-glossario termo="Cancelar"></sgr-glossario>
+                </md-button>
+                <md-button class="md-primary md-raised" type="submit" ng-if="!scope.apenasLeitura">
+                    <md-icon md-font-set="material-icons">done</md-icon>
+                    <sgr-glossario termo="Salvar"></sgr-glossario>
+                </md-button>
+            </div>
+        </section>
+    </div>
+</form>
+

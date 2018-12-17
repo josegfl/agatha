@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="1.00">
+        <sql splitStatements="false" >
+            <![CDATA[
+
+                CREATE SEQUENCE sk_causa START WITH 1;
+                CREATE TABLE tb_causa (
+                    id_causa             BIGINT NOT NULL,
+                    ds_causa             varchar(200)  NOT NULL,
+                    ic_ativo             bool DEFAULT true NOT NULL,
+                    CONSTRAINT pk_tb_consequencia_0 PRIMARY KEY ( id_causa )
+                 );
+
+                COMMENT ON TABLE tb_causa IS 'Tabela responsável por armazenar os dados de causas de eventos de riscos.';
+
+                COMMENT ON COLUMN tb_causa.id_causa IS 'Identificador da causa de evento de risco';
+
+                COMMENT ON COLUMN tb_causa.ds_causa IS 'Descrição da causa de eventos de riscos';
+
+                COMMENT ON COLUMN tb_causa.ic_ativo IS 'Situação da causa';
+
+                CREATE SEQUENCE sk_consequencia START WITH 1;
+                CREATE TABLE tb_consequencia (
+                    id_consequencia      BIGINT NOT NULL,
+                    ds_consequencia      varchar(200)  NOT NULL,
+                    ic_ativo             bool DEFAULT true NOT NULL,
+                    CONSTRAINT pk_tb_consequencia PRIMARY KEY ( id_consequencia )
+                 );
+
+                COMMENT ON TABLE tb_consequencia IS 'Tabela responsável por armazenar os dados de consequência de eventos de riscos.';
+
+                COMMENT ON COLUMN tb_consequencia.id_consequencia IS 'Identificador da consequência de evento de risco';
+
+                COMMENT ON COLUMN tb_consequencia.ds_consequencia IS 'Descrição da consequência de eventos de riscos';
+
+                COMMENT ON COLUMN tb_consequencia.ic_ativo IS 'Situação da consequência';
+
+                CREATE SEQUENCE sk_evento START WITH 1;
+                CREATE TABLE tb_evento (
+                    id_evento            BIGINT NOT NULL,
+                    ds_evento            varchar(200)  NOT NULL,
+                    ic_ativo             bool DEFAULT true NOT NULL,
+                    CONSTRAINT pk_tb_consequencia_1 PRIMARY KEY ( id_evento )
+                 );
+
+                COMMENT ON TABLE tb_evento IS 'Tabela responsável por armazenar os dados de eventos de risco.';
+
+                COMMENT ON COLUMN tb_evento.id_evento IS 'Identificador do evento de risco';
+
+                COMMENT ON COLUMN tb_evento.ds_evento IS 'Descrição do evento de risco';
+
+                COMMENT ON COLUMN tb_evento.ic_ativo IS 'Situação da evento';
+            ]]>
+        </sql>
+    </changeSet>
+</databaseChangeLog>

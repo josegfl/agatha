@@ -1,0 +1,142 @@
+<md-content flex>
+    <div class="sgr-container">
+
+        <div class="sgr-container-header" layout="row">
+            <div class="md-toolbar-tools">
+                <h3 style="font-size: 18px">
+                    <sgr-glossario termo="Manter Categoria de Risco"></sgr-glossario>
+                </h3>
+            </div>
+        </div>
+
+        <form ng-cloak name="formRegistro" ng-submit="scope.persistir(scope.registro)" novalidate>
+
+            <div class="sgr-container-body" layout="row" layout-xs="column">
+
+                <md-input-container class="md-block" flex-gt-xs flex="50">
+                    <label>
+                        <sgr-glossario termo="Descrição da Categoria"></sgr-glossario>
+                    </label>
+                    <md-autocomplete class="md-autocomplete-icon" md-floating-label="" md-no-cache="true" md-search-text-change="scope.getDescricaoBySearch(scope.registro.descricao)" md-search-text="scope.registro.descricao" md-selected-item-change="scope.registro.descricao = item" md-item-text="scope.registro.descricao" md-items="item in scope.descricoes" md-min-length="2" required>
+                        <md-item-template>
+                            <span md-highlight-text="scope.registro.descricao" md-highlight-flags="^i">{{item}}</span>
+                        </md-item-template>
+                    </md-autocomplete>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-xs flex="50">
+                    <label>
+                        <sgr-glossario termo="Natureza do Risco"></sgr-glossario>
+                    </label>
+                    <md-select ng-model="scope.registro.natureza" ng-disabled="scope.registro.categoria.descricao == 'Orçamentário' || scope.registro.categoria.descricao == 'Fiscal'" required>
+                        <md-option ng-value="item" ng-repeat="item in scope._naturezas">{{ item.descricao }}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-xs flex="50">
+                    <label>
+                        <sgr-glossario termo="Status"></sgr-glossario>
+                    </label>
+                    <md-select ng-model="scope.registro.status">
+                        <md-option ng-value="item.status" ng-repeat="item in scope._status">{{ item.nome }}</md-option>
+                    </md-select>
+                </md-input-container>
+
+            </div>
+
+            <div class="sgr-container-buttons" layout="row" layout-align="end">
+                <section layout="row center" layout-sm="column" layout-wrap>
+                    <div layout="row" layout-align="space-around center">
+                        <md-button class="md-primary" type="button" ng-click="scope.limparFiltros()">
+                            <md-icon md-font-set="material-icons">filter_list</md-icon>
+                            <sgr-glossario termo="Limpar"></sgr-glossario>
+                        </md-button>
+                        <md-button class="md-primary" type="button" ng-click="scope.filtrar()">
+                            <md-icon md-font-set="material-icons">search</md-icon>
+                            <sgr-glossario termo="Consultar"></sgr-glossario>
+                        </md-button>
+                        <md-button class="md-primary" type="submit">
+                            <md-icon md-font-set="material-icons">{{scope.registro.id ? 'check' : 'add'}}</md-icon>
+                            <sgr-glossario termo="Alterar" ng-show="scope.registro.id"></sgr-glossario>
+                            <sgr-glossario termo="Incluir" ng-show="!scope.registro.id"></sgr-glossario>
+                        </md-button>
+                    </div>
+                </section>
+            </div>
+
+        </form>
+
+        <div class="sgr-container-table" layout="column">
+            <md-card>
+                <md-table-container>
+                    <table md-table>
+                        <thead md-head>
+                        <tr md-row>
+                            <th md-column class="text-right" width="60px">
+                                <sgr-glossario termo="Item"></sgr-glossario>
+                            </th>
+                            <th md-column>
+                                <sgr-glossario termo="Descrição da Categoria de Risco"></sgr-glossario>
+                            </th>
+                            <th md-column>
+                                <sgr-glossario termo="Natureza"></sgr-glossario>
+                            </th>
+                            <th md-column>
+                                <sgr-glossario termo="Status"></sgr-glossario>
+                            </th>
+                            <th md-column class="text-center" width="150px">
+                                <sgr-glossario termo="Ação"></sgr-glossario>
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody md-body>
+                        <tr md-row ng-repeat="item in scope._registros">
+                            <td md-cell class="text-right">
+                                <span ng-bind="{{scope.filtros.page*scope.filtros.size+$index+1}}"></span>
+                            </td>
+                            <td md-cell>
+                                <span ng-bind="item.descricao"></span>
+                            </td>
+                            <td md-cell>
+                                <span ng-bind="item.natureza.descricao"></span>
+                            </td>
+                            <td md-cell>
+                                <span ng-show="item.status">Ativo</span>
+                                <span ng-show="!item.status">Inativo</span>
+                            </td>
+
+                            <td md-cell class="text-center cell-options" width="60px">
+                                <a ng-click="scope.findBy(item.id)">
+                                    <md-tooltip md-direction="top">
+                                        Alterar
+                                    </md-tooltip>
+                                    <ng-md-icon icon="create"></ng-md-icon>
+                                </a>
+
+                                <a ng-click="scope.alterarStatus(item)" class="cursor-pointer">
+                                    <md-tooltip md-direction="top">
+                                        {{item.status ? 'Inativar' : 'Ativar'}}
+                                    </md-tooltip>
+                                    <md-icon class="table-button-icon" ng-class="item.status ? 'text-error' : 'text-success'" md-font-set="material-icons">power_settings_new</md-icon>
+                                </a>
+
+                                <a ng-click="scope.excluirRegistro(item)" class="cursor-pointer">
+                                    <md-tooltip md-direction="top">
+                                        Excluir
+                                    </md-tooltip>
+                                    <ng-md-icon icon="delete"></ng-md-icon>
+                                </a>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+                <md-table-pagination md-on-paginate="scope.filtrar" md-limit="scope.tamanhoLimite" md-limit-options="[20, 50, 100]" md-page="scope.registroInicial" md-total="{{scope.totalItems}}" md-page-select></md-table-pagination>
+            </md-card>
+        </div>
+    </div>
+
+</md-content>
+

@@ -1,0 +1,11 @@
+<div id="breadcrumb">
+    <ul class="breadcrumb">
+        <span class="voce-esta-aqui">VOCÊ ESTÁ AQUI:</span>
+        <li class="migalha-pao" ng-repeat="step in steps | limitTo:(steps.length-1)">
+            <a ng-href="{{step.ncyBreadcrumbLink}}" ng-bind-html="step.ncyBreadcrumbLabel"></a>
+        </li>
+        <li class="migalha-pao active" ng-repeat="step in steps | limitTo:-1">
+            <span ng-bind-html="step.ncyBreadcrumbLabel"></span>
+        </li>
+    </ul>
+</div>

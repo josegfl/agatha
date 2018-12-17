@@ -1,0 +1,36 @@
+version: '2'
+services:
+
+  mpog-gestaoriscos-bd:
+    container_name: mpog-gestaoriscos-bd
+    build: postgresql
+
+    #Caso queira expor o banco de dados em alguma porta tcp, as 2 linhas abaixo servem de exemplo 
+    #ports:
+    #  - "5432:5432"
+
+    # IMPORTANTE, esta linha abaixo, define a pasta onde ficarão persistidos os dados do banco, neste caso, na pasta docker, será criada uma pasta de nome data, ficando (pasta home do agatha)/docker/data
+    # Para manter a integridade dos dados, esta pasta não deve ser perdida, sendo de suma importância, gerar backup em ambientes de produção
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  mpog-gestaoriscos-backend:
+    container_name: mpog-gestaoriscos-backend
+    image: mpog-gestaoriscos-backend
+    build: spring
+    links:
+      - mpog-gestaoriscos-bd
+    volumes:
+      - ./spring/config:/config
+
+  mpog-gestaoriscos-frontend:
+    container_name: mpog-gestaoriscos-frontend
+    image: mpog-gestaoriscos-frontend
+    build: nginx
+    links:
+      - mpog-gestaoriscos-backend
+    ports:
+      - "80:80"
+    environment:
+      - ENDERECO_API=mpog-gestaoriscos-backend:8080
+

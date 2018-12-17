@@ -1,0 +1,237 @@
+<md-content flex>
+    <div class="sgr-container">
+
+        <div class="sgr-container-body">
+
+            <div>
+                <div layout="row" layout-xs="column" class="processo-info p-b-0">
+                    <div class="md-block" flex-gt-xs flex="100">
+                        <strong>
+                            <sgr-glossario termo="Macroprocesso"></sgr-glossario>
+                        </strong>
+                    </div>
+                </div>
+                <div layout="row" layout-xs="column" class="processo-info">
+                    <div class="md-block" flex-gt-xs flex="100">
+                        <span>{{scope.processo.macroprocesso.descricao}}</span>
+                    </div>
+                </div>
+
+                <div layout="row" layout-xs="column" class="processo-info p-b-0">
+                    <div class="md-block" flex-gt-xs flex="100">
+                        <strong>
+                            <sgr-glossario termo="Processo"></sgr-glossario>
+                        </strong>
+                    </div>
+                </div>
+                <div layout="row" layout-xs="column" class="processo-info">
+                    <div class="md-block" flex-gt-xs flex="100">
+                        <span>{{scope.processo.processo}}</span>
+                    </div>
+                </div>
+
+                <div layout="row" layout-xs="column" class="processo-info p-b-0">
+                    <div class="md-block" flex-gt-xs flex="30">
+                        <strong>
+                            <sgr-glossario termo="Objetivo do Macroprocesso/Processo"></sgr-glossario>
+                        </strong>
+                    </div>
+                </div>
+                <div layout="row" layout-xs="column" class="processo-info">
+                    <div class="md-block" flex-gt-xs flex="30">
+                        <span>{{scope.processo.objetivo}}</span>
+                    </div>
+                </div>
+
+                <hr color="#4CAF50" width="99%" size="2px"/>
+            </div>
+
+            <div layout="row" layout-xs="column">
+                <h3 style="margin-bottom: 10px; padding-left: 7px;">
+                    <sgr-glossario termo="Evento de Risco"></sgr-glossario>
+                </h3>
+            </div>
+            <div class="md-block p-b-20" flex-gt-xs style="margin-left: 7px;">
+                <span>{{scope._eventoRisco.evento.descricao}}</span>
+            </div>
+
+
+            <div layout="row" layout-xs="column">
+                <md-button class="md-primary" aria-label="Incluir" ng-click="scope.incluirControle = true">
+                    <md-icon md-font-set="material-icons">add</md-icon>
+                    <sgr-glossario termo="Controle Existente"></sgr-glossario>
+                </md-button>
+
+            </div>
+
+            <div class="sgr-container-table" layout="column" flex-gt-xs flex="100">
+                <md-card>
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head>
+                            <tr md-row>
+                                <th md-column class="text-right" width="30px">
+                                    <sgr-glossario termo="Item"></sgr-glossario>
+                                </th>
+                                <th md-column width="30%">
+                                    <sgr-glossario termo="Descrição"></sgr-glossario>
+                                </th>
+                                <th md-column width="25%">
+                                    <sgr-glossario termo="Desenho"></sgr-glossario>
+                                </th>
+                                <th md-column with="25%">
+                                    <sgr-glossario termo="Operação"></sgr-glossario>
+                                </th>
+                                <th md-column class="text-center" width="150px">
+                                    <sgr-glossario termo="Ações"></sgr-glossario>
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody md-body>
+                            <tr ng-show="scope.incluirControle">
+                                <td md-cell class="text-right">
+
+                                </td>
+                                <td >
+                                    <md-input-container class="md-block" flex-gt-xs flex="100">
+                                        <md-autocomplete class="md-autocomplete-icon" md-floating-label="" md-no-cache="true" md-search-text-change="scope.getControlesBySearch(scope.registro.controle.descricao)" md-search-text="scope.registro.controle.descricao" md-selected-item-change="scope.registro.controle = item"
+                                                         md-item-text="scope.registro.controle.descricao" md-items="item in scope._controles" md-min-length="2" required>
+                                            <md-item-template>
+                                                <span md-highlight-text="scope.registro.controle.descricao" md-highlight-flags="^i">{{item.descricao}}</span>
+                                            </md-item-template>
+                                        </md-autocomplete>
+                                    </md-input-container>
+                                </td>
+                                <td md-cell>
+                                    <md-input-container class="md-block" flex-gt-xs flex="100">
+                                        <md-select ng-model="scope.registro.desenho" required>
+                                            <md-option  ng-value="item" ng-repeat="item in scope._desenhos">{{ item.descricao }}</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </td>
+                                <td md-cell>
+                                    <md-input-container class="md-block" flex-gt-xs flex="100">
+                                        <md-select ng-model="scope.registro.operacao" required>
+                                            <md-option ng-value="item" ng-repeat="item in scope._operacoes">{{ item.descricao }}</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </td>
+
+                                <td md-cell class="text-center cell-options" width="120px">
+                                    <md-button class="md-icon-button" aria-label="Incluir" ng-click="scope.adicionarControleEvento()">
+                                        <md-tooltip>Incluir Controle de Evento</md-tooltip>
+                                        <md-icon class="table-icon">check</md-icon>
+                                    </md-button>
+
+                                    <md-button class="md-icon-button" aria-label="Cancelar" ng-click="scope.incluirControle = false; scope.registro = {}">
+                                        <md-icon class="table-icon" md-font-set="material-icons">cancel</md-icon>
+                                        <md-tooltip>Cancelar</md-tooltip>
+                                    </md-button>
+
+                                </td>
+                            </tr>
+                            <tr md-row ng-repeat="item in scope._eventoRisco.controleEventos">
+                                <td md-cell class="text-right">
+                                    <span ng-bind="$index + 1"></span>
+                                </td>
+                                <td md-cell>
+                                    <span ng-bind="item.controle.descricao" ng-if="!item.$update"></span>
+                                    <md-input-container class="md-block" flex-gt-xs flex="100" ng-if="item.$update">
+                                        <md-autocomplete class="md-autocomplete-icon" md-floating-label="" md-no-cache="true" md-search-text-change="scope.getControlesBySearch(scope.registro.controle.descricao)" md-search-text="scope.registro.controle.descricao" md-selected-item-change="scope.registro.controle = item"
+                                                         md-item-text="scope.registro.controle.descricao" md-items="item in scope._controles" md-min-length="2" required>
+                                            <md-item-template>
+                                                <span md-highlight-text="scope.registro.controle.descricao" md-highlight-flags="^i">{{item.descricao}}</span>
+                                            </md-item-template>
+                                        </md-autocomplete>
+                                    </md-input-container>
+                                </td>
+                                <td md-cell>
+                                    <span ng-bind="item.desenho.descricao" ng-if="!item.$update"></span>
+                                    <md-input-container class="md-block" flex-gt-xs flex="100" ng-if="item.$update">
+                                        <md-select ng-model="scope.registro.desenho" required>
+                                            <md-option ng-value="item" ng-repeat="item in scope._desenhos">{{ item.descricao }}</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </td>
+                                <td md-cell>
+                                    <span ng-bind="item.operacao.descricao" ng-if="!item.$update"></span>
+                                    <md-input-container class="md-block" flex-gt-xs flex="100" ng-if="item.$update">
+                                        <md-select ng-model="scope.registro.operacao" required>
+                                            <md-option ng-value="item" ng-repeat="item in scope._operacoes">{{ item.descricao }}</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </td>
+                                <td md-cell class="text-center cell-options" width="120px">
+
+                                    <!--<a ng-click="scope.salvarTaxonomiaControle(item)">-->
+                                    <!--<md-tooltip md-direction="top">-->
+                                    <!--Enviar para taxonomia-->
+                                    <!--</md-tooltip>-->
+                                    <!--<ng-md-icon icon="send"></ng-md-icon>-->
+                                    <!--</a>-->
+
+                                    <a ng-click="scope.alterarControleEvento(item)" ng-show="!item.$update">
+                                        <md-tooltip md-direction="top">
+                                            Alterar
+                                        </md-tooltip>
+                                        <ng-md-icon icon="create"></ng-md-icon>
+                                    </a>
+
+                                    <a ng-click="scope.excluirControleEvento(item)" class="cursor-pointer" ng-show="!item.$update">
+                                        <md-tooltip md-direction="top">
+                                            Excluir
+                                        </md-tooltip>
+                                        <ng-md-icon icon="delete"></ng-md-icon>
+                                    </a>
+
+                                    <a aria-label="Alterar" ng-click="scope.handleControleChange($event)" ng-show="item.$update">
+                                        <md-icon class="table-icon">check</md-icon>
+                                        <md-tooltip>Alterar Controle de Evento</md-tooltip>
+                                    </a>
+
+                                    <a aria-label="Cancelar" ng-click="scope.cancelarControleUpdate()" ng-show="item.$update">
+                                        <md-icon class="table-icon" md-font-set="material-icons">cancel</md-icon>
+                                        <md-tooltip>Cancelar</md-tooltip>
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                </md-card>
+            </div>
+
+            <div class="sgr-container-buttons m-t-10 m-b-10" layout="row" layout-align="end">
+                <section layout="row center" layout-sm="column" layout-wrap>
+                    <div layout="row" layout-align="space-around center">
+                        <md-button class="md-primary" ui-sref="processo.avaliacao.controleEvento.alterar({id : scope.processoId})">
+                            <md-icon md-font-set="material-icons">keyboard_arrow_left</md-icon>
+                            <sgr-glossario termo="Voltar"></sgr-glossario>
+                        </md-button>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+        </div>
+</md-content>
+
+
+<style>
+    md-option .md-text{
+        white-space: normal !important;
+        text-overflow: unset !important;
+    }
+
+    .md-select-menu-container{
+        width: 600px !important;
+    }
+
+    md-select.md-table-select > .md-select-value > span > .md-text {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+    }
+</style>

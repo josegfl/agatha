@@ -1,0 +1,147 @@
+        <div class="m-b-20" layout="row" layout-xs="column">
+            <div class="sgr-container-table" layout="column" flex-gt-xs flex="100">
+                <md-card>
+                    <md-table-container>
+                        <table md-table>
+                            <thead md-head>
+                            <tr md-row>
+                                <th md-column class="text-right" width="60px">
+                                    <sgr-glossario termo="Item"></sgr-glossario>
+                                </th>
+                                <th md-column>
+                                    <sgr-glossario termo="Evento de Risco"></sgr-glossario>
+                                </th>
+                                <th md-column class="text-right" width="100px">
+                                    <sgr-glossario termo="Probabilidade x Impacto"></sgr-glossario>
+                                </th>
+                                <th md-column width="100px">
+                                    <sgr-glossario termo="Nível de Risco"></sgr-glossario>
+                                </th>
+
+                                <th md-column>
+                                    <sgr-glossario termo="Controle Proposto"></sgr-glossario>
+                                </th>
+                                <th md-column width="150px">
+                                    <sgr-glossario termo="Área(s) Responsável(eis)"></sgr-glossario>
+                                </th>
+                                <th md-column class="text-center" width="70px">
+                                    <sgr-glossario termo="Data Inicio"></sgr-glossario>
+                                </th>
+                                <th md-column class="text-center" width="70px">
+                                    <sgr-glossario termo="Data Fim"></sgr-glossario>
+                                </th>
+                                <th md-column class="" width="60px">
+                                    <sgr-glossario termo="Ação"></sgr-glossario>
+                                </th>
+                            </tr>
+                            </thead>
+
+                            <tbody md-body>
+                            <tr md-row ng-repeat="item in scope._eventosRisco">
+                                <td md-cell class="text-right" width="60px">
+                                    <span>{{$index+1}}</span>
+                                </td>
+                                <td md-cell>
+                                    <span>{{item.evento.descricao}}</span>
+                                </td>
+                                 <td md-cell width="100px" class="text-right">
+                                     <span>{{item.calculoRiscoResidual.nivel}}</span>
+                                </td>
+                                <td md-cell  width="100px" style="background: {{item.calculoRiscoResidual.nivel | corNivelRisco}}">
+                                    <strong style="color: black; font-size: 16px;font-weight: 600">{{item.calculoRiscoResidual.nivel | nivelRisco}}</strong>
+                                </td>
+                                <td md-cell ng-class="{'border-none': item.controles.length > 0}" style="padding: 0 !important; margin: 0 !important; height: 52px !important;" colspan="4">
+                                    <table md-table style="height: 100% !important;">
+                                        <tr md-row style="background: transparent" ng-repeat="row in item.controles">
+                                            <td md-cell>
+                                                <span ng-bind="row.controle.descricao"></span>
+                                            </td>
+                                            <td md-cell width="150px">
+                                                <span ng-bind="row.areaResponsavel"></span>
+                                            </td>
+                                            <td md-cell class="text-center" width="70px">
+                                                <span ng-bind="row.dtInicio | date:'dd/MM/yyyy' "></span>
+                                            </td>
+                                            <td md-cell class="text-center" width="70px">
+                                                <span ng-bind="row.dtConclusao | date:'dd/MM/yyyy'"></span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td md-cell class="" width="60px">
+                                    <a ui-sref="processo.planoControle.editar({id: scope.processoId, eventoRiscoId: item.id})" ng-show="scope.permissao.criarEventoRisco && !scope.apenasLeitura">
+                                        <md-tooltip md-direction="top">
+                                            Alterar
+                                        </md-tooltip>
+                                        <ng-md-icon icon="create"></ng-md-icon>
+                                    </a>
+                                    <a ui-sref="planoControle.detalhar({id: scope.processoId, eventoRiscoId: item.id})">
+                                        <md-tooltip md-direction="top">
+                                            Detalhar Plano de Controle
+                                        </md-tooltip>
+                                        <ng-md-icon icon="search"></ng-md-icon>
+                                    </a>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                    <md-table-pagination md-on-paginate="scope.filtrar" md-limit="scope.tamanhoLimite" md-limit-options="[20, 50, 100]" md-page="scope.registroInicial" md-total="{{scope.totalItems}}" md-page-select></md-table-pagination>
+                </md-card>
+            </div>
+        </div>
+
+        <!--<form class="m-b-20" name="formValidar" novalidate ng-show="scope.permissao.validar && false">-->
+
+        <!--<div class="sgr-container-header" layout="row" style="margin: 20px -10px; border-radius: 0">-->
+        <!--<div class="md-toolbar-tools">-->
+        <!--<h3 style="font-size: 18px">-->
+        <!--<sgr-glossario termo="Validação"></sgr-glossario>-->
+        <!--</h3>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div layout="row" layout-xs="column">-->
+
+        <!--<md-input-container class="md-block" flex-gt-xs flex="50">-->
+        <!--<label>-->
+        <!--<sgr-glossario termo="Decisão"></sgr-glossario>-->
+        <!--</label>-->
+        <!--<md-select ng-model="scope.registro.decisao" ng-disabled="scope.apenasLeitura" ng-change="scope.registro.justificativa = null">-->
+        <!--<md-option ng-value="item" ng-repeat="item in scope._decisoes">{{ item.nome }}</md-option>-->
+        <!--</md-select>-->
+        <!--</md-input-container>-->
+
+        <!--</div>-->
+
+        <!--<div layout="row" layout-xs="column" ng-show="scope.registro.decisao.nome == 'Reprovar'">-->
+
+        <!--<md-input-container class="md-block" flex-gt-xs flex="100">-->
+        <!--<label>-->
+        <!--<sgr-glossario termo="Justificativa"></sgr-glossario>-->
+        <!--</label>-->
+        <!--<textarea ng-model="scope.registro.justificativa" rows="3" ng-disabled="scope.apenasLeitura" ng-required="scope.registro.decisao.nome == 'Reprovar' && scope.permissao.validar"></textarea>-->
+        <!--</md-input-container>-->
+
+        <!--</div>-->
+        <!--</form>-->
+
+        <!--<div class="sgr-container-buttons sgr-container-footer" layout="row" layout-align="end">-->
+            <!--<section layout="row center" layout-sm="column" layout-wrap>-->
+                <!--<div layout="row" layout-align="space-around center">-->
+                    <!--<md-button class="md-primary" ui-sref="home">-->
+                        <!--<md-icon md-font-set="material-icons">close</md-icon>-->
+                        <!--<sgr-glossario termo="Cancelar"></sgr-glossario>-->
+                    <!--</md-button>-->
+                    <!--<md-button class="md-primary md-raised" ng-click="scope.iniciarPlanoControle(scope.registro)" ng-if="!scope.apenasLeitura">-->
+                        <!--<md-icon md-font-set="material-icons">done</md-icon>-->
+                        <!--<sgr-glossario termo="Salvar"></sgr-glossario>-->
+                    <!--</md-button>-->
+                    <!--<md-button class="md-primary md-raised" ng-click="scope.validarPlanoControle(scope.registro)" ng-if="!scope.apenasLeitura && scope.permissao.enviarParaValidacao && scope.registro.isAnalista != false">-->
+                        <!--<md-icon md-font-set="material-icons">star</md-icon>-->
+                        <!--<sgr-glossario termo="Enviar para validação"></sgr-glossario>-->
+                    <!--</md-button>-->
+                <!--</div>-->
+            <!--</section>-->
+        <!--</div>-->

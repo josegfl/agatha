@@ -1,0 +1,14 @@
+<md-content>
+
+    <md-tabs md-dynamic-height md-border-bottom md-selected="scope.riscoInerenteTab">
+        <md-tab label="Probabilidade" ng-click="scope.changeToProbabilidade()"></md-tab>
+        <md-tab label="Impacto" ng-click="scope.changeToImpacto()"></md-tab>
+    </md-tabs>
+
+    <div class="sgr-container">
+        <div class="sgr-container-body">
+            <ui-view></ui-view>
+        </div>
+    </div>
+
+</md-content>

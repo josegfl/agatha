@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="1.08.1" labels="Adição da data de cadastro ao processo">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_processo ADD dt_cadastro TIMESTAMP NULL;
+            COMMENT ON COLUMN tb_processo.dt_cadastro IS 'Data em que o processo foi criado';
+
+            UPDATE tb_processo SET dt_cadastro = '2017-04-01 00:00:00';
+
+            ALTER TABLE tb_processo ALTER COLUMN dt_cadastro SET NOT NULL;
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.08.2" labels="Alteração do processo para permitir uma lista de anexos">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_processo DROP CONSTRAINT fk_tb_processo_tb_arquivo_anexo;
+
+            ALTER TABLE tb_processo DROP id_arquivo_anexo;
+
+
+            ALTER TABLE tb_arquivo_anexo ADD nu_tamanho INTEGER NULL;
+            COMMENT ON COLUMN tb_arquivo_anexo.nu_tamanho IS 'Tamanho do arquivo';
+
+            UPDATE tb_arquivo_anexo SET nu_tamanho = 0;
+
+            ALTER TABLE tb_arquivo_anexo ALTER COLUMN nu_tamanho SET NOT NULL;
+
+
+            CREATE SEQUENCE sk_processo_anexo START WITH 1;
+            CREATE TABLE tb_processo_anexo
+            (
+            id_processo_anexo BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_processo BIGINT NOT NULL,
+            id_arquivo_anexo BIGINT NOT NULL
+            );
+            COMMENT ON TABLE tb_processo_anexo IS 'Armazena todos os anexos de um processo.';
+            COMMENT ON COLUMN tb_processo_anexo.id_processo_anexo IS 'Identificador do registro';
+            COMMENT ON COLUMN tb_processo_anexo.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_processo_anexo.id_processo IS 'Identificador do processo';
+            COMMENT ON COLUMN tb_processo_anexo.id_arquivo_anexo IS 'Identificador do arquivo de anexo';
+
+            ALTER TABLE tb_processo_anexo ADD CONSTRAINT fk_tb_processo_anexo_tb_processo FOREIGN KEY (id_processo) REFERENCES tb_processo (id_processo);
+
+            ALTER TABLE tb_processo_anexo ADD CONSTRAINT fk_tb_processo_anexo_tb_arquivo_anexo FOREIGN KEY (id_arquivo_anexo) REFERENCES tb_arquivo_anexo (id_arquivo_anexo);
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.08.3" labels="Alteração do tamanho das colunas de nome da tabela de anexo">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_arquivo_anexo ALTER COLUMN no_arquivo TYPE VARCHAR(200);
+
+            ALTER TABLE tb_arquivo_anexo ALTER COLUMN no_documento TYPE VARCHAR(200);
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.08.4" labels="Insert da tabela Decisão da Etapa e adição do relacionamento às etapas">
+        <sql splitStatements="false">
+
+            CREATE SEQUENCE sk_decisao_etapa START WITH 1;
+            CREATE TABLE tb_decisao_etapa
+            (
+            id_decisao_etapa BIGINT PRIMARY KEY NOT NULL,
+            no_decisao VARCHAR(200) NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL
+            );
+            COMMENT ON TABLE tb_decisao_etapa IS 'Armazena as decisões que uma etapa do processo pode assumir';
+            COMMENT ON COLUMN tb_decisao_etapa.id_decisao_etapa IS 'Identificador do registro';
+            COMMENT ON COLUMN tb_decisao_etapa.no_decisao IS 'Nome da decisão';
+            COMMENT ON COLUMN tb_decisao_etapa.ic_excluido IS 'Identifica se o registro está excluído';
+
+            INSERT INTO tb_decisao_etapa (id_decisao_etapa, no_decisao, ic_excluido) VALUES (nextval('sk_decisao_etapa'), 'Validar', false);
+            INSERT INTO tb_decisao_etapa (id_decisao_etapa, no_decisao, ic_excluido) VALUES (nextval('sk_decisao_etapa'), 'Reprovar', false);
+
+
+            ALTER TABLE tb_analise ADD id_decisao_etapa BIGINT NULL;
+            COMMENT ON COLUMN tb_analise.id_decisao_etapa IS 'Identificador da decisão';
+
+            ALTER TABLE tb_analise ADD ds_justificativa TEXT NULL;
+            COMMENT ON COLUMN tb_analise.ds_justificativa IS 'Justificativa do gestor caso a etapa seja reprovada';
+
+            ALTER TABLE tb_analise ADD CONSTRAINT fk_tb_analise_tb_decisao_etapa FOREIGN KEY (id_decisao_etapa) REFERENCES tb_decisao_etapa (id_decisao_etapa);
+
+
+            ALTER TABLE tb_identificacao ADD id_decisao_etapa BIGINT NULL;
+            COMMENT ON COLUMN tb_identificacao.id_decisao_etapa IS 'Identificador da decisão';
+
+            ALTER TABLE tb_identificacao ADD ds_justificativa TEXT NULL;
+            COMMENT ON COLUMN tb_identificacao.ds_justificativa IS 'Justificativa do gestor caso a etapa seja reprovada';
+
+            ALTER TABLE tb_identificacao ADD CONSTRAINT fk_tb_identificacao_tb_decisao_etapa FOREIGN KEY (id_decisao_etapa) REFERENCES tb_decisao_etapa (id_decisao_etapa);
+
+
+            ALTER TABLE tb_avaliacao ADD id_decisao_etapa BIGINT NULL;
+            COMMENT ON COLUMN tb_avaliacao.id_decisao_etapa IS 'Identificador da decisão';
+
+            ALTER TABLE tb_avaliacao ADD ds_justificativa TEXT NULL;
+            COMMENT ON COLUMN tb_avaliacao.ds_justificativa IS 'Justificativa do gestor caso a etapa seja reprovada';
+
+            ALTER TABLE tb_avaliacao ADD CONSTRAINT fk_tb_avaliacao_tb_decisao_etapa FOREIGN KEY (id_decisao_etapa) REFERENCES tb_decisao_etapa (id_decisao_etapa);
+
+
+            ALTER TABLE tb_resposta ADD id_decisao_etapa BIGINT NULL;
+            COMMENT ON COLUMN tb_resposta.id_decisao_etapa IS 'Identificador da decisão';
+
+            ALTER TABLE tb_resposta ADD ds_justificativa TEXT NULL;
+            COMMENT ON COLUMN tb_resposta.ds_justificativa IS 'Justificativa do gestor caso a etapa seja reprovada';
+
+            ALTER TABLE tb_resposta ADD CONSTRAINT fk_tb_resposta_tb_decisao_etapa FOREIGN KEY (id_decisao_etapa) REFERENCES tb_decisao_etapa (id_decisao_etapa);
+
+
+            ALTER TABLE tb_informacao ADD id_decisao_etapa BIGINT NULL;
+            COMMENT ON COLUMN tb_informacao.id_decisao_etapa IS 'Identificador da decisão';
+
+            ALTER TABLE tb_informacao ADD ds_justificativa TEXT NULL;
+            COMMENT ON COLUMN tb_informacao.ds_justificativa IS 'Justificativa do gestor caso a etapa seja reprovada';
+
+            ALTER TABLE tb_informacao ADD CONSTRAINT fk_tb_informacao_tb_decisao_etapa FOREIGN KEY (id_decisao_etapa) REFERENCES tb_decisao_etapa (id_decisao_etapa);
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.08.5" labels="Criação das tabelas relacionadas a taxonomia">
+        <sql splitStatements="false">
+
+            CREATE SEQUENCE sk_tipo_taxonomia START WITH 1;
+            CREATE TABLE tb_tipo_taxonomia
+            (
+            id_tipo_taxonomia BIGINT PRIMARY KEY NOT NULL,
+            no_tipo_taxonomia VARCHAR(200) NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL
+            );
+            COMMENT ON TABLE tb_tipo_taxonomia IS 'Armazena todos os tipos de taxonomia';
+            COMMENT ON COLUMN tb_tipo_taxonomia.id_tipo_taxonomia IS 'Identificador do registro';
+            COMMENT ON COLUMN tb_tipo_taxonomia.no_tipo_taxonomia IS 'Nome do tipo da taxonomia';
+            COMMENT ON COLUMN tb_tipo_taxonomia.ic_excluido IS 'Identifica se o registro está excluído';
+
+            INSERT INTO tb_tipo_taxonomia (id_tipo_taxonomia, no_tipo_taxonomia, ic_excluido) VALUES (nextval('sk_tipo_taxonomia'), 'Evento', false);
+            INSERT INTO tb_tipo_taxonomia (id_tipo_taxonomia, no_tipo_taxonomia, ic_excluido) VALUES (nextval('sk_tipo_taxonomia'), 'Causa', false);
+            INSERT INTO tb_tipo_taxonomia (id_tipo_taxonomia, no_tipo_taxonomia, ic_excluido) VALUES (nextval('sk_tipo_taxonomia'), 'Consequência', false);
+            INSERT INTO tb_tipo_taxonomia (id_tipo_taxonomia, no_tipo_taxonomia, ic_excluido) VALUES (nextval('sk_tipo_taxonomia'), 'Controle', false);
+
+
+            CREATE SEQUENCE sk_status_taxonomia START WITH 1;
+            CREATE TABLE tb_status_taxonomia
+            (
+            id_status_taxonomia BIGINT PRIMARY KEY NOT NULL,
+            no_status_taxonomia VARCHAR(200) NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL
+            );
+            COMMENT ON TABLE tb_status_taxonomia IS 'Armazena todos os status da taxonomia';
+            COMMENT ON COLUMN tb_status_taxonomia.id_status_taxonomia IS 'Identificador do registro';
+            COMMENT ON COLUMN tb_status_taxonomia.no_status_taxonomia IS 'Nome do status da taxonomia';
+            COMMENT ON COLUMN tb_status_taxonomia.ic_excluido IS 'Identifica se o registro está excluído';
+
+            INSERT INTO tb_status_taxonomia (id_status_taxonomia, no_status_taxonomia, ic_excluido) VALUES (nextval('sk_status_taxonomia'), 'Não avaliado', false);
+            INSERT INTO tb_status_taxonomia (id_status_taxonomia, no_status_taxonomia, ic_excluido) VALUES (nextval('sk_status_taxonomia'), 'Aprovado', false);
+            INSERT INTO tb_status_taxonomia (id_status_taxonomia, no_status_taxonomia, ic_excluido) VALUES (nextval('sk_status_taxonomia'), 'Reprovado', false);
+            INSERT INTO tb_status_taxonomia (id_status_taxonomia, no_status_taxonomia, ic_excluido) VALUES (nextval('sk_status_taxonomia'), 'Agrupado', false);
+
+
+            CREATE SEQUENCE sk_taxonomia START WITH 1;
+            CREATE TABLE tb_taxonomia
+            (
+            id_taxonomia BIGINT PRIMARY KEY NOT NULL,
+            ds_taxonomia VARCHAR(200) NOT NULL,
+            ds_search VARCHAR(200) NOT NULL,
+            dt_cadastro TIMESTAMP NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            ds_justificativa TEXT NULL,
+            id_tipo_taxonomia BIGINT NOT NULL,
+            id_status_taxonomia BIGINT NOT NULL,
+            id_orgao BIGINT NOT NULL,
+            id_evento BIGINT NULL,
+            id_causa BIGINT NULL,
+            id_consequencia BIGINT NULL,
+            id_controle BIGINT NULL,
+            id_agrupamento_taxonomia BIGINT NULL
+            );
+            COMMENT ON TABLE tb_taxonomia IS 'Armazena todos as taxonomia';
+            COMMENT ON COLUMN tb_taxonomia.id_taxonomia IS 'Identificador do registro';
+            COMMENT ON COLUMN tb_taxonomia.ds_taxonomia IS 'Descrição da taxonomia';
+            COMMENT ON COLUMN tb_taxonomia.ds_search IS 'Descrição utilizada na busca do autocomplete';
+            COMMENT ON COLUMN tb_taxonomia.dt_cadastro IS 'Data da criação do registro';
+            COMMENT ON COLUMN tb_taxonomia.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_taxonomia.ds_justificativa IS 'Justificativa da reprovação da taxonomia';
+            COMMENT ON COLUMN tb_taxonomia.id_tipo_taxonomia IS 'Identificador do tipo da taxonomia';
+            COMMENT ON COLUMN tb_taxonomia.id_status_taxonomia IS 'Identificador do status da taxonomia';
+            COMMENT ON COLUMN tb_taxonomia.id_orgao IS 'Identificador do órgão';
+            COMMENT ON COLUMN tb_taxonomia.id_evento IS 'Identificador do evento de risco';
+            COMMENT ON COLUMN tb_taxonomia.id_causa IS 'Identificador da causa de risco';
+            COMMENT ON COLUMN tb_taxonomia.id_consequencia IS 'Identificador da consequência de risco';
+            COMMENT ON COLUMN tb_taxonomia.id_controle IS 'Identificador da controle';
+            COMMENT ON COLUMN tb_taxonomia.id_agrupamento_taxonomia IS 'Identificador do agrupamento da taxonomia';
+
+
+            CREATE SEQUENCE sk_agrupamento_taxonomia START WITH 1;
+            CREATE TABLE tb_agrupamento_taxonomia
+            (
+            id_agrupamento_taxonomia BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_taxonomia_padrao BIGINT NOT NULL
+            );
+            COMMENT ON TABLE tb_agrupamento_taxonomia IS 'Armazena todos os agrupamentos de taxonomia';
+            COMMENT ON COLUMN tb_agrupamento_taxonomia.id_agrupamento_taxonomia IS 'Identificador do registro';
+            COMMENT ON COLUMN tb_agrupamento_taxonomia.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_agrupamento_taxonomia.id_taxonomia_padrao IS 'Identificador da taxonomia padrão';
+
+
+            ALTER TABLE tb_taxonomia ADD CONSTRAINT fk_tb_taxonomia_tb_tipo_taxonomia FOREIGN KEY (id_tipo_taxonomia) REFERENCES tb_tipo_taxonomia (id_tipo_taxonomia);
+
+            ALTER TABLE tb_taxonomia ADD CONSTRAINT fk_tb_taxonomia_tb_status_taxonomia FOREIGN KEY (id_status_taxonomia) REFERENCES tb_status_taxonomia (id_status_taxonomia);
+
+            ALTER TABLE tb_taxonomia ADD CONSTRAINT fk_tb_taxonomia_tb_orgao FOREIGN KEY (id_orgao) REFERENCES tb_orgao (id_orgao);
+
+            ALTER TABLE tb_taxonomia ADD CONSTRAINT fk_tb_taxonomia_tb_evento FOREIGN KEY (id_evento) REFERENCES tb_evento (id_evento);
+
+            ALTER TABLE tb_taxonomia ADD CONSTRAINT fk_tb_taxonomia_tb_causa FOREIGN KEY (id_causa) REFERENCES tb_causa (id_causa);
+
+            ALTER TABLE tb_taxonomia ADD CONSTRAINT fk_tb_taxonomia_tb_consequencia FOREIGN KEY (id_consequencia) REFERENCES tb_consequencia (id_consequencia);
+
+            ALTER TABLE tb_taxonomia ADD CONSTRAINT fk_tb_taxonomia_tb_controle FOREIGN KEY (id_controle) REFERENCES tb_controle (id_controle);
+
+            ALTER TABLE tb_taxonomia ADD CONSTRAINT fk_tb_taxonomia_tb_agrupamento_taxonomia FOREIGN KEY (id_agrupamento_taxonomia) REFERENCES tb_agrupamento_taxonomia (id_agrupamento_taxonomia);
+
+
+            ALTER TABLE tb_agrupamento_taxonomia ADD CONSTRAINT fk_tb_agrupamento_taxonomia_tb_taxonomia FOREIGN KEY (id_taxonomia_padrao) REFERENCES tb_taxonomia (id_taxonomia);
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.08.6" labels="Correção do nome do impacto">
+        <sql splitStatements="false">
+
+            UPDATE tb_impacto_calculadora SET no_impacto_calculadora = 'Negócios / Serviços à Sociedade' WHERE no_impacto_calculadora = 'Negócios/Serviços à Sociedade'
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.08.7" labels="Criação das tabelas responsáveis a resposta de risco">
+        <sql splitStatements="false">
+
+            CREATE SEQUENCE sk_tipo_resposta_risco START WITH 1;
+            CREATE TABLE tb_tipo_resposta_risco
+            (
+            id_tipo_resposta_risco BIGINT PRIMARY KEY NOT NULL,
+            no_tipo_resposta_risco VARCHAR(200) NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL
+            );
+            COMMENT ON TABLE tb_tipo_resposta_risco IS 'Armazena todos os tipos de resposta à risco';
+            COMMENT ON COLUMN tb_tipo_resposta_risco.id_tipo_resposta_risco IS 'Identificador do registro';
+            COMMENT ON COLUMN tb_tipo_resposta_risco.no_tipo_resposta_risco IS 'Nome do tipo da resposta à risco';
+            COMMENT ON COLUMN tb_tipo_resposta_risco.ic_excluido IS 'Identifica se o registro está excluído';
+
+            INSERT INTO tb_tipo_resposta_risco (id_tipo_resposta_risco, no_tipo_resposta_risco, ic_excluido) VALUES (nextval('sk_tipo_resposta_risco'), 'Evitar', false);
+            INSERT INTO tb_tipo_resposta_risco (id_tipo_resposta_risco, no_tipo_resposta_risco, ic_excluido) VALUES (nextval('sk_tipo_resposta_risco'), 'Reduzir', false);
+            INSERT INTO tb_tipo_resposta_risco (id_tipo_resposta_risco, no_tipo_resposta_risco, ic_excluido) VALUES (nextval('sk_tipo_resposta_risco'), 'Compartilhar/Transferir', false);
+            INSERT INTO tb_tipo_resposta_risco (id_tipo_resposta_risco, no_tipo_resposta_risco, ic_excluido) VALUES (nextval('sk_tipo_resposta_risco'), 'Aceitar', false);
+
+
+            CREATE SEQUENCE sk_tipo_controle START WITH 1;
+            CREATE TABLE tb_tipo_controle
+            (
+            id_tipo_controle BIGINT PRIMARY KEY NOT NULL,
+            no_tipo_controle VARCHAR(200) NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL
+            );
+            COMMENT ON TABLE tb_tipo_controle IS 'Armazena todos os tipos de controle';
+            COMMENT ON COLUMN tb_tipo_controle.id_tipo_controle IS 'Identificador do registro';
+            COMMENT ON COLUMN tb_tipo_controle.no_tipo_controle IS 'Nome do tipo da controle';
+            COMMENT ON COLUMN tb_tipo_controle.ic_excluido IS 'Identifica se o registro está excluído';
+
+            INSERT INTO tb_tipo_controle (id_tipo_controle, no_tipo_controle, ic_excluido) VALUES (nextval('sk_tipo_controle'), 'Corretivo', false);
+            INSERT INTO tb_tipo_controle (id_tipo_controle, no_tipo_controle, ic_excluido) VALUES (nextval('sk_tipo_controle'), 'Preventivo', false);
+
+
+            CREATE SEQUENCE sk_objetivo_controle START WITH 1;
+            CREATE TABLE tb_objetivo_controle
+            (
+            id_objetivo_controle BIGINT PRIMARY KEY NOT NULL,
+            no_objetivo_controle VARCHAR(200) NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL
+            );
+            COMMENT ON TABLE tb_objetivo_controle IS 'Armazena todos os objetivos de controle';
+            COMMENT ON COLUMN tb_objetivo_controle.id_objetivo_controle IS 'Identificador do registro';
+            COMMENT ON COLUMN tb_objetivo_controle.no_objetivo_controle IS 'Nome do objetivo do controle';
+            COMMENT ON COLUMN tb_objetivo_controle.ic_excluido IS 'Identifica se o registro está excluído';
+
+            INSERT INTO tb_objetivo_controle (id_objetivo_controle, no_objetivo_controle, ic_excluido) VALUES (nextval('sk_objetivo_controle'), 'Melhoria de Controle Existente', false);
+            INSERT INTO tb_objetivo_controle (id_objetivo_controle, no_objetivo_controle, ic_excluido) VALUES (nextval('sk_objetivo_controle'), 'Adotar Controle Novo', false);
+
+
+            CREATE SEQUENCE sk_resposta_risco START WITH 1;
+            CREATE TABLE tb_resposta_risco
+            (
+            id_resposta_risco BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_tipo_resposta BIGINT NOT NULL,
+            id_controle BIGINT NOT NULL,
+            id_tipo_controle BIGINT NOT NULL,
+            id_objetivo_controle BIGINT NOT NULL,
+            id_evento_risco BIGINT NOT NULL
+            );
+            COMMENT ON TABLE tb_resposta_risco IS 'Armazena todas as respostas à risco';
+            COMMENT ON COLUMN tb_resposta_risco.id_resposta_risco IS 'Identificador do registro';
+            COMMENT ON COLUMN tb_resposta_risco.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_resposta_risco.id_tipo_resposta IS 'Identificador do tipo de resposta';
+            COMMENT ON COLUMN tb_resposta_risco.id_controle IS 'Identificador do controle proposto';
+            COMMENT ON COLUMN tb_resposta_risco.id_tipo_controle IS 'Identificador do tipo de controle';
+            COMMENT ON COLUMN tb_resposta_risco.id_objetivo_controle IS 'Identificador do objetivo do controle';
+            COMMENT ON COLUMN tb_resposta_risco.id_evento_risco IS 'Identificador do evento de risco';
+
+
+            ALTER TABLE tb_resposta_risco ADD CONSTRAINT fk_tb_resposta_risco_tb_tipo_resposta FOREIGN KEY (id_tipo_resposta) REFERENCES tb_tipo_resposta_risco (id_tipo_resposta_risco);
+
+            ALTER TABLE tb_resposta_risco ADD CONSTRAINT fk_tb_resposta_risco_tb_controle FOREIGN KEY (id_controle) REFERENCES tb_controle (id_controle);
+
+            ALTER TABLE tb_resposta_risco ADD CONSTRAINT fk_tb_resposta_risco_tb_tipo_controle FOREIGN KEY (id_tipo_controle) REFERENCES tb_tipo_controle (id_tipo_controle);
+
+            ALTER TABLE tb_resposta_risco ADD CONSTRAINT fk_tb_resposta_risco_tb_objetivo_controle FOREIGN KEY (id_objetivo_controle) REFERENCES tb_objetivo_controle (id_objetivo_controle);
+
+            ALTER TABLE tb_resposta_risco ADD CONSTRAINT fk_tb_resposta_risco_tb_evento_risco FOREIGN KEY (id_evento_risco) REFERENCES tb_evento_risco (id_evento_risco);
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.08.8" labels="Criação do Glossário">
+        <sql splitStatements="false">
+
+            CREATE SEQUENCE sk_glossario START WITH 1;
+            CREATE TABLE tb_glossario
+            (
+            id_glossario BIGINT PRIMARY KEY NOT NULL,
+            no_glossario VARCHAR(200) NOT NULL,
+            ds_glossario VARCHAR(200) NOT NULL,
+            ds_termo_search VARCHAR(200) NOT NULL,
+            ds_descricao_search VARCHAR(200) NOT NULL,
+            ic_ativo BOOLEAN DEFAULT true NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL
+            );
+            COMMENT ON TABLE tb_glossario IS 'Armazena todos os glossários do sistema';
+            COMMENT ON COLUMN tb_glossario.id_glossario IS 'Identificador do registro';
+            COMMENT ON COLUMN tb_glossario.no_glossario IS 'Termo do glossário';
+            COMMENT ON COLUMN tb_glossario.ds_glossario IS 'Descrição do termo do glossário';
+            COMMENT ON COLUMN tb_glossario.ds_termo_search IS 'Descrição utilizada na busca do autocomplete pelo termo';
+            COMMENT ON COLUMN tb_glossario.ds_descricao_search IS 'Descrição utilizada na busca do autocomplete pela descrição';
+            COMMENT ON COLUMN tb_glossario.ic_ativo IS 'Identifica se o registro está ativo';
+            COMMENT ON COLUMN tb_glossario.ic_excluido IS 'Identifica se o registro está excluído';
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

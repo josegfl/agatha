@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="1.01">
+        <sql splitStatements="false">
+            <![CDATA[
+
+            ALTER TABLE tb_causa ADD ic_excluido bool DEFAULT false NOT NULL;
+            COMMENT ON COLUMN tb_causa.ic_excluido IS 'Identifica se o registro está excluído';
+
+            ALTER TABLE tb_consequencia ADD ic_excluido bool DEFAULT false NOT NULL;
+            COMMENT ON COLUMN tb_consequencia.ic_excluido IS 'Identifica se o registro está excluído';
+
+            ALTER TABLE tb_evento ADD ic_excluido bool DEFAULT false NOT NULL;
+            COMMENT ON COLUMN tb_evento.ic_excluido IS 'Identifica se o registro está excluído';
+
+            CREATE SEQUENCE sk_perfil START WITH 1;
+            CREATE TABLE tb_perfil (
+            id_perfil BIGINT NOT NULL,
+            no_perfil varchar(100) NOT NULL,
+            CONSTRAINT pk_tb_perfil PRIMARY KEY ( id_perfil )
+            );
+
+            COMMENT ON TABLE tb_perfil IS 'Tabela responsável por armazenar os dados de perfil';
+
+            COMMENT ON COLUMN tb_perfil.id_perfil IS 'Identificador do perfil';
+
+            COMMENT ON COLUMN tb_perfil.no_perfil IS 'Nome do perfil';
+
+            INSERT INTO tb_perfil (id_perfil, no_perfil) VALUES (nextval('sk_perfil'), 'Comitê');
+            INSERT INTO tb_perfil (id_perfil, no_perfil) VALUES (nextval('sk_perfil'), 'Subcomitê');
+            INSERT INTO tb_perfil (id_perfil, no_perfil) VALUES (nextval('sk_perfil'), 'Núcleo');
+            INSERT INTO tb_perfil (id_perfil, no_perfil) VALUES (nextval('sk_perfil'), 'Unidade');
+            INSERT INTO tb_perfil (id_perfil, no_perfil) VALUES (nextval('sk_perfil'), 'Gestor do Processo');
+            INSERT INTO tb_perfil (id_perfil, no_perfil) VALUES (nextval('sk_perfil'), 'Analista de Risco');
+
+            CREATE TABLE tb_categoria_unidade
+            (
+            id_categoria_unidade INTEGER PRIMARY KEY NOT NULL,
+            no_categoria VARCHAR(30) NOT NULL,
+            sg_categoria_unidade CHAR(2) NOT NULL
+            );
+            COMMENT ON COLUMN tb_categoria_unidade.id_categoria_unidade IS 'Identificador da categoria da unidade do órgão';
+            COMMENT ON COLUMN tb_categoria_unidade.no_categoria IS 'Nome da categoria';
+            COMMENT ON COLUMN tb_categoria_unidade.sg_categoria_unidade IS 'Sigla da categoria';
+            CREATE UNIQUE INDEX uq_categoria_unidade ON tb_categoria_unidade (no_categoria);
+            CREATE UNIQUE INDEX uq_categoria_unidade_sigla ON tb_categoria_unidade (sg_categoria_unidade);
+
+
+            INSERT INTO tb_categoria_unidade (id_categoria_unidade, no_categoria, sg_categoria_unidade)
+            VALUES(1, 'Unidade Administrativa', 'UA');
+            INSERT INTO tb_categoria_unidade (id_categoria_unidade, no_categoria, sg_categoria_unidade)
+            VALUES(2, 'Unidade Colegiada', 'UC');
+            INSERT INTO tb_categoria_unidade (id_categoria_unidade, no_categoria, sg_categoria_unidade)
+            VALUES(3, 'Entidade', 'EN');
+            INSERT INTO tb_categoria_unidade (id_categoria_unidade, no_categoria, sg_categoria_unidade)
+            VALUES(4, 'Órgão', 'OR');
+            INSERT INTO tb_categoria_unidade (id_categoria_unidade, no_categoria, sg_categoria_unidade)
+            VALUES(5, 'Ente', 'ET');
+
+
+            CREATE TABLE tb_natureza_juridica
+            (
+            id_natureza_juridica SMALLINT PRIMARY KEY NOT NULL,
+            no_natureza_juridica VARCHAR(30) NOT NULL
+            );
+            COMMENT ON COLUMN tb_natureza_juridica.id_natureza_juridica IS 'Identificador da natureza jurídica';
+            COMMENT ON COLUMN tb_natureza_juridica.no_natureza_juridica IS 'Nome da natureza jurídica';
+            CREATE UNIQUE INDEX uq_natureza_juridica ON tb_natureza_juridica (no_natureza_juridica);
+
+            INSERT INTO tb_natureza_juridica(id_natureza_juridica, no_natureza_juridica) VALUES (1, 'Empresa Pública');
+            INSERT INTO tb_natureza_juridica(id_natureza_juridica, no_natureza_juridica) VALUES (2, 'Fundação Pública');
+            INSERT INTO tb_natureza_juridica(id_natureza_juridica, no_natureza_juridica) VALUES (3, 'Administração Direta');
+            INSERT INTO tb_natureza_juridica(id_natureza_juridica, no_natureza_juridica) VALUES (4, 'Autarquia');
+            INSERT INTO tb_natureza_juridica(id_natureza_juridica, no_natureza_juridica) VALUES (6, 'Sociedade de Economia Mista');
+
+            CREATE SEQUENCE sk_orgao START WITH 1;
+            CREATE TABLE tb_orgao
+            (
+            id_orgao INTEGER PRIMARY KEY NOT NULL,
+            no_orgao VARCHAR(255) NOT NULL,
+            id_orgao_superior INTEGER,
+            sg_orgao VARCHAR(32) NOT NULL,
+            id_categoria_unidade INTEGER,
+            id_natureza_juridica SMALLINT
+            );
+            ALTER TABLE tb_orgao ADD CONSTRAINT fk_orgao_orgao FOREIGN KEY (id_orgao_superior) REFERENCES tb_orgao (id_orgao);
+            ALTER TABLE tb_orgao ADD CONSTRAINT fk_orgao_categoria_unidade FOREIGN KEY (id_categoria_unidade) REFERENCES tb_categoria_unidade (id_categoria_unidade);
+            ALTER TABLE tb_orgao ADD CONSTRAINT fk_orgao_natureza_juridica FOREIGN KEY (id_natureza_juridica) REFERENCES tb_natureza_juridica (id_natureza_juridica);
+            COMMENT ON COLUMN tb_orgao.id_orgao IS 'Identificador do orgão';
+            COMMENT ON COLUMN tb_orgao.no_orgao IS 'Nome do orgão';
+            COMMENT ON COLUMN tb_orgao.id_orgao_superior IS 'Orgão superior do qual pode ser subordinado';
+            COMMENT ON COLUMN tb_orgao.sg_orgao IS 'Sigla do órgão';
+            COMMENT ON COLUMN tb_orgao.id_categoria_unidade IS 'Identificador da categoria de unidade do órgão';
+            COMMENT ON COLUMN tb_orgao.id_natureza_juridica IS 'Identificador da natureza jurídica do órgão';
+
+            CREATE SEQUENCE sk_usuario START WITH 1;
+            CREATE TABLE tb_usuario
+            (
+            id_usuario INTEGER PRIMARY KEY NOT NULL,
+            no_usuario VARCHAR(100) NOT NULL,
+            nu_cpf VARCHAR(11) NOT NULL,
+            id_orgao INTEGER
+            );
+            ALTER TABLE tb_usuario ADD CONSTRAINT fk_usuario_orgao FOREIGN KEY (id_orgao) REFERENCES tb_orgao (id_orgao);
+            COMMENT ON COLUMN tb_usuario.id_usuario IS 'Identificador do usuario';
+            COMMENT ON COLUMN tb_usuario.no_usuario IS 'Nome do usuário';
+            COMMENT ON COLUMN tb_usuario.nu_cpf IS 'CPF do usuário';
+            COMMENT ON COLUMN tb_usuario.id_orgao IS 'Identificador do orgão que o usuário é vinculado';
+
+            CREATE UNIQUE INDEX uq_usuario_cpf ON tb_usuario (nu_cpf);
+
+            CREATE SEQUENCE sk_permissao START WITH 1;
+            CREATE TABLE tb_permissao
+            (
+            id_permissao INTEGER PRIMARY KEY NOT NULL,
+            ic_ativo BOOLEAN DEFAULT true NOT NULL,
+            id_usuario INTEGER NOT NULL,
+            id_perfil INTEGER NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL
+            );
+            ALTER TABLE tb_permissao ADD CONSTRAINT fk_permissao_usuario FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id_usuario);
+            ALTER TABLE tb_permissao ADD CONSTRAINT fk_permissao_perfil FOREIGN KEY (id_perfil) REFERENCES tb_perfil (id_perfil);
+            COMMENT ON COLUMN tb_permissao.id_permissao IS 'Identificador da permissão';
+            COMMENT ON COLUMN tb_permissao.ic_ativo IS 'Situação da permissão';
+            COMMENT ON COLUMN tb_permissao.id_usuario IS 'Identificador do usuario relacionado a permissão';
+            COMMENT ON COLUMN tb_permissao.id_perfil IS 'Identificador do perfil relacionado a permissão';
+            COMMENT ON COLUMN tb_permissao.ic_excluido IS 'Identifica se o registro está excluído';
+
+            CREATE SEQUENCE sk_analise START WITH 1;
+            CREATE TABLE tb_analise
+            (
+            id_analise BIGINT PRIMARY KEY NOT NULL,
+            ic_atribuicoes BOOLEAN NOT NULL,
+            ic_estrutura BOOLEAN NOT NULL,
+            ic_etica BOOLEAN NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            ic_missao BOOLEAN NOT NULL,
+            ic_normas_internas BOOLEAN NOT NULL,
+            ic_objetivos BOOLEAN NOT NULL,
+            ic_recursos_humanos BOOLEAN NOT NULL,
+            ic_visao BOOLEAN NOT NULL,
+            id_status_processo BIGINT NOT NULL
+            );
+            COMMENT ON COLUMN tb_analise.id_analise IS 'Identificador da análise';
+            COMMENT ON COLUMN tb_analise.ic_atribuicoes IS 'Existência de atribuição de alçadas e responsabilidades no
+            ambiente interno';
+            COMMENT ON COLUMN tb_analise.ic_estrutura IS 'Existência de estrutura organizacional no ambiente interno';
+            COMMENT ON COLUMN tb_analise.ic_etica IS 'Existência de código de ética / normas de conduta no ambiente
+            interno';
+            COMMENT ON COLUMN tb_analise.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_analise.ic_missao IS 'Existência de missão na fixação de objetivos';
+            COMMENT ON COLUMN tb_analise.ic_normas_internas IS 'Situação das normas internas';
+            COMMENT ON COLUMN tb_analise.ic_objetivos IS 'Existência de objetivos na fixação de objetivos';
+            COMMENT ON COLUMN tb_analise.ic_recursos_humanos IS 'Existência da política de recursos humanos no ambiente
+            interno';
+            COMMENT ON COLUMN tb_analise.ic_visao IS 'Existência de visão na fixação de objetivos';
+            COMMENT ON COLUMN tb_analise.id_status_processo IS 'Status atual da análise';
+
+            CREATE SEQUENCE sk_avaliacao START WITH 1;
+            CREATE TABLE tb_avaliacao
+            (
+            id_avaliacao BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_status_processo BIGINT NOT NULL
+            );
+            COMMENT ON COLUMN tb_avaliacao.id_avaliacao IS 'Identificador da avaliação';
+            COMMENT ON COLUMN tb_avaliacao.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_avaliacao.id_status_processo IS 'Status atual da avaliação';
+
+            CREATE SEQUENCE sk_identificacao START WITH 1;
+            CREATE TABLE tb_identificacao
+            (
+            id_identificacao BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_status_processo BIGINT NOT NULL
+            );
+            COMMENT ON COLUMN tb_identificacao.id_identificacao IS 'Identificador da identificação';
+            COMMENT ON COLUMN tb_identificacao.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_identificacao.id_status_processo IS 'Status atual da identificação';
+
+            CREATE SEQUENCE sk_informacao START WITH 1;
+            CREATE TABLE tb_informacao
+            (
+            id_informacao BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_status_processo BIGINT NOT NULL
+            );
+            COMMENT ON COLUMN tb_informacao.id_informacao IS 'Identificador da informação';
+            COMMENT ON COLUMN tb_informacao.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_informacao.id_status_processo IS 'Status atual da informação';
+
+            CREATE SEQUENCE sk_resposta START WITH 1;
+            CREATE TABLE tb_resposta
+            (
+            id_resposta BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_status_processo BIGINT NOT NULL
+            );
+            COMMENT ON COLUMN tb_resposta.id_resposta IS 'Identificador da resposta';
+            COMMENT ON COLUMN tb_resposta.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_resposta.id_status_processo IS 'Status atual da resposta';
+
+            CREATE SEQUENCE sk_tipo_matriz START WITH 1;
+            CREATE TABLE tb_tipo_matriz
+            (
+            id_tipo_matriz BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            no_tipo_matriz VARCHAR(200) NOT NULL
+            );
+            COMMENT ON COLUMN tb_tipo_matriz.id_tipo_matriz IS 'Identificador do tipo da matriz';
+            COMMENT ON COLUMN tb_tipo_matriz.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_tipo_matriz.no_tipo_matriz IS 'Nome do tipo da matriz';
+
+            INSERT INTO tb_tipo_matriz(id_tipo_matriz, ic_excluido, no_tipo_matriz) VALUES (1, false, 'Pontos Fortes');
+            INSERT INTO tb_tipo_matriz(id_tipo_matriz, ic_excluido, no_tipo_matriz) VALUES (2, false, 'Oportunidades');
+            INSERT INTO tb_tipo_matriz(id_tipo_matriz, ic_excluido, no_tipo_matriz) VALUES (3, false, 'Pontos Fracos');
+            INSERT INTO tb_tipo_matriz(id_tipo_matriz, ic_excluido, no_tipo_matriz) VALUES (4, false, 'Ameaças');
+
+            CREATE SEQUENCE sk_matriz_swot START WITH 1;
+            CREATE TABLE tb_matriz_swot
+            (
+            id_matriz_swot BIGINT PRIMARY KEY NOT NULL,
+            ds_matriz_swot VARCHAR(200) NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_analise BIGINT NOT NULL,
+            id_tipo_matriz BIGINT NOT NULL
+            );
+            COMMENT ON COLUMN tb_matriz_swot.id_matriz_swot IS 'Identificador da matriz swot';
+            COMMENT ON COLUMN tb_matriz_swot.ds_matriz_swot IS 'Descrição de uma matriz swot';
+            COMMENT ON COLUMN tb_matriz_swot.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_matriz_swot.id_analise IS 'Identificador da Análise de Ambiente';
+            COMMENT ON COLUMN tb_matriz_swot.id_tipo_matriz IS 'Identificador do tipo de matriz';
+
+            CREATE SEQUENCE sk_processo START WITH 1;
+            CREATE TABLE tb_processo
+            (
+            id_processo BIGINT PRIMARY KEY NOT NULL,
+            no_coordenacao VARCHAR(200),
+            no_diretoria VARCHAR(200),
+            dt_fim TIMESTAMP,
+            dt_inicio TIMESTAMP,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            no_lei VARCHAR(200),
+            no_macroprocesso VARCHAR(200),
+            ds_objetivo VARCHAR(200),
+            no_processo VARCHAR(200),
+            no_sistema VARCHAR(200),
+            id_analise BIGINT,
+            id_avaliacao BIGINT,
+            id_usuario BIGINT NOT NULL,
+            id_identificacao BIGINT,
+            id_informacao BIGINT,
+            id_resposta BIGINT
+            );
+            COMMENT ON COLUMN tb_processo.id_processo IS 'Identificador do processo';
+            COMMENT ON COLUMN tb_processo.no_coordenacao IS 'Nome do coordenador do processo';
+            COMMENT ON COLUMN tb_processo.no_diretoria IS 'Nome da diretoria do processo';
+            COMMENT ON COLUMN tb_processo.dt_fim IS 'Data final da análise do processo';
+            COMMENT ON COLUMN tb_processo.dt_inicio IS 'Data inicial para análise do processo';
+            COMMENT ON COLUMN tb_processo.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_processo.no_lei IS 'Leis e regulamentos do processo';
+            COMMENT ON COLUMN tb_processo.no_macroprocesso IS 'Nome do macroprocesso';
+            COMMENT ON COLUMN tb_processo.ds_objetivo IS 'Descrição do objetivo do processo ou macroprocesso';
+            COMMENT ON COLUMN tb_processo.no_processo IS 'Nome do processo';
+            COMMENT ON COLUMN tb_processo.no_sistema IS 'Nome do sistema do processo';
+            COMMENT ON COLUMN tb_processo.id_analise IS 'Identificador da análise de ambiente e fixação de objetivos';
+            COMMENT ON COLUMN tb_processo.id_avaliacao IS 'Identificador da avaliação de riscos e controles';
+            COMMENT ON COLUMN tb_processo.id_usuario IS 'Identificador do usuário que iniciou o processo';
+            COMMENT ON COLUMN tb_processo.id_identificacao IS 'Identificador da identificação de eventos de risco';
+            COMMENT ON COLUMN tb_processo.id_informacao IS 'Identificador da informação, comunicação e monitoramento';
+            COMMENT ON COLUMN tb_processo.id_resposta IS 'Identificador da resposta ao risco';
+
+            CREATE SEQUENCE sk_responsavel START WITH 1;
+            CREATE TABLE tb_responsavel
+            (
+            id_responsavel BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_processo BIGINT NOT NULL,
+            id_usuario BIGINT NOT NULL
+            );
+            COMMENT ON COLUMN tb_responsavel.id_responsavel IS 'Identificador do responsável';
+            COMMENT ON COLUMN tb_responsavel.id_processo IS 'Identificador do processo';
+            COMMENT ON COLUMN tb_responsavel.id_usuario IS 'Identificador do usuário';
+
+            CREATE SEQUENCE sk_status_processo START WITH 1;
+            CREATE TABLE tb_status_processo
+            (
+            id_status_processo BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            no_status VARCHAR(200) NOT NULL
+            );
+            COMMENT ON COLUMN tb_status_processo.id_status_processo IS 'Identificador do status do processo';
+            COMMENT ON COLUMN tb_status_processo.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_status_processo.no_status IS 'Nome do status do processo';
+
+            INSERT INTO tb_status_processo(id_status_processo, ic_excluido, no_status) VALUES (1, false, 'Iniciada');
+            INSERT INTO tb_status_processo(id_status_processo, ic_excluido, no_status) VALUES (2, false, 'Não Iniciada');
+            INSERT INTO tb_status_processo(id_status_processo, ic_excluido, no_status) VALUES (3, false, 'Pendente');
+            INSERT INTO tb_status_processo(id_status_processo, ic_excluido, no_status) VALUES (4, false, 'Validada');
+            INSERT INTO tb_status_processo(id_status_processo, ic_excluido, no_status) VALUES (5, false, 'Recusada');
+
+            ALTER TABLE tb_analise ADD CONSTRAINT fk_mhw1yyymcefj87tmy2s90ae4m FOREIGN KEY (id_status_processo) REFERENCES tb_status_processo (id_status_processo);
+
+            ALTER TABLE tb_matriz_swot ADD CONSTRAINT fk_h6tmgfy64gqr3gr7vlr043d7o FOREIGN KEY (id_analise) REFERENCES tb_analise (id_analise);
+
+            ALTER TABLE tb_matriz_swot ADD CONSTRAINT fk_jlhobsnpdu16i7tmu65s6w0iq FOREIGN KEY (id_tipo_matriz) REFERENCES tb_tipo_matriz (id_tipo_matriz);
+
+            ALTER TABLE tb_processo ADD CONSTRAINT fk_itfb3ikjun54e3e01vwggqvso FOREIGN KEY (id_analise) REFERENCES tb_analise (id_analise);
+
+            ALTER TABLE tb_processo ADD CONSTRAINT fk_figkis2pm0qu3047l0vu2uijj FOREIGN KEY (id_avaliacao) REFERENCES tb_avaliacao (id_avaliacao);
+
+            ALTER TABLE tb_processo ADD CONSTRAINT fk_1uib13lnpvx52oh99k33bgrnp FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id_usuario);
+
+            ALTER TABLE tb_processo ADD CONSTRAINT fk_5vfr4b1af8y8t4nmqplkxd8xd FOREIGN KEY (id_identificacao) REFERENCES tb_identificacao (id_identificacao);
+
+            ALTER TABLE tb_processo ADD CONSTRAINT fk_q9xy4gt6jjwabiovks75oh4g1 FOREIGN KEY (id_informacao) REFERENCES tb_informacao (id_informacao);
+
+            ALTER TABLE tb_processo ADD CONSTRAINT fk_c97snqms7p37sel359w5xinns FOREIGN KEY (id_resposta) REFERENCES tb_resposta (id_resposta);
+
+            ALTER TABLE tb_responsavel ADD CONSTRAINT fk_tb_responsavel_tb_processo FOREIGN KEY (id_processo) REFERENCES tb_processo (id_processo);
+
+            ALTER TABLE tb_responsavel ADD CONSTRAINT fk_tb_responsavel_tb_usuario FOREIGN KEY (id_usuario) REFERENCES tb_usuario (id_usuario);
+            ]]>
+        </sql>
+    </changeSet>
+</databaseChangeLog>

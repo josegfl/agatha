@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="1.03">
+        <sql splitStatements="false">
+            <![CDATA[
+
+            COMMENT ON COLUMN tb_causa.ds_search IS 'Descrição utilizada na busca do autocomplete';
+            COMMENT ON COLUMN tb_consequencia.ds_search IS 'Descrição utilizada na busca do autocomplete';
+
+            CREATE SEQUENCE sk_natureza START WITH 1;
+            CREATE TABLE tb_natureza
+            (
+            id_natureza BIGINT PRIMARY KEY NOT NULL,
+            ds_natureza VARCHAR(200) NOT NULL,
+            ic_ativo BOOLEAN DEFAULT true NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            ds_search VARCHAR(200) NOT NULL
+            ) ;
+
+            COMMENT ON TABLE tb_natureza IS 'Tabela responsável por armazenar os dados de naturezas de riscos.' ;
+            COMMENT ON COLUMN tb_natureza.id_natureza IS 'Identificador da natureza de risco' ;
+            COMMENT ON COLUMN tb_natureza.ds_natureza IS 'Descrição da natureza de risco' ;
+            COMMENT ON COLUMN tb_natureza.ic_ativo IS 'Situação da natureza' ;
+            COMMENT ON COLUMN tb_natureza.ic_excluido IS 'Identifica se o registro está excluído' ;
+            COMMENT ON COLUMN tb_natureza.ds_search IS 'Descrição utilizada na busca do autocomplete' ;
+
+            CREATE SEQUENCE sk_categoria START WITH 1;
+            CREATE TABLE tb_categoria
+            (
+            id_categoria BIGINT PRIMARY KEY NOT NULL,
+            ds_categoria VARCHAR(200) NOT NULL,
+            ic_ativo BOOLEAN DEFAULT true NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            ds_search VARCHAR(200) NOT NULL
+            );
+
+            COMMENT ON TABLE tb_categoria IS 'Tabela responsável por armazenar os dados de categorias de riscos.';
+            COMMENT ON COLUMN tb_categoria.id_categoria IS 'Identificador da categoria de risco';
+            COMMENT ON COLUMN tb_categoria.ds_categoria IS 'Descrição da categoria de risco';
+            COMMENT ON COLUMN tb_categoria.ic_ativo IS 'Situação da categoria';
+            COMMENT ON COLUMN tb_categoria.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_categoria.ds_search IS 'Descrição utilizada na busca do autocomplete';
+
+            CREATE SEQUENCE sk_controle START WITH 1;
+            CREATE TABLE tb_controle
+            (
+            id_controle BIGINT PRIMARY KEY NOT NULL,
+            ds_controle VARCHAR(200) NOT NULL,
+            ic_ativo BOOLEAN DEFAULT true NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            ds_search VARCHAR(200) NOT NULL
+            );
+
+            COMMENT ON TABLE tb_controle IS 'Tabela responsável por armazenar os dados de controles de riscos.';
+            COMMENT ON COLUMN tb_controle.id_controle IS 'Identificador do controle de risco';
+            COMMENT ON COLUMN tb_controle.ds_controle IS 'Descrição do controle de risco';
+            COMMENT ON COLUMN tb_controle.ic_ativo IS 'Situação do controle';
+            COMMENT ON COLUMN tb_controle.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_controle.ds_search IS 'Descrição utilizada na busca do autocomplete';
+            ]]>
+        </sql>
+    </changeSet>
+</databaseChangeLog>

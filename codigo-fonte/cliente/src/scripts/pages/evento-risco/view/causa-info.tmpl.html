@@ -1,0 +1,9 @@
+<md-dialog style="padding: 20px">
+    <h2>Atenção!</h2>
+    <span>Exitem outros processos que utilizam essa descrição evento de risco</span>
+    <md-dialog-actions layout="row">
+        <md-button class="md-raised md-primary" ng-click="ctrl.cancel()">Cancelar</md-button>
+        <md-button class="md-raised md-primary" ng-click="ctrl.substituirCausa()">Alterar apenas este</md-button>
+        <md-button class="md-raised md-primary" ng-click="ctrl.atualizarTodasCausas()">Alterar todos</md-button>
+    </md-dialog-actions>
+</md-dialog>

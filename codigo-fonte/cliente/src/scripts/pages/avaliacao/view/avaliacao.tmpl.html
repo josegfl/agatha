@@ -1,0 +1,15 @@
+        <md-tabs md-dynamic-height md-border-bottom md-selected="scope.avaliacaoStates" class="m-t-25">
+            <md-tab label="Avaliação do Risco Inerente" ng-click="scope.changeToRiscoInerente()"></md-tab>
+            <md-tab label="Avaliação dos Controles Existentes" ng-click="scope.changeToControleEvento()"></md-tab>
+            <md-tab label="Avaliação do Risco Residual" ng-click="scope.changeToRiscoResidual()"></md-tab>
+        </md-tabs>
+
+        <md-content class="md-padding">
+            <div class="sgr-container">
+                <div class="m-b-20"  class="sgr-container-body">
+                    <ui-view></ui-view>
+                </div>
+            </div>
+        </md-content>
+
+

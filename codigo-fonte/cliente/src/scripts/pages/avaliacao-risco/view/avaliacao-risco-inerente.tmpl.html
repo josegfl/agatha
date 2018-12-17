@@ -1,0 +1,78 @@
+<div layout="row" layout-xs="column">
+    <div class="md-block" flex-gt-xs flex="100" style="display: flex" ng-if="!scope.apenasLeitura">
+        <div layout="row" layout-xs="column" layout-align="end">
+            <md-button class="md-fab md-primary md-hue-2" aria-label="Incluir" ui-sref="riscoInerente.probabilidade({id: scope.processoId})" ng-disabled="scope.ignorar || !scope._eventosRisco.length">
+                <md-tooltip>Calcular Mapa de Risco Inerente</md-tooltip>
+                <md-icon style="color:white">dialpad</md-icon>
+            </md-button>
+
+            <label class="m-r-20" style="align-self: center; font-weight: 600">
+                <sgr-glossario termo="Calcular Mapa de Risco Inerente"></sgr-glossario>
+            </label>
+        </div>
+
+
+        <md-checkbox ng-model="scope.ignorar" ng-change="scope.handleIgnorarChange()" aria-label="Ignorar" style="align-self: center; margin: 0" ng-disabled="scope.disableCheck">
+            <sgr-glossario termo="Ignorar esta etapa?"></sgr-glossario>
+        </md-checkbox>
+    </div>
+</div>
+
+<div layout="row" layout-xs="column">
+    <div class="sgr-container-table" layout="column" flex-gt-xs flex="100">
+        <md-card>
+            <md-table-container>
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column class="text-right" width="60px">
+                            <sgr-glossario termo="Item"></sgr-glossario>
+                        </th>
+                        <th md-column width="20%">
+                            <sgr-glossario termo="Evento de Risco"></sgr-glossario>
+                        </th>
+                        <th md-column class="text-right" width="20%">
+                            <sgr-glossario termo="Probabilidade"></sgr-glossario>
+                        </th>
+                        <th md-column class="text-right" width="20%">
+                            <sgr-glossario termo="Impacto"></sgr-glossario>
+                        </th>
+                        <th md-column class="text-right" width="20%">
+                            <sgr-glossario termo="Probabilidade x Impacto"></sgr-glossario>
+                        </th>
+                        <th md-column width="15%">
+                            <sgr-glossario termo="Nível do Risco"></sgr-glossario>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody md-body>
+                    <tr md-row ng-repeat="item in scope._eventosRisco">
+                        <td md-cell class="text-right">
+                            <span>{{scope.filtros.page*scope.filtros.size+$index+1}}</span>
+                        </td>
+                        <td md-cell>
+                            <span>{{item.evento.descricao}}</span>
+                        </td>
+                        <td md-cell class="text-right">
+                            <span>{{item.calculoRiscoInerente.frequencia}}</span>
+                        </td>
+                        <td md-cell class="text-right">
+                            <span>{{item.calculoRiscoInerente.mediaPeso}}</span>
+                        </td>
+                        <td md-cell class="text-right">
+                            <span>{{item.calculoRiscoInerente.nivel}}</span>
+                        </td>
+
+                        <td md-cell style="background: {{item.calculoRiscoInerente.nivel | corNivelRisco}}">
+                            <strong style="color: black; font-size: 16px;font-weight: 600">{{item.calculoRiscoInerente.nivel | nivelRisco}}</strong>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination md-on-paginate="scope.filtrar" md-limit="scope.tamanhoLimite" md-limit-options="[20, 50, 100]" md-page="scope.registroInicial" md-total="{{scope.totalItems}}" md-page-select></md-table-pagination>
+        </md-card>
+    </div>
+</div>

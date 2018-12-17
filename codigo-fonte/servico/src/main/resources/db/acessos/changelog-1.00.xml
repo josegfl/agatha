@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="1.0.0" labels="Insert do Sistema">
+        <sql>
+            INSERT INTO acessos.tb_sistema (id_sistema, descricao, esquema, excluido, interno, realm, sigla, nome, codigo_sistema, id_logo)
+			VALUES(nextval('acessos.tb_sistema_seq'), 'Sistema Gestão de Riscos', 'gestaoriscos', false, true, NULL, 'SGR', 'Gestão de Riscos', 's0003', NULL);
+        </sql>
+    </changeSet>
+	
+
+   <changeSet author="fabrica.wgl" id="1.0.1" labels="Insert dos Módulos">
+        <sql>
+			INSERT INTO acessos.tb_modulo (id_modulo, excluido, nome, url, id_sistema, codigo_modulo, codigo_sistema, sigla)
+			VALUES(nextval('acessos.tb_modulo_seq'), false, 'Gestão de Riscos', 'gestaoriscos.tst.basis.com.br', (SELECT id_sistema FROM acessos.tb_sistema WHERE codigo_sistema = 's0003'), 'sgr_m0001', 's0003', 'SGR');
+		</sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.0.2" labels="Insert das Permissões">
+        <sql>
+			INSERT INTO acessos.tb_permissao (id_permissao, ativo, exige_certificado_digital, permissao_tela, codigo_sistemico, descricao, nome, excluido, id_modulo, padrao_url, codigo_modulo)
+            VALUES(nextval('acessos.tb_permissao_seq'), true, false, false, 'ADM_SGR', 'Administração Gestão de Riscos', 'Administração Gestão de Riscos', false, (SELECT id_modulo FROM acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), '/gestaoriscos/api', 'sgr_m0001');
+        </sql>
+    </changeSet>
+
+    <changeSet  author="fabrica.wgl" id="1.0.3" labels="Insert do Perfil Adminstrador do Gestão de Riscos">
+        <sql>
+			INSERT INTO acessos.tb_perfil (id_perfil, nome, descricao, perfil_sistema, excluido, id_modulo) 
+			VALUES(nextval('acessos.tb_perfil_seq'), 'Administrador Gestão de Riscos', 'Administrador Gestão de Riscos', false, false, (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'));
+        </sql>
+    </changeSet>
+
+    <changeSet id="1.0.4" author="fabrica.wgl" labels="Insert das Permissões ao Perfil Administrador">
+        <sql>
+            INSERT INTO acessos.tb_perfil_permissao (id_perfil, id_permissao)
+            VALUES((SELECT id_perfil from acessos.tb_perfil WHERE  nome = 'Administrador Gestão de Riscos'), (SELECT id_permissao FROM acessos.tb_permissao WHERE id_modulo = (SELECT id_modulo from acessos.tb_modulo WHERE codigo_modulo = 'sgr_m0001')));
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.0.5" labels="Insert de Menus">
+        <sql>
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.processo', 'Processo', 'Processo', 'Processo', NULL,  (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), NULL, 'Processo', 'Processo', 'Processo', NULL, NULL, false);
+
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.processo.gestao', 'Gerenciar Processo', 'Gerenciar Processo', 'Gerenciar Processo', NULL,  (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), (SELECT id_item_menu from acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.processo'), 'Gerenciar Processo', 'Gerenciar Processo', 'Gerenciar Processo', NULL, NULL, false);
+
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.processo.gerenciar', 'Gerenciar', 'Gerenciar', 'http://gestaoriscos.tst.basis.com.br', NULL,  (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), (SELECT id_item_menu from acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.processo.gestao'), 'Gerenciar', 'Gerenciar', 'Gerenciar', NULL, NULL, false);
+
+
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.permissao', 'Permissão', 'Permissão', 'Permissão', NULL,  (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), NULL, 'Permissão', 'Permissão', 'Permissão', NULL, NULL, false);
+
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.permissao.gestao', 'Gerenciar Permissão', 'Gerenciar Permissão', 'Gerenciar Permissão', NULL,  (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), (SELECT id_item_menu from acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.permissao'), 'Gerenciar Permissão', 'Gerenciar Permissão', 'Gerenciar Permissão', NULL, NULL, false);
+
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.permissao.gerenciar', 'Gerenciar', 'Gerenciar', 'http://gestaoriscos.tst.basis.com.br/#/gerenciarPermissoes/', NULL,  (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), (SELECT id_item_menu from acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.permissao.gestao'), 'Gerenciar', 'Gerenciar', 'Gerenciar', NULL, NULL, false);
+
+
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.nucleo', 'Núcleo', 'Núcleo', 'Núcleo', NULL,  (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), NULL, 'Núcleo', 'Núcleo', 'Núcleo', NULL, NULL, false);
+
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.nucleo.gestao', 'Gerenciar Eventos de Risco', 'Gerenciar Eventos de Risco', 'Gerenciar Eventos de Risco', NULL,  (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), (SELECT id_item_menu from acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo'), 'Gerenciar Eventos de Risco', 'Gerenciar Eventos de Risco', 'Gerenciar Eventos de Risco', NULL, NULL, false);
+
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.nucleo.evento', 'Evento', 'Evento', 'http://gestaoriscos.tst.basis.com.br/#/manterEventoRisco', NULL,  (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), (SELECT id_item_menu from acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo.gestao'), 'Evento', 'Evento', 'Evento', NULL, NULL, false);
+
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.nucleo.causa', 'Causa', 'Causa', 'http://gestaoriscos.tst.basis.com.br/#/manterCausaEventoRisco', NULL,  (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), (SELECT id_item_menu from acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo.gestao'), 'Causa', 'Causa', 'Causa', NULL, NULL, false);
+
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.nucleo.consequencia', 'Consequência', 'Consequência', 'http://gestaoriscos.tst.basis.com.br/#/manterConsequenciaEventoRisco', NULL,  (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), (SELECT id_item_menu from acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo.gestao'), 'Consequência', 'Consequência', 'Consequência', NULL, NULL, false);
+			</sql>
+        <rollback>
+            <sql>
+                delete from acessos.tb_item_menu_permissao where id_item_menu in (SELECT id_item_menu from acessos.tb_item_menu where id_modulo = (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'));
+                update acessos.tb_item_menu set id_item_menu_superior = null where id_item_menu in (SELECT id_item_menu from acessos.tb_item_menu WHERE id_modulo = (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'));
+                delete from acessos.tb_item_menu where id_item_menu in (SELECT id_item_menu from acessos.tb_item_menu where id_modulo = (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'));
+
+			</sql>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="1.0.6" author="fabrica.wgl" labels="Insert das Permissões para o Item de Menu">
+        <sql>
+			INSERT INTO acessos.tb_item_menu_permissao (id_permissao,id_item_menu) 
+			SELECT (SELECT id_permissao from acessos.tb_permissao WHERE  id_modulo = (SELECT id_modulo from acessos.tb_modulo WHERE codigo_modulo = 'sgr_m0001')), id_item_menu FROM acessos.tb_item_menu WHERE id_modulo = (SELECT id_modulo from acessos.tb_modulo WHERE codigo_modulo = 'sgr_m0001');
+        </sql>
+        <rollback>
+            <sql>
+                delete from acessos.tb_item_menu_permissao where id_item_menu in (SELECT id_item_menu from acessos.tb_item_menu where id_modulo = (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'));
+            </sql>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

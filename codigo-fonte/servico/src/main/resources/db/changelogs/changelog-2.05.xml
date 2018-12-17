@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="2.05.1" labels="Adição da decisão do processo">
+        <sql splitStatements="false">
+
+            CREATE SEQUENCE sk_decisao_processo START WITH 1;
+            CREATE TABLE tb_decisao_processo
+            (
+            id_decisao_processo BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            no_decisao VARCHAR(200) NOT NULL
+            ) ;
+            COMMENT ON TABLE tb_decisao_processo is 'Tabela responsável por armazenar os tipos de decisões do processo';
+            COMMENT ON COLUMN tb_decisao_processo.id_decisao_processo is 'Identificador de decisão do processo';
+            COMMENT ON COLUMN tb_decisao_processo.ic_excluido is 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_decisao_processo.no_decisao is 'Nome da decisão do processo';
+
+            INSERT INTO tb_decisao_processo(id_decisao_processo, ic_excluido, no_decisao) VALUES (nextval('sk_decisao_processo'), false, 'Validar' );
+            INSERT INTO tb_decisao_processo(id_decisao_processo, ic_excluido, no_decisao) VALUES (nextval('sk_decisao_processo'), false, 'Recusar' );
+
+
+            ALTER TABLE tb_processo ADD id_decisao BIGINT NULL;
+            COMMENT ON COLUMN tb_processo.id_decisao IS 'Identificador da decisão processo';
+
+            ALTER TABLE tb_processo ADD CONSTRAINT fk_tb_processo_tb_decisao_processo FOREIGN KEY (id_decisao) REFERENCES tb_decisao_processo (id_decisao_processo);
+
+
+            ALTER TABLE tb_processo ADD ds_justificativa VARCHAR(250) NULL;
+            COMMENT ON COLUMN tb_processo.ds_justificativa IS 'Justificativa da decisão processo';
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="2.05.2" labels="Adição dos usuários ao banco">
+        <sql splitStatements="false">
+
+            <!--SEST-->
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Gerson Batista Pereira', '89522710849',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEST' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Otávio Porto Barbosa', '45272735587',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEST' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Natal Henrique Troz Guglilhermi', '48387010049',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEST' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            <!--SDI-->
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Viviane Vecchi Mendes Muller', '00902685120',
+            (
+            SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEDI' AND orgaoPai.sg_orgao = 'MP' ));
+
+            <!--SGP-->
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Henriette Leão de Furtado', '64001830604',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEGEP' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            <!--SETIC-->
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Rodrigo de Souza Maeda', '85555673191',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SETIC' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            <!--SEPLAN-->
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Thomaz Milani Rodrigues Muroni Silva', '38329525864',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEPLAN' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Elise Sueli Pereira Gonçalves', '01352735105',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEPLAN' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Elder Linton Alves de Araujo', '41790430178',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEPLAN' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Suripongse Naibert Chimpliganond', '61096784149',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEPLAN' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Pedro Celso Rodrigues Fonseca', '01209112132',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEPLAN' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Marcia Ribeiro Fantuzze Dias', '46111255134',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEPLAN' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Priscilla Rosa Pimentel Sganzerla', '04241094767',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEPLAN' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Daniel Souza Coelho', '07269295492',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEPLAN' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Luis Fernando Magnani de Oliveira', '60507764900',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEPLAN' AND orgaoPai.sg_orgao = 'MP' ) );
+
+            INSERT INTO gestaoriscos.tb_usuario (id_usuario, no_usuario, nu_cpf, id_orgao) VALUES (nextval('sk_usuario'), 'Maria do Rosário de Holanda Cunha Cardoso', '23964057134',
+            ( SELECT orgao.id_orgao from gestaoriscos.tb_orgao AS orgao LEFT OUTER JOIN gestaoriscos.tb_orgao orgaoPai ON orgao.id_orgao_superior = orgaoPai.id_orgao  WHERE orgao.sg_orgao = 'SEPLAN' AND orgaoPai.sg_orgao = 'MP' ) );
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

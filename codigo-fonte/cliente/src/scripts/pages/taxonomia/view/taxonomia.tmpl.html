@@ -1,0 +1,167 @@
+<md-content flex>
+    <div class="sgr-container">
+
+        <div class="sgr-container-header" layout="row">
+            <div class="md-toolbar-tools">
+                <h3 style="font-size: 18px">
+                    <sgr-glossario termo="Consultar Taxonomia"></sgr-glossario>
+                </h3>
+            </div>
+        </div>
+
+        <form novalidate>
+
+            <div class="sgr-container-body" layout="row" layout-xs="column">
+                <md-input-container class="md-block" flex-gt-xs flex="50">
+                    <label>
+                        <sgr-glossario termo="Tipo"></sgr-glossario>
+                    </label>
+                    <md-select ng-model="scope.filtros.tipoId">
+                        <md-option ng-value="item.id" ng-repeat="item in scope._tipos">{{ item.nome }}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-xs flex="50">
+                    <label>
+                        <sgr-glossario termo="Secretaria"></sgr-glossario>
+                    </label>
+                    <md-autocomplete class="md-autocomplete-icon" md-floating-label="" md-no-cache="true" md-search-text-change="scope.searchOrgaoByNome(scope.filtros.orgao)" md-search-text="scope.filtros.orgao" md-selected-item-change="scope.filtros.orgao = item" md-item-text="scope.filtros.orgao" md-items="item in scope.nomeOrgaos" md-min-length="2">
+                        <md-item-template>
+                            <span md-highlight-text="scope.filtros.orgao" md-highlight-flags="^i">{{item}}</span>
+                        </md-item-template>
+                    </md-autocomplete>
+                </md-input-container>
+
+            </div>
+
+            <div class="sgr-container-body" layout="row" layout-xs="column">
+                <md-input-container class="md-block" flex-gt-xs flex="50">
+                    <label>
+                        <sgr-glossario termo="Descrição"></sgr-glossario>
+                    </label>
+                    <md-autocomplete class="md-autocomplete-icon" md-floating-label="" md-no-cache="true" md-search-text-change="scope.getDescricaoBySearch(scope.filtros.descricao)" md-search-text="scope.filtros.descricao" md-selected-item-change="scope.filtros.descricao = item" md-item-text="scope.filtros.descricao" md-items="item in scope.descricoes" md-min-length="2">
+                        <md-item-template>
+                            <span md-highlight-text="scope.filtros.descricao" md-highlight-flags="^i">{{item}}</span>
+                        </md-item-template>
+                    </md-autocomplete>
+                </md-input-container>
+
+                <div class="md-block" flex-gt-xs flex="50">
+                    <div layout="row" layout-xs="column">
+
+                        <div class="md-block" flex-gt-xs flex="50">
+                            <span class="fs-11">
+                                <sgr-glossario termo="Período de envio"></sgr-glossario>
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column">
+                        <div class="md-block" flex-gt-xs>
+                            <md-datepicker ng-model="scope.filtros.dtInicio" ng-change="scope.handleDtInicioChange()"></md-datepicker>
+
+                            <md-datepicker ng-model="scope.filtros.dtFim" md-min-date="scope.filtros.dtInicio"></md-datepicker>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sgr-container-buttons" layout="row" layout-align="end">
+                <section layout="row center" layout-sm="column" layout-wrap>
+                    <div layout="row" layout-align="space-around center">
+                        <md-button class="md-primary" type="button" ng-click="scope.limparFiltros()">
+                            <md-icon md-font-set="material-icons">filter_list</md-icon>
+                            <sgr-glossario termo="Limpar"></sgr-glossario>
+                        </md-button>
+                        <md-button class="md-primary" type="button" ng-click="scope.filtrar()">
+                            <md-icon md-font-set="material-icons">search</md-icon>
+                            <sgr-glossario termo="Consultar"></sgr-glossario>
+                        </md-button>
+                    </div>
+                </section>
+            </div>
+
+        </form>
+
+        <div class="sgr-container-table" layout="column">
+            <md-card>
+                <md-table-container>
+                    <table md-table>
+                        <thead md-head>
+                        <tr md-row>
+                            <th md-column class="text-center" width="80px">
+                                <sgr-glossario termo="Item"></sgr-glossario>
+                            </th>
+                            <th md-column class="text-center">
+                                <sgr-glossario termo="Data"></sgr-glossario>
+                            </th>
+                            <th md-column class="text-center">
+                                <sgr-glossario termo="Tipo"></sgr-glossario>
+                            </th>
+                            <th md-column>
+                                <sgr-glossario termo="Secretaria"></sgr-glossario>
+                            </th>
+                            <th md-column>
+                                <sgr-glossario termo="Descrição"></sgr-glossario>
+                            </th>
+                            <th md-column class="text-center" width="150px">
+                                <sgr-glossario termo="Ação"></sgr-glossario>
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody md-body>
+                        <tr md-row ng-repeat="item in scope._registros">
+                            <td md-cell class="text-center">
+                                <span ng-bind="{{scope.filtros.page*scope.filtros.size+$index+1}}"></span>
+                            </td>
+                            <td md-cell class="text-center">
+                                {{item.dtCadastro | date: 'dd/MM/yyyy'}}
+                            </td>
+                            <td md-cell class="text-center">
+                                {{item.tipo.nome}}
+                            </td>
+                            <td md-cell>
+                                {{item.orgao.nome}}
+                            </td>
+                            <td md-cell>
+                                {{item.descricao}}
+                            </td>
+
+                            <td md-cell class="text-center cell-options" width="60px">
+                                <md-checkbox ng-model="item.$selected" ng-change="scope.handleItemSelecionado(item)" aria-label="Selecionar" style="align-self: center; margin: 0" ng-disabled="scope.tipoSelecionado && scope.tipoSelecionado.nome != item.tipo.nome"></md-checkbox>
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+                <md-table-pagination md-on-paginate="scope.filtrar" md-limit="scope.tamanhoLimite" md-limit-options="[20, 50, 100]" md-page="scope.registroInicial" md-total="{{scope.totalItems}}" md-page-select></md-table-pagination>
+            </md-card>
+        </div>
+
+        <div class="sgr-container-buttons" layout="row" layout-align="end">
+            <section layout="row center" layout-sm="column" layout-wrap>
+                <div layout="row" layout-align="space-around center">
+                    <md-button class="md-primary md-raised" type="button" ui-sref="taxonomia.agrupamento.listar">
+                        <sgr-glossario termo="Consultar Agrupamento"></sgr-glossario>
+                    </md-button>
+                    <md-button class="md-primary md-raised" type="button" ng-disabled="!scope.selectedData.length" ng-click="scope.aprovar()">
+                        <sgr-glossario termo="Aprovar"></sgr-glossario>
+                    </md-button>
+                    <md-button class="md-primary md-raised" type="button" ng-disabled="!scope.selectedData.length" ng-click="scope.agrupar()">
+                        <sgr-glossario termo="Agrupar"></sgr-glossario>
+                    </md-button>
+                    <md-button class="md-primary md-raised" type="button" ng-disabled="!scope.selectedData.length" ng-click="scope.adicionarJustificativa($event)">
+                        <sgr-glossario termo="Reprovar"></sgr-glossario>
+                    </md-button>
+                </div>
+            </section>
+        </div>
+
+    </div>
+
+</md-content>
+

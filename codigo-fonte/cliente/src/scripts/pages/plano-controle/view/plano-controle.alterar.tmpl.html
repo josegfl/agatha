@@ -1,0 +1,304 @@
+<div layout="row" layout-xs="column" style="margin-left: 10px;">
+    <h3 style="margin-bottom: 10px;">
+        <sgr-glossario termo="Evento de Risco"></sgr-glossario>
+    </h3>
+</div>
+
+<div class="md-block" flex-gt-xs style="margin-left: 10px;">
+    <span>{{scope._eventoRisco.evento.descricao}}</span>
+</div>
+
+
+<div layout="row" layout-xs="column">
+    <h3 style="margin-bottom: 0; padding-left: 7px;">
+        <sgr-glossario termo="Causas"></sgr-glossario>
+    </h3>
+</div>
+
+<div class="sgr-container-table" layout="column" flex-gt-xs flex="100">
+    <md-card>
+        <md-table-container>
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                    <th md-column class="text-right" width="60px">
+                        <sgr-glossario termo="Item"></sgr-glossario>
+                    </th>
+                    <th md-column>
+                        <sgr-glossario termo="Causa do Risco"></sgr-glossario>
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody md-body>
+                <tr md-row ng-repeat="item in scope._eventoRisco.causas | orderBy: 'causa.descricao'">
+                    <td md-cell class="text-right">
+                        <span ng-bind="$index + 1"></span>
+                    </td>
+                    <td md-cell>
+                        <span ng-bind="item.causa.descricao"></span>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-card>
+</div>
+
+<div layout="row" layout-xs="column">
+    <h3 style="margin-bottom: 0; padding-left: 7px;">
+        <sgr-glossario termo="Consequências"></sgr-glossario>
+    </h3>
+</div>
+
+<div class="sgr-container-table" layout="column" flex-gt-xs flex="100">
+    <md-card>
+        <md-table-container>
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                    <th md-column class="text-right" width="60px">
+                        <sgr-glossario termo="Item"></sgr-glossario>
+                    </th>
+                    <th md-column>
+                        <sgr-glossario termo="Consequência do Risco"></sgr-glossario>
+                    </th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="item in scope._eventoRisco.consequencias | orderBy: 'consequencia.descricao'">
+                    <td md-cell class="text-right">
+                        <span ng-bind="$index + 1"></span>
+                    </td>
+                    <td md-cell>
+                        <span ng-show="!item.$update" ng-bind="item.consequencia.descricao"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-card>
+</div>
+
+<div layout="row" layout-xs="column" style="margin-left: 10px;">
+    <h3 style="margin-bottom: 10px;">
+        <sgr-glossario termo="Resposta ao Evento de Risco"></sgr-glossario>
+    </h3>
+</div>
+
+<div class="md-block" flex-gt-xs style="margin-left: 10px;">
+    <span>{{scope._eventoRisco.respostaRisco.nome}}</span>
+</div>
+
+<hr color="#4CAF50" width="99%" size="2px" class="m-b-20 m-t-20"/>
+
+<form name="formRegistro" novalidate>
+    <div layout="row" layout-xs="column">
+
+        <md-input-container class="md-block m-b-0" flex-gt-xs flex="100">
+            <label>
+                <sgr-glossario termo="Controle Proposto"></sgr-glossario>
+            </label>
+            <md-autocomplete class="md-autocomplete-icon" md-floating-label="" md-no-cache="true" md-search-text-change="scope.getControlesBySearch(scope.registro.controle.descricao)" md-search-text="scope.registro.controle.descricao" md-selected-item-change="scope.registro.controle = item" md-item-text="scope.registro.controle.descricao"
+                             md-items="item in scope._controles" md-min-length="2" required>
+                <md-item-template>
+                    <span md-highlight-text="scope.registro.controle.descricao" md-highlight-flags="^i">{{item.descricao}}</span>
+                </md-item-template>
+            </md-autocomplete>
+        </md-input-container>
+    </div>
+
+    <div layout="row" layout-xs="column">
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Tipo de Controle"></sgr-glossario>
+            </label>
+            <md-select ng-model="scope.registro.tipoControle" required>
+                <md-option ng-value="item" ng-repeat="item in scope._tiposControle">{{ item.nome }}</md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Objetivo do Controle"></sgr-glossario>
+            </label>
+            <md-select ng-model="scope.registro.objetivo" required>
+                <md-option ng-value="item" ng-repeat="item in scope._objetivosControle">{{ item.nome }}</md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+
+
+    <div layout="row" layout-xs="column">
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Área Responsável"></sgr-glossario>
+            </label>
+            <input ng-model="scope.registro.areaResponsavel" type="text" ng-disabled="scope.apenasLeitura" required>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Responsável"></sgr-glossario>
+            </label>
+            <input ng-model="scope.registro.responsavel" type="text" ng-disabled="scope.apenasLeitura"/>
+        </md-input-container>
+    </div>
+
+    <div layout="row" layout-xs="column">
+        <md-input-container class="md-block" flex-gt-xs flex="100">
+            <label>
+                <sgr-glossario termo="Intervenientes"></sgr-glossario>
+            </label>
+            <input ng-model="scope.registro.interveniente" type="text" ng-disabled="scope.apenasLeitura"/>
+        </md-input-container>
+    </div>
+
+    <div layout="row" layout-xs="column">
+        <md-input-container class="md-block" flex-gt-xs flex="100">
+            <label>
+                <sgr-glossario termo="Como será implementado"></sgr-glossario>
+            </label>
+            <input ng-model="scope.registro.implementacao" type="text" ng-disabled="scope.apenasLeitura"/>
+        </md-input-container>
+    </div>
+
+
+    <div layout="row" layout-xs="column">
+
+        <div class="md-block" flex-gt-xs flex="50">
+            <span>
+                <sgr-glossario termo="Data de Início"></sgr-glossario>
+            </span>
+        </div>
+
+        <div class="md-block" flex-gt-xs flex="50">
+            <span>
+                <sgr-glossario termo="Data de Conclusão"></sgr-glossario>
+            </span>
+        </div>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <div class="md-block" flex-gt-xs flex="50">
+            <md-datepicker-custom name="dtInicio" ng-model="scope.registro.dtInicio" md-max-date="scope.registro.dtConclusao"
+                                  md-custom-required="false" md-custom-mask="39/19/9999" md-custom-clean-mask="false" md-custom-restrict="reject" ng-disabled="scope.apenasLeitura"></md-datepicker-custom>
+
+            <div class="validation-messages" style="color:red; font-size: 12px">
+                <div ng-show="formRegistro.dtInicio.$error.valid">Escolha uma data válida!</div>
+                <div ng-show="formRegistro.dtInicio.$error.maxdate">Escolha uma data menor que a data fim</div>
+            </div>
+
+        </div>
+        <div class="md-block" flex-gt-xs flex="50">
+            <md-datepicker-custom name="dtConclusao" ng-model="scope.registro.dtConclusao" md-min-date="scope.registro.dtInicio"
+                                  md-custom-required="false" md-custom-mask="39/19/9999" md-custom-clean-mask="false" md-custom-restrict="reject" ng-disabled="scope.apenasLeitura"></md-datepicker-custom>
+
+            <div class="validation-messages" style="color:red; font-size: 12px">
+                <div ng-show="formRegistro.dtConclusao.$error.valid">Escolha uma data válida!</div>
+                <div ng-show="formRegistro.dtConclusao.$error.mindate">Escolha uma data maior que a data de inicio</div>
+            </div>
+        </div>
+    </div>
+        <div layout="row" layout-align="end">
+            <md-button class="md-primary md-raised" aria-label="Incluir" ng-click="scope.adicionarControleEvento()" ng-show="!scope.registro.$update">
+                <md-icon md-font-set="material-icons">done</md-icon>
+                <sgr-glossario termo="Salvar"></sgr-glossario>
+            </md-button>
+
+            <md-button  class="md-fab md-primary md-hue-2 md-mini" aria-label="Alterar" ng-click="scope.handleControleChange($event)" ng-show="scope.registro.$update">
+                <md-tooltip>Alterar Resposta</md-tooltip>
+                <md-icon style="color:white">check</md-icon>
+            </md-button>
+
+            <md-button class="md-fab md-warn md-hue-2 md-mini" aria-label="Cancelar" ng-click="scope.cancelarControleUpdate()" ng-show="scope.registro.$update">
+                <md-tooltip>Cancelar</md-tooltip>
+                <md-icon style="color:white">close</md-icon>
+            </md-button>
+        </div>
+</form>
+
+<div class="sgr-container-table" layout="column" flex-gt-xs flex="100">
+    <md-card>
+        <md-table-container>
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                    <th md-column class="text-right" width="60px">
+                        <sgr-glossario termo="Item"></sgr-glossario>
+                    </th>
+                    <th md-column width="40%">
+                        <sgr-glossario termo="Controle Proposto"></sgr-glossario>
+                    </th>
+                    <th md-column>
+                        <sgr-glossario termo="Tipo"></sgr-glossario>
+                    </th>
+                    <th md-column>
+                        <sgr-glossario termo="Objetivo"></sgr-glossario>
+                    </th>
+                    <th md-column class="text-center" width="150px">
+                        <sgr-glossario termo="Ações"></sgr-glossario>
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody md-body>
+                <tr md-row ng-repeat="item in scope._eventoRisco.controles">
+                    <td md-cell class="text-right">
+                        <span ng-bind="$index + 1"></span>
+                    </td>
+                    <td md-cell width="50%">
+                        <span ng-bind="item.controle.descricao"></span>
+                    </td>
+                    <td md-cell>
+                        <span ng-bind="item.tipoControle.nome"></span>
+                    </td>
+                    <td md-cell width="30%">
+                        <span ng-bind="item.objetivo.nome"></span>
+                    </td>
+                    <td md-cell class="text-center cell-options" width="120px">
+
+                        <!--<a ng-click="scope.salvarTaxonomiaControle(item)">-->
+                        <!--<md-tooltip md-direction="top">-->
+                        <!--Enviar para taxonomia-->
+                        <!--</md-tooltip>-->
+                        <!--<ng-md-icon icon="send"></ng-md-icon>-->
+                        <!--</a>-->
+
+                        <a ng-click="scope.alterarControleEvento(item)">
+                            <md-tooltip md-direction="top">
+                                Alterar
+                            </md-tooltip>
+                            <ng-md-icon icon="create"></ng-md-icon>
+                        </a>
+
+                        <a ng-click="scope.excluirControleEvento(item)" class="cursor-pointer">
+                            <md-tooltip md-direction="top">
+                                Excluir
+                            </md-tooltip>
+                            <ng-md-icon icon="delete"></ng-md-icon>
+                        </a>
+
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-card>
+</div>
+
+
+<div class="sgr-container-buttons m-t-10 m-b-10" layout="row" layout-align="end">
+    <section layout="row center" layout-sm="column" layout-wrap>
+        <div layout="row" layout-align="space-around center">
+            <md-button class="md-primary" ng-click="scope.voltar()">
+                <md-icon md-font-set="material-icons">keyboard_arrow_left</md-icon>
+                <sgr-glossario termo="voltar"></sgr-glossario>
+            </md-button>
+        </div>
+    </section>
+</div>
+
+

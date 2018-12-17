@@ -1,0 +1,85 @@
+
+<form ng-cloak name="formRegistro" ng-submit="scope.persistir(scope.registro)" novalidate>
+
+    <div class="m-b-20" layout="row" layout-xs="column">
+        <div class="sgr-container-table" layout="column" flex-gt-xs flex="100">
+            <md-card>
+                <md-table-container>
+                    <table md-table>
+                        <thead md-head>
+                        <tr md-row>
+                            <th md-column class="text-right" width="60px">
+                                <sgr-glossario termo="Item"></sgr-glossario>
+                            </th>
+                            <th md-column width="35%">
+                                <sgr-glossario termo="Evento de Risco"></sgr-glossario>
+                            </th>
+                            <th md-column width="35%">
+                                <sgr-glossario termo="Causa de Risco"></sgr-glossario>
+                            </th>
+                            <th md-column width="25%">
+                                <sgr-glossario termo="Probabilidade"></sgr-glossario>*
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody md-body>
+                        <tr md-row ng-repeat="item in scope._eventosRisco">
+                            <td md-cell class="text-right">
+                                <span>{{$index+1}}</span>
+                            </td>
+                            <td md-cell>
+                                <span>{{item.evento.descricao}}</span>
+                            </td>
+                            <td md-cell>
+                                <p ng-repeat="causaDTO in item.causas | orderBy: 'causa.descricao'" ng-class="{'m-t-0' : $first, 'm-b-0' : $last}">
+                                    {{causaDTO.causa.descricao}} </p>
+                            </td>
+                            <td md-cell>
+                                <div layout="row" layout-xs="column" style="height: 100%">
+
+                                    <md-input-container class="md-block" flex-gt-xs flex="100" style=";height: auto;text-align: center;display: flex;margin: 0; padding: 0; border: 1px solid #ddd;">
+                                        <md-select ng-model="item.calculoRiscoResidual.frequencia" class="calculadora-input calculo" ng-change="scope.calculaNivel(item)" required>
+                                            <md-option ng-value="item.frequencia" ng-repeat="item in scope._frequencias">{{ item.frequencia }} - {{ item.descricao }}</md-option>
+                                        </md-select>
+                                    </md-input-container>
+
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+            </md-card>
+        </div>
+    </div>
+
+    <div class="sgr-container-buttons m-t-20" layout="row" layout-xs="column">
+        <div class="md-block" flex-gt-xs flex="50" style="height: auto;text-align: center;display: flex;">
+            <md-button class="md-primary" type="button" ng-click="scope.visualizarLegendaProbabilidade($event)">
+                <sgr-glossario termo="Legenda Probabilidade"></sgr-glossario>
+            </md-button>
+        </div>
+        <div class="md-block" flex-gt-xs flex="50" layout-align="end">
+            <div layout="row" layout-align="end">
+                <section layout="row center" layout-sm="column" layout-wrap>
+                    <div layout="row" layout-align="space-around center">
+                        <md-button class="md-primary" type="button" ui-sref="processo.avaliacao.riscoResidual.alterar({id: scope.processoId})">
+                            <md-icon md-font-set="material-icons">clear</md-icon>
+                            <sgr-glossario termo="Cancelar"></sgr-glossario>
+                        </md-button>
+                        <md-button class="md-primary md-raised" type="submit">
+                            <md-icon md-font-set="material-icons">check</md-icon>
+                            <sgr-glossario termo="Salvar"></sgr-glossario>
+                        </md-button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </div>
+
+</form>
+</div>
+
+</md-content>

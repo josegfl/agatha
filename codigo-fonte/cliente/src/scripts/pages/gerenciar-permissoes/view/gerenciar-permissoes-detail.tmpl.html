@@ -1,0 +1,157 @@
+<md-content flex>
+    <div class="sgr-container">
+
+        <div class="sgr-container-header" layout="row">
+            <div class="md-toolbar-tools">
+                <h3 style="font-size: 18px">
+                    <sgr-glossario termo="Alterar Usuário" ng-show="scope.isEdicao"></sgr-glossario>
+                    <sgr-glossario termo="Incluir Usuário" ng-show="!scope.isEdicao"></sgr-glossario>
+                </h3>
+            </div>
+        </div>
+
+        <div layout="row" layout-xs="column" flex="auto">
+            <div flex layout-margin>
+                <form id="formUsuario" name="usuarioFormCreate" novalidate ng-submit="scope.persistir()">
+                    <div layout="row" >
+                        <md-input-container class="md-block" flex-gt-sm flex="30">
+                            <label>CPF </label>
+                            <input type="text" id="cpfUsuarioGerenciarPermissoes" ng-change="scope.verificarModCPF(usuarioFormCreate.cpf)" name="usercpf" ng-model="usuarioFormCreate.cpf" required
+                                   mask="999.999.999-99" autocomplete="off" minlength="14" ng-focus="usuarioFormCreate.cpf"/>
+
+                            <div ng-hide="usuarioFormCreate.cpf && usuarioFormCreate.usercpf.$valid">
+                                <div ng-messages="usuarioFormCreate.cpf.$error">
+                                    <div ng-message="required" class="error-message">
+                                        CPF Inválido!
+                                    </div>
+                                </div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm flex="65">
+                            <label>Nome do usuário </label>
+                            <input type="text" id="nomeUsuarioGerenciarPermissoes" ng-model="usuarioFormCreate.nome"
+                                   name="username" required maxlength="100" autocomplete="off"/>
+                            <div ng-hide="usuarioFormCreate.nome">
+                                <div ng-messages="usuarioFormCreate.nome.$error">
+                                    <div ng-message="required" class="error-message">
+                                        Campo obrigatório.
+                                    </div>
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div layout="row" >
+                        <md-input-container class="md-block" flex-gt-sm flex="30">
+                            <label>Secretaria/Unidade </label>
+                            <md-select name="secretariaUnidade" ng-model="usuarioFormCreate.secretaria" md-selected-text="" required>
+                                <md-option ng-repeat="secretaria in scope.orgaos" ng-value="secretaria.id">
+                                    {{secretaria.sigla}} - {{secretaria.nome}}
+                                </md-option>
+                            </md-select>
+                            <div ng-hide="usuarioFormCreate.secretaria">
+                                <div ng-messages="usuarioFormCreate.secretaria.$error">
+                                    <div ng-message="required" class="error-message">
+                                        Campo obrigatório.
+                                    </div>
+                                </div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm flex="65">
+                            <label>Email Institucional </label>
+                            <input type="email" id="emailUsuarioGerenciarPermissoes" ng-model="usuarioFormCreate.email" name="useremail"
+                                   ng-pattern="scope.regexEmail" required maxlength="50" autocomplete="off"/>
+
+                            <div ng-hide="usuarioFormCreate.email">
+                                <div ng-messages="usuarioFormCreate.email.$error.valid" role="alert">
+                                    <div ng-message-exp="['required', 'pattern']" class="error-message">
+                                        Email Inválido!
+                                    </div>
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div layout="row" >
+                        <md-input-container class="md-block" flex-gt-sm flex="30">
+                            <label>Perfil </label>
+                            <md-select name="perfilGerenciarPermissoes" ng-model="usuarioFormCreate.perfil">
+                                <md-option ng-repeat="perfil in scope._perfis" ng-value="perfil">
+                                    {{perfil.nome}}
+                                </md-option>
+                            </md-select>
+
+                        </md-input-container>
+
+                        <md-button class="md-fab botao-adicionar-perfil" aria-label="Adicionar perfil" name="inserirPerfilUsername"
+                                   ng-click="scope.adicionarPerfil(usuarioFormCreate.perfil)">
+                            <i class="material-icons">add</i>
+                            <md-tooltip
+                                md-direction="{{usuarioFormCreate.inserirPerfilUsername}}">
+                                Adicionar um perfil
+                            </md-tooltip>
+                        </md-button>
+                    </div>
+
+                    <md-card class="table-show" ng-show="scope.usuario.permissoes && scope.usuario.permissoes.length > 0">
+                        <md-table-container>
+                            <table md-table>
+                                <thead md-head>
+                                <tr md-row>
+                                    <th md-column class="text-center" width="80px">
+                                        <sgr-glossario termo="Item"></sgr-glossario>
+                                    </th>
+                                    <th md-column>
+                                        <sgr-glossario termo="Perfil"></sgr-glossario>
+                                    </th>
+                                    <th md-column class="text-center" width="150px">
+                                        <sgr-glossario termo="Ação"></sgr-glossario>
+                                    </th>
+                                </tr>
+                                </thead>
+
+                                <tbody md-body>
+                                <tr md-row ng-repeat="item in scope.usuario.permissoes" ng-if="!item.excluido">
+                                    <td md-cell class="text-center">
+                                        <span ng-bind="$index + 1"></span>
+                                    </td>
+                                    <td md-cell>
+                                        <span ng-bind="item.perfil.nome"></span>
+                                    </td>
+                                    <td md-cell class="text-center">
+                                        <a ng-click="scope.removerPerfil(item)" class="cursor-pointer">
+                                            <md-tooltip md-direction="top">
+                                                Excluir
+                                            </md-tooltip>
+                                            <ng-md-icon icon="delete"></ng-md-icon>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </md-table-container>
+                    </md-card>
+                    <div layout="row" layout-align="end center" layout-margin>
+                        <md-button class="md-primary" type="button" ng-show="!scope.isEdicao" ng-click="scope.limparCadastro()">
+                            <md-icon md-font-set="material-icons">filter_list</md-icon>
+                            <sgr-glossario termo="Limpar"></sgr-glossario>
+                        </md-button>
+
+                        <md-button class="md-primary" type="button" ui-sref="gerenciarPermissoes.list">
+                            <md-icon md-font-set="material-icons">cancel</md-icon>
+                            <sgr-glossario termo="Cancelar"></sgr-glossario>
+                        </md-button>
+
+                        <md-button type="submit" class="md-raised md-primary" type="button">
+                            <md-icon md-font-set="material-icons">done</md-icon>
+                            <sgr-glossario termo="Salvar"></sgr-glossario>
+                        </md-button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</md-content>

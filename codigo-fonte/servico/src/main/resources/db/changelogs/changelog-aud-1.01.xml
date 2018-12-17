@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="1.01" labels="Criação da tabela de usuario de audição">
+        <sql splitStatements="false">
+        CREATE TABLE aud_gestaoriscos."tb_usuario_aud" (
+            "id_usuario" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "no_usuario" varchar(100) COLLATE "pg_catalog"."default",
+            "nu_cpf" varchar(11),
+            "id_orgao" integer,
+            "email" varchar(50) COLLATE "pg_catalog"."default");
+
+        CREATE TABLE aud_gestaoriscos."tb_orgao_aud" (
+            "id_orgao" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "no_orgao" varchar(255) COLLATE "pg_catalog"."default",
+            "id_orgao_superior" integer,
+            "sg_orgao" varchar(32) COLLATE "pg_catalog"."default",
+            "id_categoria_unidade" integer,
+            "id_natureza_juridica" SMALLINT);
+
+        CREATE TABLE aud_gestaoriscos."tb_categoria_unidade_aud" (
+            "id_categoria_unidade" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "no_categoria" varchar(30) COLLATE "pg_catalog"."default",
+            "sg_categoria_unidade" char(2));
+
+        CREATE TABLE aud_gestaoriscos."tb_natureza_juridica_aud" (
+            "id_natureza_juridica" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "no_natureza_juridica" varchar(30) COLLATE "pg_catalog"."default");
+
+        </sql>
+    </changeSet>
+</databaseChangeLog>

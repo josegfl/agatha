@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="2.07.1" labels="Criando a table de Funcionalidades e o seu relacional com perfil">
+        <sql>
+
+            CREATE TABLE IF NOT EXISTS gestaoriscos.tb_funcionalidade(
+
+            id_funcionalidade BIGINT PRIMARY KEY,
+            ds_detalhada VARCHAR(70) NOT NULL,
+            ds_resumida VARCHAR(50) NOT NULL,
+            url VARCHAR(100),
+            icone VARCHAR(30),
+            id_funcionalidade_pai BIGINT,
+            posicao INTEGER NOT NULL DEFAULT 100,
+            ic_excluido BOOLEAN NOT NULL
+
+            );
+
+            CREATE TABLE IF NOT EXISTS gestaoriscos.tb_funcionalidade_perfil(
+
+            id_perfil BIGINT NOT NULL,
+            id_funcionalidade BIGINT NOT NULL,
+            ic_excluido BOOLEAN NOT NULL,
+
+            CONSTRAINT fk_tb_funcionalidade
+            FOREIGN KEY (id_funcionalidade) REFERENCES gestaoriscos.tb_funcionalidade(id_funcionalidade),
+
+            CONSTRAINT fk_tb_perfil
+            FOREIGN KEY (id_perfil) REFERENCES gestaoriscos.tb_perfil(id_perfil)
+
+            );
+
+            CREATE TABLE IF NOT EXISTS gestaoriscos.tb_role(
+
+            id_role BIGINT PRIMARY KEY,
+            ds_role VARCHAR(50) NOT NULL,
+            ds_acronym VARCHAR(50) NOT NULL,
+            ic_excluido BOOLEAN NOT NULL
+
+            );
+
+            CREATE TABLE IF NOT EXISTS gestaoriscos.tb_role_perfil(
+
+            id_perfil BIGINT NOT NULL,
+            id_role BIGINT NOT NULL,
+            ic_excluido BOOLEAN NOT NULL,
+
+            CONSTRAINT fk_tb_role
+            FOREIGN KEY (id_role) REFERENCES gestaoriscos.tb_role(id_role),
+
+            CONSTRAINT fk_tb_perfil
+            FOREIGN KEY (id_perfil) REFERENCES gestaoriscos.tb_perfil(id_perfil)
+            );
+
+            INSERT INTO gestaoriscos.tb_funcionalidade VALUES (1, 'Processo', 'Processo', null, null, null, 1, FALSE);
+            INSERT INTO gestaoriscos.tb_funcionalidade VALUES (2, 'Gerenciar Processo', 'Gerenciar Processo', null, null, 1, 1, FALSE);
+            INSERT INTO gestaoriscos.tb_funcionalidade VALUES (3, 'Gerenciar', 'Gerenciar', '#/', null, 2, 1, FALSE);
+
+            INSERT INTO gestaoriscos.tb_funcionalidade_perfil VALUES (1, 3, FALSE);
+
+            CREATE SEQUENCE IF NOT EXISTS sk_tb_funcionalidade START WITH 1;
+            CREATE SEQUENCE IF NOT EXISTS sk_tb_role START WITH 1;
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

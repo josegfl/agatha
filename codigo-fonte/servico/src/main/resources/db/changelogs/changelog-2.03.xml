@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="2.03.1" labels="Remoção do tipo resposta risco de resposta a risco e adicionando em evento a risco">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_resposta_risco DROP CONSTRAINT fk_tb_resposta_risco_tb_tipo_resposta;
+
+            ALTER TABLE tb_resposta_risco DROP id_tipo_resposta;
+
+            ALTER TABLE tb_evento_risco ADD ds_justificativa_resposta_risco VARCHAR(4000) NULL;
+            COMMENT ON COLUMN tb_evento_risco.ds_justificativa_resposta_risco IS 'Justificativa da resposta a risco selecionada';
+
+
+            <!--Alteração da respota a risco para plano de controle-->
+            ALTER TABLE tb_resposta_risco RENAME TO tb_plano_controle;
+
+            ALTER SEQUENCE sk_resposta_risco RENAME TO sk_plano_controle;
+
+            ALTER TABLE tb_plano_controle RENAME id_resposta_risco TO id_plano_controle;
+
+
+            <!--Alteração do plano de controle-->
+            ALTER TABLE tb_tipo_resposta_risco RENAME TO tb_resposta_risco;
+
+            ALTER SEQUENCE sk_tipo_resposta_risco RENAME TO sk_resposta_risco;
+
+            ALTER TABLE tb_resposta_risco RENAME id_tipo_resposta_risco TO id_resposta_risco;
+
+
+            <!--Criação do relacionamento-->
+            ALTER TABLE tb_evento_risco ADD id_resposta_risco BIGINT NULL;
+            COMMENT ON COLUMN tb_evento_risco.id_resposta_risco IS 'Identificador da resposta a risco';
+
+            ALTER TABLE tb_evento_risco ADD CONSTRAINT fk_tb_evento_risco_tb_resposta_risco FOREIGN KEY (id_resposta_risco) REFERENCES tb_resposta_risco (id_resposta_risco);
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="2.03.2" labels="Correção tabela resposta risco">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_resposta_risco RENAME no_tipo_resposta_risco TO no_resposta_risco;
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="2.03.3" labels="Correção calculo risco">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_calculo_risco ALTER COLUMN nu_media_peso DROP NOT NULL;
+
+            ALTER TABLE tb_calculo_risco ALTER COLUMN nu_frequencia DROP NOT NULL;
+
+            ALTER TABLE tb_calculo_risco ALTER COLUMN nu_nivel DROP NOT NULL;
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="2.03.4" labels="Correção calculo risco">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_peso_evento_risco ALTER COLUMN nu_peso DROP NOT NULL;
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="2.03.5" labels="Remoção das tabelas desnecessárias">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_analise DROP CONSTRAINT fk_tb_analise_tb_status_etapa;
+
+            ALTER TABLE tb_analise DROP id_status_etapa;
+
+            ALTER TABLE tb_analise DROP CONSTRAINT fk_tb_analise_tb_decisao_etapa;
+
+            ALTER TABLE tb_analise DROP id_decisao_etapa;
+
+            ALTER TABLE tb_analise DROP ds_justificativa;
+
+
+            ALTER TABLE tb_avaliacao DROP CONSTRAINT fk_tb_avaliacao_tb_status_etapa;
+
+            ALTER TABLE tb_avaliacao DROP id_status_etapa;
+
+            ALTER TABLE tb_avaliacao DROP CONSTRAINT fk_tb_avaliacao_tb_decisao_etapa;
+
+            ALTER TABLE tb_avaliacao DROP id_decisao_etapa;
+
+            ALTER TABLE tb_avaliacao DROP ds_justificativa;
+
+
+            ALTER TABLE tb_identificacao DROP CONSTRAINT fk_tb_identificacao_tb_status_etapa;
+
+            ALTER TABLE tb_identificacao DROP id_status_etapa;
+
+            ALTER TABLE tb_identificacao DROP CONSTRAINT fk_tb_identificacao_tb_decisao_etapa;
+
+            ALTER TABLE tb_identificacao DROP id_decisao_etapa;
+
+            ALTER TABLE tb_identificacao DROP ds_justificativa;
+
+
+            ALTER TABLE tb_processo DROP CONSTRAINT fk_c97snqms7p37sel359w5xinns;
+
+            ALTER TABLE tb_processo DROP id_resposta;
+
+
+            ALTER TABLE tb_processo DROP CONSTRAINT fk_q9xy4gt6jjwabiovks75oh4g1;
+
+            ALTER TABLE tb_processo DROP id_informacao;
+
+
+            DROP TABLE tb_resposta;
+
+            DROP TABLE tb_informacao;
+
+            DROP TABLE tb_decisao_etapa;
+
+            DROP TABLE tb_status_etapa;
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

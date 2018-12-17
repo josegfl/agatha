@@ -1,0 +1,793 @@
+<form name="formRegistro" novalidate>
+
+    <div layout="row" layout-xs="column">
+
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Órgão"></sgr-glossario>
+            </label>
+            <input ng-model="scope.registro.analise.orgao.nome" type="text" disabled/>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Secretaria"></sgr-glossario>
+            </label>
+            <input ng-model="scope.registro.analise.secretaria.nome" type="text" disabled/>
+        </md-input-container>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Diretoria"></sgr-glossario>
+            </label>
+            <input ng-model="scope.registro.diretoria" type="text" ng-disabled="scope.apenasLeitura"/>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Coordenação"></sgr-glossario>
+            </label>
+            <input ng-model="scope.registro.coordenacao" type="text" ng-disabled="scope.apenasLeitura"/>
+        </md-input-container>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <h3>
+            <sgr-glossario termo="Informações sobre o Ambiente Interno - existência de:"></sgr-glossario>
+        </h3>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <div class="md-block" flex-gt-xs flex="60">
+            <span>
+                <sgr-glossario termo="Código de Ética / Normas de Conduta"></sgr-glossario> *
+            </span>
+        </div>
+
+        <div class="md-block" flex-gt-xs flex="20">
+            <md-radio-group ng-model="scope.registro.analise.etica" ng-disabled="scope.apenasLeitura" required>
+
+                <md-radio-button value="true" class="md-primary radio-column">Sim</md-radio-button>
+                <md-radio-button value="false" class="md-primary radio-column">Não</md-radio-button>
+
+            </md-radio-group>
+        </div>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <div class="md-block" flex-gt-xs flex="60">
+            <span>
+                <sgr-glossario termo="Estrutura Organizacional"></sgr-glossario> *
+            </span>
+        </div>
+
+        <div class="md-block" flex-gt-xs flex="20">
+            <md-radio-group ng-model="scope.registro.analise.estrutura" ng-disabled="scope.apenasLeitura" required>
+
+                <md-radio-button value="true" class="md-primary radio-column">Sim</md-radio-button>
+                <md-radio-button value="false" class="md-primary radio-column">Não</md-radio-button>
+
+            </md-radio-group>
+        </div>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <div class="md-block" flex-gt-xs flex="60">
+            <span>
+                <sgr-glossario termo="Política de Recursos Humanos (Compromisso com a competência e desenvolvimento)"></sgr-glossario> *
+            </span>
+        </div>
+
+        <div class="md-block" flex-gt-xs flex="20">
+            <md-radio-group ng-model="scope.registro.analise.recursosHumanos" ng-disabled="scope.apenasLeitura" required>
+
+                <md-radio-button value="true" class="md-primary radio-column">Sim</md-radio-button>
+                <md-radio-button value="false" class="md-primary radio-column">Não</md-radio-button>
+
+            </md-radio-group>
+        </div>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <div class="md-block" flex-gt-xs flex="60">
+            <span>
+                <sgr-glossario termo="Atribuição de Alçadas e Responsabilidades"></sgr-glossario> *
+            </span>
+        </div>
+
+        <div class="md-block" flex-gt-xs flex="20">
+            <md-radio-group ng-model="scope.registro.analise.atribuicoes" ng-disabled="scope.apenasLeitura" required>
+
+                <md-radio-button value="true" class="md-primary radio-column">Sim</md-radio-button>
+                <md-radio-button value="false" class="md-primary radio-column">Não</md-radio-button>
+
+            </md-radio-group>
+        </div>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <div class="md-block" flex-gt-xs flex="60">
+            <span>
+                <sgr-glossario termo="Normas Internas"></sgr-glossario> *
+            </span>
+        </div>
+
+        <div class="md-block" flex-gt-xs flex="20">
+            <md-radio-group ng-model="scope.registro.analise.normasInternas" ng-disabled="scope.apenasLeitura" required>
+
+                <md-radio-button value="true" class="md-primary radio-column">Sim</md-radio-button>
+                <md-radio-button value="false" class="md-primary radio-column">Não</md-radio-button>
+
+            </md-radio-group>
+        </div>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <h3>
+            <sgr-glossario termo="Informações sobre a Fixação de Objetivos - existência de:"></sgr-glossario>
+        </h3>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <div class="md-block" flex-gt-xs flex="60">
+            <span>
+                <sgr-glossario termo="Missão"></sgr-glossario> *
+            </span>
+        </div>
+
+        <div class="md-block" flex-gt-xs flex="20">
+            <md-radio-group ng-model="scope.registro.analise.missao" ng-disabled="scope.apenasLeitura" required>
+
+                <md-radio-button value="true" class="md-primary radio-column">Sim</md-radio-button>
+                <md-radio-button value="false" class="md-primary radio-column">Não</md-radio-button>
+
+            </md-radio-group>
+        </div>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <div class="md-block" flex-gt-xs flex="60">
+            <span>
+                <sgr-glossario termo="Visão"></sgr-glossario> *
+            </span>
+        </div>
+
+        <div class="md-block" flex-gt-xs flex="20">
+            <md-radio-group ng-model="scope.registro.analise.visao" ng-disabled="scope.apenasLeitura" required>
+
+                <md-radio-button value="true" class="md-primary radio-column">Sim</md-radio-button>
+                <md-radio-button value="false" class="md-primary radio-column">Não</md-radio-button>
+
+            </md-radio-group>
+        </div>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <div class="md-block" flex-gt-xs flex="60">
+            <span>
+                <sgr-glossario termo="Objetivos"></sgr-glossario> *
+            </span>
+        </div>
+
+        <div class="md-block" flex-gt-xs flex="20">
+            <md-radio-group ng-model="scope.registro.analise.objetivos" ng-disabled="scope.apenasLeitura" required>
+
+                <md-radio-button value="true" class="md-primary radio-column">Sim</md-radio-button>
+                <md-radio-button value="false" class="md-primary radio-column">Não</md-radio-button>
+
+            </md-radio-group>
+        </div>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <h3>
+            <sgr-glossario termo="Informações sobre o Macroprocesso/Processo"></sgr-glossario>
+        </h3>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Macroprocesso"></sgr-glossario>
+            </label>
+            <md-select ng-model="scope.registro.macroprocesso" ng-disabled="scope.apenasLeitura" ng-required="!scope.registro.processo">
+                <md-option ng-value="item" ng-repeat="item in scope._macroprocessos">{{ item.descricao }}</md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Processo"></sgr-glossario>
+            </label>
+            <input ng-model="scope.registro.processo" type="text" ng-disabled="scope.apenasLeitura" ng-required="!scope.registro.macroprocesso"/>
+        </md-input-container>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <md-input-container class="md-block" flex-gt-xs flex="100">
+            <label>
+                <sgr-glossario termo="Objetivo do Macroprocesso/Processo"></sgr-glossario>
+            </label>
+            <input ng-model="scope.registro.objetivo" type="text" ng-disabled="scope.apenasLeitura" required/>
+        </md-input-container>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Leis e Regulamentos"></sgr-glossario>
+            </label>
+            <input ng-model="scope.registro.lei" type="text" ng-disabled="scope.apenasLeitura"/>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Sistemas"></sgr-glossario>
+            </label>
+            <input ng-model="scope.registro.sistema" type="text" ng-disabled="scope.apenasLeitura"/>
+        </md-input-container>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Gestor Responsável pelo processo"></sgr-glossario>
+            </label>
+            <md-select ng-model="scope.registro.gestor" ng-disabled="scope.apenasLeitura" required>
+                <md-option ng-value="item" ng-repeat="item in scope._gestores">{{ item.nome }}</md-option>
+            </md-select>
+        </md-input-container>
+
+    </div>
+
+    <div layout="row" layout-xs="column" ng-repeat="responsavel in scope.registro.responsaveis">
+
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Responsável pela Análise"></sgr-glossario>
+            </label>
+            <md-select ng-model="responsavel.usuario" ng-disabled="scope.apenasLeitura" ng-change="scope.verificarReponsavel(responsavel, $index)" required>
+                <md-option ng-value="item" ng-repeat="item in scope._analistas">{{ item.nome }}</md-option>
+            </md-select>
+        </md-input-container>
+
+        <md-button class="md-fab md-primary md-hue-2 md-mini" aria-label="Incluir" ng-show="$index == 0 && !scope.apenasLeitura" ng-click="scope.adicionarResponsavel()">
+            <md-tooltip>Incluir novo responsável</md-tooltip>
+            <md-icon style="color:white">add</md-icon>
+        </md-button>
+
+        <md-button class="md-fab md-hue-2 md-mini" aria-label="Remover" ng-show="$index != 0 && !scope.apenasLeitura" ng-click="scope.removerResponsavel($index )">
+            <md-tooltip>Remover responsável</md-tooltip>
+            <md-icon style="color:white">remove</md-icon>
+        </md-button>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+
+        <div class="md-block" flex-gt-xs flex="50">
+            <span class="fs-11">
+                <sgr-glossario termo="Período da Análise"></sgr-glossario>
+            </span>
+        </div>
+
+    </div>
+
+    <div layout="row" layout-xs="column">
+        <div class="md-block" flex-gt-xs>
+            <md-datepicker-custom name="dtInicio" ng-model="scope.registro.dtInicio" md-max-date="scope.registro.dtFim"
+
+                                  md-custom-required="false" md-custom-mask="39/19/9999" md-custom-clean-mask="false" md-custom-restrict="reject" ng-disabled="scope.apenasLeitura"></md-datepicker-custom>
+
+            <md-datepicker-custom name="dtFim" ng-model="scope.registro.dtFim" md-min-date="scope.registro.dtInicio"
+
+                                  md-custom-required="false" md-custom-mask="39/19/9999" md-custom-clean-mask="false" md-custom-restrict="reject" ng-disabled="scope.apenasLeitura"></md-datepicker-custom>
+
+            <div class="validation-messages" style="color:red; font-size: 12px">
+                <div ng-show="formRegistro.dtInicio.$error.valid">Escolha uma data válida!</div>
+                <div ng-show="formRegistro.dtInicio.$error.maxdate">Escolha uma data menor que a data fim</div>
+
+                <div ng-show="formRegistro.dtFim.$error.valid">Escolha uma data válida!</div>
+                <div ng-show="formRegistro.dtFim.$error.mindate">Escolha uma data maior que a data de inicio</div>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<div layout="row" layout-xs="column">
+    <h3 style="margin-bottom: 0;">
+        <sgr-glossario termo="Anexos"></sgr-glossario>
+    </h3>
+</div>
+<hr color="#4CAF50" width="100%" size="2px"/>
+
+<div layout="row" layout-xs="column" ng-show="!scope.apenasLeitura">
+
+    <md-content class="md-block" flex-gt-xs flex="100" style="background: transparent">
+
+        <md-content class="file-upload-tamanho-maximo" style="background: transparent">
+            <lf-ng-md-file-input name="files" lf-api="scope.uploadApi" lf-files="scope.files" lf-totalsize="25MB" lf-mimetype="" aria-label="Envio de arquivos" lf-remove-label="Excluir" lf-browse-label="Incluir Anexos" lf-placeholder="Procurar" multiple></lf-ng-md-file-input>
+            <!--<md-tooltip style="float: right">-->
+            <!--Formatos suportados:PDF, WORD, EXCEL, JGEG, BPMN, RAR ou ZIP. O arquivo deve ter no máximo 25MB.-->
+            <!--</md-tooltip>-->
+        </md-content>
+        <div ng-messages="formRegistro.files.$error" style="color:red;">
+            <div ng-if="formRegistro.$error.totalsize.length > 0">
+                O tamanho máximo é de 25MB.
+            </div>
+        </div>
+    </md-content>
+</div>
+
+<div layout="row" layout-xs="column" ng-show="scope.registro.anexos.length">
+    <div class="sgr-container-table" layout="column" flex-gt-xs flex="100">
+        <md-card>
+            <md-table-container>
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column class="text-right" width="60px">
+                            <sgr-glossario termo="Item"></sgr-glossario>
+                        </th>
+                        <th md-column>
+                            <sgr-glossario termo="Nome do Anexo"></sgr-glossario>
+                        </th>
+                        <th md-column>
+                            <sgr-glossario termo="Tamanho"></sgr-glossario>
+                        </th>
+                        <th md-column class="text-center">
+                            <sgr-glossario termo="Ações"></sgr-glossario>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody md-body>
+                    <tr md-row ng-repeat="item in scope.registro.anexos">
+                        <td md-cell class="text-right">
+                            <span>{{$index + 1}}</span>
+                        </td>
+                        <td md-cell>
+                            <span>{{item.arquivoAnexo.nomeArquivo}}</span>
+                        </td>
+                        <td md-cell>
+                            <span>{{item.arquivoAnexo.tamanho/1024/1024|number:2}} MB</span>
+                        </td>
+
+                        <td md-cell class="text-center">
+                            <a ng-href="{{'/gestaoriscos/api/processos/download/' + item.arquivoAnexo.id}}" class="cursor-pointer">
+                                <md-tooltip md-direction="top">
+                                    Visualizar
+                                </md-tooltip>
+                                <ng-md-icon class="table-button-icon" icon="remove_red_eye"></ng-md-icon>
+                            </a>
+
+                            <a aria-label="Remover" ng-click="scope.excluirAnexo(item)" class="cursor-pointer" ng-show="!scope.apenasLeitura">
+                                <md-tooltip md-direction="top">
+                                    Remover anexo
+                                </md-tooltip>
+                                <ng-md-icon class="table-button-icon" icon="delete"></ng-md-icon>
+                            </a>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </md-card>
+    </div>
+</div>
+
+<div layout="row" layout-xs="column">
+    <h3 style="margin-bottom: 0;">
+        <sgr-glossario termo="Análise SWOT"></sgr-glossario>
+    </h3>
+</div>
+<hr color="#4CAF50" width="100%" size="2px"/>
+
+<div layout="row">
+    <div flex="50" layout-margin>
+        <fieldset class="m-t-20">
+            <legend class="LegendTamanhoTextoFieldset text-center">
+                <h3 class="text-center">
+                    <sgr-glossario termo="Ambiente Interno"></sgr-glossario>
+                </h3>
+            </legend>
+
+            <div layout="row" layout-margin class="m-t-0">
+                <div flex class="m-t-0">
+                    <h3 flex style="text-align: center; margin: 0;background: #43BEEA" class="md-subhead tac title-bg title-verde">
+                        <sgr-glossario termo="Forças"></sgr-glossario>
+
+                        <md-button ng-click="scope.incluirPontoForte = true" class="md-icon-button" aria-label="Adicionar Matrix SWOT" style="margin: 0" ng-if="!scope.apenasLeitura">
+                            <md-icon md-font-set="material-icons">add</md-icon>
+                            <md-tooltip>Adicionar Matrix SWOT</md-tooltip>
+                        </md-button>
+                    </h3>
+                    <div flex class="lista table-container">
+                        <table style="width: 100%">
+                            <tbody style="background: #98DAF2;">
+                            <!--Inclusao-->
+                            <tr ng-show="scope.incluirPontoForte">
+                                <td class="text-center">
+
+                                    <md-input-container class="md-block" flex-gt-xs flex="100" style="margin-bottom: 0">
+                                        <label>
+                                            <sgr-glossario termo="Nova Força"></sgr-glossario>
+                                        </label>
+                                        <input ng-model="scope.pontoForte" type="text"/>
+                                    </md-input-container>
+
+                                </td>
+
+                                <td width="100" align="center" ng-if="!scope.apenasLeitura">
+                                    <md-button ng-click="scope.adicionarPontoFonte({id : 1})" class="md-icon-button" aria-label="Editar" style="margin: 0">
+                                        <md-icon class="table-icon" md-font-set="material-icons">check</md-icon>
+                                        <md-tooltip>Concluir</md-tooltip>
+                                    </md-button>
+                                    <md-button ng-click="scope.incluirPontoForte = false; scope.pontoForte = null" class="md-icon-button" aria-label="Excluir" style="margin: 0">
+                                        <md-icon class="table-icon" md-font-set="material-icons">cancel</md-icon>
+                                        <md-tooltip>Cancelar</md-tooltip>
+                                    </md-button>
+                                </td>
+                            </tr>
+
+                            <tr ng-show="(scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 1}}).length == 0">
+                                <td class="text-center">Nenhum ponto forte cadastrado.</td>
+                            </tr>
+                            <tr ng-repeat="item in lista = (scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 1}})">
+                                <td width="40" align="center">
+                                    {{($index)+1}}
+                                </td>
+                                <td>
+                                    <span ng-show="!item.$edit">{{item.descricao}}</span>
+
+                                    <md-input-container class="md-block" flex-gt-xs flex="100" style="margin-bottom: 0" ng-show="item.$edit">
+                                        <label>
+                                            <sgr-glossario termo="Editar Força"></sgr-glossario>
+                                        </label>
+                                        <input ng-model="scope.pontoForteEditado" type="text"/>
+                                    </md-input-container>
+
+                                </td>
+                                <td width="100" align="center" ng-if="!scope.apenasLeitura">
+                                    <md-button ng-click="scope.pontoForteEditado = item.descricao; item.$edit = true" class="md-icon-button" aria-label="Editar" style="margin: 0" ng-show="!item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">edit</md-icon>
+                                        <md-tooltip>Editar</md-tooltip>
+                                    </md-button>
+                                    <md-button ng-click="scope.excluirMatriz(item)" class="md-icon-button" aria-label="Excluir" style="margin: 0" ng-show="!item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">delete</md-icon>
+                                        <md-tooltip>Excluir</md-tooltip>
+                                    </md-button>
+
+                                    <md-button ng-click="scope.editarPontoForte()" class="md-icon-button" aria-label="Editar" style="margin: 0" ng-show="item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">check</md-icon>
+                                        <md-tooltip>Concluir</md-tooltip>
+                                    </md-button>
+                                    <md-button ng-click="item.$edit = false; scope.pontoForteEditado = null" class="md-icon-button" aria-label="Excluir" style="margin: 0" ng-show="item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">cancel</md-icon>
+                                        <md-tooltip>Cancelar</md-tooltip>
+                                    </md-button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <div layout="row" layout-margin class="m-t-0">
+
+                <div flex>
+                    <h3 flex style="text-align: center; margin: 0;background: #F78E4A;" class="md-subhead tac title-bg title-vermelho">
+                        <sgr-glossario termo="Fraquezas"></sgr-glossario>
+
+                        <md-button ng-click="scope.incluirPontoFraco = true" class="md-icon-button" aria-label="Adicionar Matrix SWOT" style="margin: 0" ng-if="!scope.apenasLeitura">
+                            <md-icon md-font-set="material-icons">add</md-icon>
+                            <md-tooltip>Adicionar Matrix SWOT</md-tooltip>
+                        </md-button>
+                    </h3>
+                    <div flex class="lista table-container">
+                        <table style="width: 100%">
+                            <tbody style="background: #FBB68D">
+                            <!--Inclusao-->
+                            <tr ng-show="scope.incluirPontoFraco">
+                                <td class="text-center">
+
+                                    <md-input-container class="md-block" flex-gt-xs flex="100" style="margin-bottom: 0">
+                                        <label>
+                                            <sgr-glossario termo="Nova Fraqueza"></sgr-glossario>
+                                        </label>
+                                        <input ng-model="scope.pontoFraco" type="text"/>
+                                    </md-input-container>
+
+                                </td>
+
+                                <td width="100" align="center" ng-if="!scope.apenasLeitura">
+                                    <md-button ng-click="scope.adicionarPontoFraco({id : 3})" class="md-icon-button" aria-label="Editar" style="margin: 0">
+                                        <md-icon class="table-icon" md-font-set="material-icons">check</md-icon>
+                                        <md-tooltip>Concluir</md-tooltip>
+                                    </md-button>
+                                    <md-button ng-click="scope.incluirPontoFraco = false; scope.pontoFraco = null" class="md-icon-button" aria-label="Excluir" style="margin: 0">
+                                        <md-icon class="table-icon" md-font-set="material-icons">cancel</md-icon>
+                                        <md-tooltip>Cancelar</md-tooltip>
+                                    </md-button>
+                                </td>
+                            </tr>
+
+                            <tr ng-show="(scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 3}}).length == 0">
+                                <td class="text-center">Nenhum ponto fraco cadastrado.</td>
+                            </tr>
+                            <tr ng-repeat="item in lista = (scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 3}})">
+                                <td width="40" align="center">
+                                    {{($index)+1}}
+                                </td>
+                                <td>
+                                    <span ng-show="!item.$edit">{{item.descricao}}</span>
+
+                                    <md-input-container class="md-block" flex-gt-xs flex="100" style="margin-bottom: 0" ng-show="item.$edit">
+                                        <label>
+                                            <sgr-glossario termo="Editar Fraqueza"></sgr-glossario>
+                                        </label>
+                                        <input ng-model="scope.pontoFracoEditado" type="text"/>
+                                    </md-input-container>
+                                </td>
+                                <td width="100" align="center" ng-if="!scope.apenasLeitura">
+                                    <md-button ng-click="scope.pontoFracoEditado = item.descricao; item.$edit = true" class="md-icon-button" aria-label="Editar" style="margin: 0" ng-show="!item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">edit</md-icon>
+                                        <md-tooltip>Editar</md-tooltip>
+                                    </md-button>
+                                    <md-button ng-click="scope.excluirMatriz(item)" class="md-icon-button" aria-label="Excluir" style="margin: 0" ng-show="!item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">delete</md-icon>
+                                        <md-tooltip>Excluir</md-tooltip>
+                                    </md-button>
+
+                                    <md-button ng-click="scope.editarPontoFraco()" class="md-icon-button" aria-label="Editar" style="margin: 0" ng-show="item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">check</md-icon>
+                                        <md-tooltip>Concluir</md-tooltip>
+                                    </md-button>
+                                    <md-button ng-click="item.$edit = false; scope.pontoFracoEditado = null" class="md-icon-button" aria-label="Excluir" style="margin: 0" ng-show="item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">cancel</md-icon>
+                                        <md-tooltip>Cancelar</md-tooltip>
+                                    </md-button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </fieldset>
+
+
+    </div>
+    <div flex="50" layout-margin>
+
+        <fieldset class="m-t-20">
+
+            <legend class="LegendTamanhoTextoFieldset text-center">
+                <h3 class="text-center">
+                    <sgr-glossario termo="Ambiente Externo"></sgr-glossario>
+                </h3>
+            </legend>
+
+            <div layout="row" layout-margin class="m-t-0">
+
+                <div flex class="m-t-0">
+                    <h3 flex style="text-align: center; margin: 0;background: #C3DA65" class="md-subhead tac title-bg title-azul">
+                        <sgr-glossario termo="Oportunidades"></sgr-glossario>
+
+                        <md-button ng-click="scope.incluirOportunidade = true" class="md-icon-button" aria-label="Adicionar Matrix SWOT" style="margin: 0" ng-if="!scope.apenasLeitura">
+                            <md-icon md-font-set="material-icons">add</md-icon>
+                            <md-tooltip>Adicionar Matrix SWOT</md-tooltip>
+                        </md-button>
+                    </h3>
+                    <div flex class="lista table-container">
+                        <table style="width: 100%">
+                            <tbody style="background: #E7F0B7;">
+                            <!--Inclusao-->
+                            <tr ng-show="scope.incluirOportunidade">
+                                <td class="text-center">
+
+                                    <md-input-container class="md-block" flex-gt-xs flex="100" style="margin-bottom: 0">
+                                        <label>
+                                            <sgr-glossario termo="Nova Oportunidade"></sgr-glossario>
+                                        </label>
+                                        <input ng-model="scope.oportunidade" type="text"/>
+                                    </md-input-container>
+
+                                </td>
+
+                                <td width="100" align="center" ng-if="!scope.apenasLeitura">
+                                    <md-button ng-click="scope.adicionarOportunidade({id : 2})" class="md-icon-button" aria-label="Editar" style="margin: 0">
+                                        <md-icon class="table-icon" md-font-set="material-icons">check</md-icon>
+                                        <md-tooltip>Concluir</md-tooltip>
+                                    </md-button>
+                                    <md-button ng-click="scope.incluirOportunidade = false; scope.oportunidade = null" class="md-icon-button" aria-label="Excluir" style="margin: 0">
+                                        <md-icon class="table-icon" md-font-set="material-icons">cancel</md-icon>
+                                        <md-tooltip>Cancelar</md-tooltip>
+                                    </md-button>
+                                </td>
+                            </tr>
+
+                            <tr ng-show="(scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 2}}).length == 0">
+                                <td class="text-center">Nenhuma oportunidade cadastrada.</td>
+                            </tr>
+                            <tr ng-repeat="item in lista = (scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 2}})">
+                                <td width="40" align="center">
+                                    {{($index)+1}}
+                                </td>
+                                <td>
+                                    <span ng-show="!item.$edit">{{item.descricao}}</span>
+
+                                    <md-input-container class="md-block" flex-gt-xs flex="100" style="margin-bottom: 0" ng-show="item.$edit">
+                                        <label>
+                                            <sgr-glossario termo="Editar Oportunidade"></sgr-glossario>
+                                        </label>
+                                        <input ng-model="scope.oportunidadeEditado" type="text"/>
+                                    </md-input-container>
+                                </td>
+                                <td width="100" align="cente" ng-if="!scope.apenasLeitura">
+                                    <md-button ng-click="scope.oportunidadeEditado = item.descricao; item.$edit = true" class="md-icon-button" aria-label="Editar" style="margin: 0" ng-show="!item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">edit</md-icon>
+                                        <md-tooltip>Editar</md-tooltip>
+                                    </md-button>
+                                    <md-button ng-click="scope.excluirMatriz(item)" class="md-icon-button" aria-label="Excluir" style="margin: 0" ng-show="!item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">delete</md-icon>
+                                        <md-tooltip>Excluir</md-tooltip>
+                                    </md-button>
+
+                                    <md-button ng-click="scope.editarOportunidade()" class="md-icon-button" aria-label="Editar" style="margin: 0" ng-show="item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">check</md-icon>
+                                        <md-tooltip>Concluir</md-tooltip>
+                                    </md-button>
+                                    <md-button ng-click="item.$edit = false; scope.oportunidadeEditado = null" class="md-icon-button" aria-label="Excluir" style="margin: 0" ng-show="item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">cancel</md-icon>
+                                        <md-tooltip>Cancelar</md-tooltip>
+                                    </md-button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div layout="row" layout-margin>
+                <div flex>
+                    <h3 flex style="text-align: center; margin: 0;background: #EE5859;" class="md-subhead tac title-bg title-amarelo">
+                        <sgr-glossario termo="Ameaças"></sgr-glossario>
+
+                        <md-button ng-click="scope.incluirAmeaca = true" class="md-icon-button" aria-label="Adicionar Matrix SWOT" style="margin: 0" ng-if="!scope.apenasLeitura">
+                            <md-icon md-font-set="material-icons">add</md-icon>
+                            <md-tooltip>Adicionar Matrix SWOT</md-tooltip>
+                        </md-button>
+                    </h3>
+                    <div flex class="lista table-container">
+                        <table style="width: 100%">
+                            <tbody style="background: #F89FB3;">
+                            <!--Inclusao-->
+                            <tr ng-show="scope.incluirAmeaca">
+                                <td class="text-center">
+
+                                    <md-input-container class="md-block" flex-gt-xs flex="100" style="margin-bottom: 0">
+                                        <label>
+                                            <sgr-glossario termo="Nova Ameaça"></sgr-glossario>
+                                        </label>
+                                        <input ng-model="scope.ameaca" type="text"/>
+                                    </md-input-container>
+
+                                </td>
+
+                                <td width="100" align="center" ng-if="!scope.apenasLeitura">
+                                    <md-button ng-click="scope.adicionarAmeaca({id : 4})" class="md-icon-button" aria-label="Editar" style="margin: 0">
+                                        <md-icon class="table-icon" md-font-set="material-icons">check</md-icon>
+                                        <md-tooltip>Concluir</md-tooltip>
+                                    </md-button>
+                                    <md-button ng-click="scope.incluirAmeaca = false; scope.ameaca = null" class="md-icon-button" aria-label="Excluir" style="margin: 0">
+                                        <md-icon class="table-icon" md-font-set="material-icons">cancel</md-icon>
+                                        <md-tooltip>Cancelar</md-tooltip>
+                                    </md-button>
+                                </td>
+                            </tr>
+
+                            <tr ng-show="(scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 4}}).length == 0">
+                                <td class="text-center">Nenhuma ameaça cadastrada.</td>
+                            </tr>
+                            <tr ng-repeat="item in lista = (scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 4}})">
+                                <td width="40" align="center">
+                                    {{($index)+1}}
+                                </td>
+                                <td>
+                                    <span ng-show="!item.$edit">{{item.descricao}}</span>
+
+                                    <md-input-container class="md-block" flex-gt-xs flex="100" style="margin-bottom: 0" ng-show="item.$edit">
+                                        <label>
+                                            <sgr-glossario termo="Editar Ameaça"></sgr-glossario>
+                                        </label>
+                                        <input ng-model="scope.ameacaEditado" type="text"/>
+                                    </md-input-container>
+                                </td>
+                                <td width="100" align="center" ng-if="!scope.apenasLeitura">
+                                    <md-button ng-click="scope.ameacaEditado = item.descricao; item.$edit = true" class="md-icon-button" aria-label="Editar" style="margin: 0" ng-show="!item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">edit</md-icon>
+                                        <md-tooltip>Editar</md-tooltip>
+                                    </md-button>
+                                    <md-button ng-click="scope.excluirMatriz(item)" class="md-icon-button" aria-label="Excluir" style="margin: 0" ng-show="!item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">delete</md-icon>
+                                        <md-tooltip>Excluir</md-tooltip>
+                                    </md-button>
+
+                                    <md-button ng-click="scope.editarAmeaca()" class="md-icon-button" aria-label="Editar" style="margin: 0" ng-show="item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">check</md-icon>
+                                        <md-tooltip>Concluir</md-tooltip>
+                                    </md-button>
+                                    <md-button ng-click="item.$edit = false; scope.ameacaEditado = null" class="md-icon-button" aria-label="Excluir" style="margin: 0" ng-show="item.$edit">
+                                        <md-icon class="table-icon" md-font-set="material-icons">cancel</md-icon>
+                                        <md-tooltip>Cancelar</md-tooltip>
+                                    </md-button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </fieldset>
+
+    </div>
+</div>
+
+<div class="sgr-container-buttons sgr-container-footer" layout="row" layout-align="end">
+    <section layout="row center" layout-sm="column" layout-wrap>
+        <div layout="row" layout-align="space-around center">
+            <md-button class="md-primary" ui-sref="home">
+                <md-icon md-font-set="material-icons">close</md-icon>
+                <sgr-glossario termo="Cancelar"></sgr-glossario>
+            </md-button>
+            <md-button class="md-primary md-raised" ng-click="scope.persistir(scope.registro)" ng-if="!scope.apenasLeitura">
+                <md-icon md-font-set="material-icons">done</md-icon>
+                <sgr-glossario termo="Salvar"></sgr-glossario>
+            </md-button>
+        </div>
+    </section>
+</div>

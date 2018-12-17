@@ -1,0 +1,21 @@
+<md-dialog style="padding: 20px; width: 600px">
+
+    <form name="ctrl.formJustificativa" ng-submit="ctrl.reprovar(ctrl.justificativa)" novalidate style="overflow: hidden">
+
+        <div layout="row" layout-xs="column">
+
+            <md-input-container class="md-block" flex-gt-xs flex="100">
+                <label>Justificativa</label>
+                <textarea ng-model="ctrl.justificativa" rows="3" required></textarea>
+            </md-input-container>
+
+        </div>
+
+        <md-dialog-actions layout="row" style="padding: 0">
+            <md-button class="md-raised md-primary" ng-click="ctrl.cancel()">Cancelar</md-button>
+            <md-button class="md-raised md-primary" type="submit">Reprovar</md-button>
+        </md-dialog-actions>
+
+    </form>
+
+</md-dialog>

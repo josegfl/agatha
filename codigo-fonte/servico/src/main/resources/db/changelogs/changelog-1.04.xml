@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="1.04">
+        <sql splitStatements="false">
+            <![CDATA[
+
+            CREATE SEQUENCE sk_evento_risco START WITH 1;
+            CREATE TABLE tb_evento_risco
+            (
+            id_evento_risco BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_evento BIGINT NOT NULL,
+            id_natureza BIGINT NOT NULL,
+            id_categoria BIGINT NOT NULL,
+            id_identificacao BIGINT NOT NULL
+            ) ;
+            COMMENT ON TABLE tb_evento_risco is 'Tabela responsável por armazenar os dados de eventos de risco da etapa de identificação de um processo';
+            COMMENT ON COLUMN tb_evento_risco.id_evento_risco is 'Identificador do evento de risco';
+            COMMENT ON COLUMN tb_evento_risco.ic_excluido is 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_evento_risco.id_evento is 'Identificador do evento';
+            COMMENT ON COLUMN tb_evento_risco.id_natureza is 'Identificador da natureza do risco';
+            COMMENT ON COLUMN tb_evento_risco.id_categoria is 'Identificador da categoria do risco';
+            COMMENT ON COLUMN tb_evento_risco.id_identificacao is 'Identificador da etapa identificação do evento de risco de um processo';
+
+            CREATE SEQUENCE sk_evento_causa START WITH 1;
+            CREATE TABLE tb_evento_causa
+            (
+            id_evento_causa BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_evento_risco BIGINT NOT NULL,
+            id_causa BIGINT NOT NULL
+            ) ;
+            COMMENT ON TABLE tb_evento_causa is 'Tabela reponsável por armazenar quais causas de risco um evento de risco possui';
+            COMMENT ON COLUMN tb_evento_causa.id_evento_causa is 'Identificador do registro';
+            COMMENT ON COLUMN tb_evento_causa.id_evento_risco is 'Identificador do evento de risco';
+            COMMENT ON COLUMN tb_evento_causa.id_causa is 'Identificador da causa de risco';
+            COMMENT ON COLUMN tb_evento_causa.ic_excluido is 'Identifica se o registro está excluído';
+
+            CREATE SEQUENCE sk_evento_consequencia START WITH 1;
+            CREATE TABLE tb_evento_consequencia
+            (
+            id_evento_consequencia BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_evento_risco BIGINT NOT NULL,
+            id_consequencia BIGINT NOT NULL
+            ) ;
+            COMMENT ON TABLE tb_evento_consequencia is 'Tabela responsável por armazenar quais consequências um evento de risco possui';
+            COMMENT ON COLUMN tb_evento_consequencia.ic_excluido is 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_evento_consequencia.id_evento_risco is 'Identificador do evento de risco';
+            COMMENT ON COLUMN tb_evento_consequencia.id_consequencia is 'Identificador da consequencia';
+
+            ALTER TABLE tb_evento ADD id_orgao BIGINT NULL;
+            COMMENT ON COLUMN tb_evento.id_orgao IS 'Identificador do órgão';
+
+            ALTER TABLE tb_causa ADD id_orgao BIGINT NULL;
+            COMMENT ON COLUMN tb_causa.id_orgao IS 'Identificador do órgão';
+
+            ALTER TABLE tb_consequencia ADD id_orgao BIGINT NULL;
+            COMMENT ON COLUMN tb_consequencia.id_orgao IS 'Identificador do órgão';
+
+
+            ALTER TABLE tb_evento_risco ADD CONSTRAINT fk_tb_evento_risco_tb_evento FOREIGN KEY (id_evento) REFERENCES tb_evento (id_evento);
+
+            ALTER TABLE tb_evento_risco ADD CONSTRAINT fk_tb_evento_risco_tb_natureza FOREIGN KEY (id_natureza) REFERENCES tb_natureza (id_natureza);
+
+            ALTER TABLE tb_evento_risco ADD CONSTRAINT fk_tb_evento_risco_categoria FOREIGN KEY (id_categoria) REFERENCES tb_categoria (id_categoria);
+
+            ALTER TABLE tb_evento_risco ADD CONSTRAINT fk_tb_evento_risco_identificacao FOREIGN KEY (id_identificacao) REFERENCES tb_identificacao (id_identificacao);
+
+
+            ALTER TABLE tb_evento_causa ADD CONSTRAINT fk_tb_evento_causa_evento_risco FOREIGN KEY (id_evento_risco) REFERENCES tb_evento_risco (id_evento_risco);
+
+            ALTER TABLE tb_evento_causa ADD CONSTRAINT fk_tb_evento_causa_tb_causa FOREIGN KEY (id_causa) REFERENCES tb_causa (id_causa);
+
+
+            ALTER TABLE tb_evento_consequencia ADD CONSTRAINT fk_tb_evento_consequencia_evento_risco FOREIGN KEY (id_evento_risco) REFERENCES tb_evento_risco (id_evento_risco);
+
+            ALTER TABLE tb_evento_consequencia ADD CONSTRAINT fk_tb_evento_consequencia_consequencia FOREIGN KEY (id_consequencia) REFERENCES tb_consequencia (id_consequencia);
+
+
+            ALTER TABLE tb_evento ADD CONSTRAINT fk_tb_evento_tb_orgao FOREIGN KEY (id_orgao) REFERENCES tb_orgao (id_orgao);
+
+            ALTER TABLE tb_causa ADD CONSTRAINT fk_tb_causa_tb_orgao FOREIGN KEY (id_orgao) REFERENCES tb_orgao (id_orgao);
+
+            ALTER TABLE tb_consequencia ADD CONSTRAINT fk_tb_consequencia_tb_orgao FOREIGN KEY (id_orgao) REFERENCES tb_orgao (id_orgao);
+            ]]>
+        </sql>
+    </changeSet>
+</databaseChangeLog>

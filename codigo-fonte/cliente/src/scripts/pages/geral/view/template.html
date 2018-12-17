@@ -1,0 +1,44 @@
+<div  flex layout="column" ng-controller="MenuController as ul">
+    <!-- Conteúdo Principal -->
+    <div class="nooverflow" style="overflow:auto;height: 100%">
+        <div class="noprint" ng-include="'scripts/pages/geral/view/header.html'"></div>
+
+        <md-content flex layout="column" ng-controller="GlobalController as vm" style="min-height: calc(100% - 150px)">
+
+            <menu></menu>
+            <div ui-view></div>
+
+        </md-content>
+        <footer class="noprint footer p-b-0" style="font-weight: 900;">
+            Ministério do Planejamento, Desenvolvimento e Gestão
+        </footer>
+        <footer class="noprint footer p-t-0">
+            Quem faz o controle interno é você!
+        </footer>
+    </div>
+</div>
+
+<script type="text/ng-template" id="toast-template-error.html">
+    <md-toast md-theme="error-toast">
+        <div class="toast-padding" layout="column" ng-show="isArray">
+            <h3 flex>{{titulo}}</h3>
+            <div flex ng-repeat="msg in msgs">
+                <span flex>{{msg}}</span>
+            </div>
+        </div>
+
+        <span flex ng-show="!isArray">{{msgs}}</br></span>
+    </md-toast>
+</script>
+
+<script type="text/ng-template" id="toast-template-warning.html">
+    <md-toast md-theme="warning-toast">
+        <span flex>{{msgs}}</span>
+    </md-toast>
+</script>
+
+<script type="text/ng-template" id="toast-template-success.html">
+    <md-toast md-theme="success-toast">
+        <span flex>{{msgs}}</span>
+    </md-toast>
+</script>

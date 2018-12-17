@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<md:EntityDescriptor ID="gestaoriscos.tst.basis.com.br" entityID="gestaoriscos.tst.basis.com.br"
+                     xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata">
+    <md:SPSSODescriptor AuthnRequestsSigned="true" WantAssertionsSigned="false"
+                        protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>MIICXzCCAcigAwIBAgIEVLydlDANBgkqhkiG9w0BAQsFADB0MQswCQYDVQQGEwJCUjELMAkGA1UE
+                        CAwCREYxETAPBgNVBAcMCEJyYXNpbGlhMQswCQYDVQQKDAJNUDEMMAoGA1UECwwDUEVOMSowKAYD
+                        VQQDDCF3ZWItYWRtaW4ucGVuLnBsYW5lamFtZW50by5nb3YuYnIwHhcNMTUwMTE5MDYwMjE0WhcN
+                        MTYwMTE5MDYwMjE0WjB0MQswCQYDVQQGEwJCUjELMAkGA1UECAwCREYxETAPBgNVBAcMCEJyYXNp
+                        bGlhMQswCQYDVQQKDAJNUDEMMAoGA1UECwwDUEVOMSowKAYDVQQDDCF3ZWItYWRtaW4ucGVuLnBs
+                        YW5lamFtZW50by5nb3YuYnIwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAIjv3iNwamv/1vLx
+                        gTUZQW26QdlCX9gPvcjf8GnSqdngRYySHTtr9k1zu0Zy3MemcwwFkDyR18yp9PmhbHrpl4iV5hmr
+                        KG5ZNAFDOsGYSS2ehGbjjzx//rK3G9FnkUNNCaBxx2YKMxoeyHg+du95Bksh4HEKJbsw6tKPaVyG
+                        HyGhAgMBAAEwDQYJKoZIhvcNAQELBQADgYEAOZd1VU8ZFt+wfHaqL80aBJg7bHqaWkyaFwIoOfIk
+                        MMwk85RmqhLt6pghIyp6SZ+wzB3NJUj339gHge1KKgT8omh3uLklI7OSifeUj09cuEnhltzve/U2
+                        j5DkKOK+9JbZ5ifaevbEcyb5kTUpNIhgAJxU5UIPKnkKPk3iiYwsnxI=
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:KeyDescriptor use="encryption">
+            <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+                <ds:X509Data>
+                    <ds:X509Certificate>MIICXzCCAcigAwIBAgIEVLydlDANBgkqhkiG9w0BAQsFADB0MQswCQYDVQQGEwJCUjELMAkGA1UE
+                        CAwCREYxETAPBgNVBAcMCEJyYXNpbGlhMQswCQYDVQQKDAJNUDEMMAoGA1UECwwDUEVOMSowKAYD
+                        VQQDDCF3ZWItYWRtaW4ucGVuLnBsYW5lamFtZW50by5nb3YuYnIwHhcNMTUwMTE5MDYwMjE0WhcN
+                        MTYwMTE5MDYwMjE0WjB0MQswCQYDVQQGEwJCUjELMAkGA1UECAwCREYxETAPBgNVBAcMCEJyYXNp
+                        bGlhMQswCQYDVQQKDAJNUDEMMAoGA1UECwwDUEVOMSowKAYDVQQDDCF3ZWItYWRtaW4ucGVuLnBs
+                        YW5lamFtZW50by5nb3YuYnIwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAIjv3iNwamv/1vLx
+                        gTUZQW26QdlCX9gPvcjf8GnSqdngRYySHTtr9k1zu0Zy3MemcwwFkDyR18yp9PmhbHrpl4iV5hmr
+                        KG5ZNAFDOsGYSS2ehGbjjzx//rK3G9FnkUNNCaBxx2YKMxoeyHg+du95Bksh4HEKJbsw6tKPaVyG
+                        HyGhAgMBAAEwDQYJKoZIhvcNAQELBQADgYEAOZd1VU8ZFt+wfHaqL80aBJg7bHqaWkyaFwIoOfIk
+                        MMwk85RmqhLt6pghIyp6SZ+wzB3NJUj339gHge1KKgT8omh3uLklI7OSifeUj09cuEnhltzve/U2
+                        j5DkKOK+9JbZ5ifaevbEcyb5kTUpNIhgAJxU5UIPKnkKPk3iiYwsnxI=
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                                Location="http://gestaoriscos.tst.basis.com.br/gestaoriscos/api/saml/SingleLogout/alias/gestaoriscostst"/>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+                                Location="http://gestaoriscos.tst.basis.com.br/gestaoriscos/api/saml/SingleLogout/alias/gestaoriscostst"/>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName</md:NameIDFormat>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Artifact"
+                                     Location="http://gestaoriscos.tst.basis.com.br/gestaoriscos/api/saml/SSO/alias/gestaoriscostst" index="0"
+                                     isDefault="true"/>
+        <md:AssertionConsumerService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                                     Location="http://gestaoriscos.tst.basis.com.br/gestaoriscos/api/saml/SSO/alias/gestaoriscostst"
+                                     index="1"/>
+    </md:SPSSODescriptor>
+</md:EntityDescriptor>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="2.06.1" labels="ADD coluna de email na tabela de usuario e adicionando a coluna de prioridade em perfil">
+        <sql>
+
+            ALTER TABLE tb_usuario ADD email VARCHAR(50) NOT NULL DEFAULT 'alterar@planejamento.gov.br';
+
+            ALTER TABLE tb_perfil ADD prioridade INT NOT NULL DEFAULT 100;
+
+            UPDATE tb_perfil SET prioridade = 1 WHERE no_perfil = 'Analista de Risco';
+
+            UPDATE tb_perfil SET prioridade = 2 WHERE no_perfil = 'Gestor do Processo';
+
+            UPDATE tb_perfil SET prioridade = 3 WHERE no_perfil = 'Unidade';
+
+            UPDATE tb_perfil SET prioridade = 4 WHERE no_perfil = 'Núcleo';
+
+            UPDATE tb_perfil SET prioridade = 5 WHERE no_perfil = 'Subcomitê';
+
+            UPDATE tb_perfil SET prioridade = 6 WHERE no_perfil = 'Comitê';
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

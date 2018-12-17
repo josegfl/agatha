@@ -1,0 +1,143 @@
+<md-content flex>
+    <div class="sgr-container">
+
+        <div class="sgr-container-header" layout="row">
+            <div class="md-toolbar-tools">
+                <h3 style="font-size: 18px">
+                    <sgr-glossario termo="Gerenciar Permissões"></sgr-glossario>
+                </h3>
+            </div>
+        </div>
+
+        <div>
+            <div class="sgr-container-body">
+
+
+                <div layout="row" layout-xs="column">
+
+                    <md-input-container class="md-block" flex-gt-xs flex="50">
+                        <label>
+                            <sgr-glossario termo="Órgão"></sgr-glossario>
+                        </label>
+                        <input ng-model="scope.nomeOrgao" ng-disabled="true"/>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-xs flex="50">
+                        <label>
+                            <sgr-glossario termo="Secretaria"></sgr-glossario>
+                        </label>
+                        <md-select name="secretariaUnidade" ng-model="scope.filtros.orgao" md-selected-text="">
+                            <md-option ng-repeat="secretaria in scope.orgaos" ng-value="secretaria.id">
+                                {{secretaria.sigla}} - {{secretaria.nome}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                </div>
+
+
+                <div layout="row" layout-xs="column">
+
+                    <md-input-container class="md-block" flex-gt-xs flex="50">
+                        <label>
+                            <sgr-glossario termo="Perfil"></sgr-glossario>
+                        </label>
+                        <md-select ng-model="scope.filtros.perfil" placeholder="Perfil">
+                            <md-option ng-value="item.id" ng-repeat="item in scope._perfis">{{ item.nome }}</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-xs flex="50">
+                        <label>
+                            <sgr-glossario termo="Usuário"></sgr-glossario>
+                        </label>
+                        <md-autocomplete class="md-autocomplete-icon" md-floating-label="" md-no-cache="true" md-search-text-change="scope.getUsuariosByNome(scope.filtros.usuario)" md-search-text="scope.filtros.usuario" md-selected-item-change="scope.filtros.usuario = item" md-item-text="scope.filtros.usuario" md-items="item in scope._usuarios"
+                                         md-min-length="2">
+                            <md-item-template>
+                                <span md-highlight-text="scope.filtros.usuario" md-highlight-flags="^i">{{item}}</span>
+                            </md-item-template>
+                        </md-autocomplete>
+                    </md-input-container>
+
+                </div>
+            </div>
+
+            <div class="sgr-container-buttons" layout="row" layout-align="end">
+                <section layout="row center" layout-sm="column" layout-wrap>
+                    <div layout="row" layout-align="space-around center">
+                        <md-button class="md-primary" type="button" ng-click="scope.limparFiltros()">
+                            <md-icon md-font-set="material-icons">filter_list</md-icon>
+                            <sgr-glossario termo="Limpar"></sgr-glossario>
+                        </md-button>
+                        <md-button class="md-primary" type="button" ng-click="scope.filtrar()">
+                            <md-icon md-font-set="material-icons">search</md-icon>
+                            <sgr-glossario termo="Consultar"></sgr-glossario>
+                        </md-button>
+                        <md-button class="md-primary" type="button" ui-sref="gerenciarPermissoes.create">
+                            <md-icon md-font-set="material-icons">add</md-icon>
+                            <sgr-glossario termo="Novo"></sgr-glossario>
+                        </md-button>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="sgr-container-table" layout="column">
+            <md-card>
+                <md-table-container>
+                    <table md-table>
+                        <thead md-head>
+                        <tr md-row>
+                            <th md-column class="text-center" width="80px">
+                                <sgr-glossario termo="Item"></sgr-glossario>
+                            </th>
+                            <th md-column>
+                                <sgr-glossario termo="Nome do Usuário"></sgr-glossario>
+                            </th>
+                            <th md-column>
+                                <sgr-glossario termo="Perfil"></sgr-glossario>
+                            </th>
+                            <th md-column class="text-center" width="150px">
+                                <sgr-glossario termo="Ação"></sgr-glossario>
+                            </th>
+                        </tr>
+                        </thead>
+
+                        <tbody md-body>
+                        <tr md-row ng-repeat="item in scope._registros">
+                            <td md-cell class="text-center">
+                                <span ng-bind="{{scope.filtros.page*scope.filtros.size+$index+1}}"></span>
+                            </td>
+                            <td md-cell>
+                                <span ng-bind="item.nome"></span>
+                            </td>
+                            <td md-cell style="padding: 0px 0px 11px !important; margin: 0 !important; border: none !important;" colspan="1">
+                                <table md-table>
+                                    <tbody md-body>
+                                    <tr md-row style="background: transparent" ng-repeat="permissao in item.permissoes" ng-if="!permissao.excluido">
+                                        <td md-cell>
+                                            <span ng-bind="permissao.perfil.nome"></span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td md-cell class="text-center cell-options" width="150px">
+                                <a ui-sref="gerenciarPermissoes.detail({id: item.id})">
+                                    <md-tooltip md-direction="top">
+                                        Alterar
+                                    </md-tooltip>
+                                    <ng-md-icon icon="create"></ng-md-icon>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+                <md-table-pagination md-on-paginate="scope.filtrar" md-limit="scope.tamanhoLimite" md-limit-options="[20, 50, 100]" md-page="scope.registroInicial" md-total="{{scope.totalItems}}" md-page-select></md-table-pagination>
+            </md-card>
+        </div>
+    </div>
+
+</md-content>
+

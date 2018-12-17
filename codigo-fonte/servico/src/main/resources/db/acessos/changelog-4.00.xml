@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="2.0.1" labels="Insert de Menus">
+        <sql>
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.nucleo.desenho', 'Desenho de Controle', 'Desenho de Controle', 'http://gestaoriscos.tst.basis.com.br/#/manterDesenho', NULL, (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), (SELECT id_item_menu from acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo.gestao'), 'Desenho', 'Desenho', 'Desenho', NULL, NULL, false);
+
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.nucleo.operacao', 'Operação de Controle', 'Operação de Controle', 'http://gestaoriscos.tst.basis.com.br/#/manterOperacao', NULL, (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), (SELECT id_item_menu from acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo.gestao'), 'Operacao', 'Operacao', 'Operacao', NULL, NULL, false);
+        </sql>
+    </changeSet>
+
+    <changeSet id="2.0.2" author="fabrica.wgl" labels="Insert das Permissões para o Item de Menu">
+        <sql>
+            INSERT INTO acessos.tb_item_menu_permissao (id_permissao,id_item_menu)
+            SELECT (SELECT id_permissao from acessos.tb_permissao WHERE id_modulo = (SELECT id_modulo from acessos.tb_modulo WHERE codigo_modulo = 'sgr_m0001')), id_item_menu FROM acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo.desenho';
+
+            INSERT INTO acessos.tb_item_menu_permissao (id_permissao,id_item_menu)
+            SELECT (SELECT id_permissao from acessos.tb_permissao WHERE id_modulo = (SELECT id_modulo from acessos.tb_modulo WHERE codigo_modulo = 'sgr_m0001')), id_item_menu FROM acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo.operacao';
+        </sql>
+    </changeSet>
+
+    <changeSet id="2.0.3" author="fabrica.wgl" labels="Insert do Menu e das Permissões para o Manter Calculadora">
+        <sql>
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.nucleo.calculadora', 'Manter Calculadora', 'Manter Calculadora', 'http://gestaoriscos.tst.basis.com.br/#/manterCalculadora', NULL, (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), (SELECT id_item_menu from acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo.gestao'), 'Calculadora', 'Calculadora', 'Calculadora', NULL, NULL, false);
+
+            INSERT INTO acessos.tb_item_menu_permissao (id_permissao,id_item_menu)
+            SELECT (SELECT id_permissao from acessos.tb_permissao WHERE id_modulo = (SELECT id_modulo from acessos.tb_modulo WHERE codigo_modulo = 'sgr_m0001')), id_item_menu FROM acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo.calculadora';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,60 @@
+<md-toolbar layout="row" id="navigation-bar" class="md-whiteframe-z2">
+
+    <div id="menu-button-container">
+        <md-button class="menu" id="menu-button" ng-click="ul.toggleMenu()" flex aria-label="Menu da Aplicação">
+            <!--<md-icon class="icone60" md-font-set="material-icons" sixe="38">menu</md-icon>-->
+
+            <ng-md-icon icon="menu" size="38" style="fill:white; margin: 10px"></ng-md-icon>
+        </md-button>
+    </div>
+    <div id="nome-sistema" layout="row" flex="40" layout-align="space-around none" class="elemento-barra-navegacao">
+        <div class="titulo-app" style="color:white"> <sgr-glossario termo="AGATHA"></sgr-glossario>  </div>
+
+        <div class="divisor-vertical" hide show-gt-sm style="color:white"></div>
+        <span hide show-gt-sm class="subtitulo-app md-caption" style="color:white">Sistema de Gestão de Integridade, Riscos e Controles</span>
+        <div flex></div>
+    </div>
+    <div flex></div>
+
+    <div hide show-gt-xs layout="column" layout-align="center center" class="elemento-barra-navegacao">
+        <md-button class="md-icon-button" aria-label="Página inicial" ui-sref="home">
+            <md-icon md-font-set="material-icons" class="icone30" aria-label="Página inicial" ui-sref="home" style="color:white">home</md-icon>
+            <md-tooltip>Página inicial</md-tooltip>
+        </md-button>
+    </div>
+    <div hide show-gt-xs layout="column" layout-align="center center" class="elemento-barra-navegacao">
+        <md-button class="md-icon-button" aria-label="Meus Dados" ui-sref="meus-dados">
+            <md-icon md-font-set="material-icons" class="icone30" aria-label="Meus Dados" style="color:white">account_circle</md-icon>
+            <md-tooltip>Meus Dados</md-tooltip>
+        </md-button>
+    </div>
+    <div hide show-gt-xs layout="column" layout-align="center center" class="elemento-barra-navegacao">
+        <div class="dropdown">
+        <md-button class="dropbtn md-icon-button" aria-label="Ajuda">
+            <md-icon md-font-set="material-icons" class="icone30" aria-label="Ajuda" style="color:white">help</md-icon>
+            <md-tooltip>Ajuda</md-tooltip>
+        </md-button>
+            <div class="dropdown-content">
+                <a href="assets/docs/Manual_do_Usuário_AGATHA.pdf" target="_blank">Manual do Sistema</a>
+                <a class="cursor-pointer" ng-click="ul.openLink('http://www.planejamento.gov.br/assuntos/gestao/controle-interno/controle-interno-da-gestao')">Outras informações</a>
+            </div>
+        </div>
+    </div>
+    <div hide show-gt-xs layout="column" layout-align="center center" class="elemento-barra-navegacao">
+        <md-button class="md-icon-button" aria-label="Logout" ng-click="ul.logout()">
+            <md-icon md-font-set="material-icons" class="icone30" aria-label="Logout" style="color:white">block</md-icon>
+            <md-tooltip>Logout</md-tooltip>
+        </md-button>
+    </div>
+
+</md-toolbar>
+
+<md-toolbar layout="row" class="md-whiteframe-z3 md-primary md-hue-2" id="breadcrumb-bar">
+    <div layout-align="center center" flex="100">
+        <bread-crumb dados="menuAcessos"></bread-crumb>
+    </div>
+
+    <!--<div flex="20" layout="row" layout-align="end center">-->
+        <!--<p class="custom-caption">Sua sessão expira em 00:40:00</p>-->
+    <!--</div>-->
+</md-toolbar>

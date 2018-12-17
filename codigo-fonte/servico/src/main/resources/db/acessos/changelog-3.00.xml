@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="3.0.1" labels="Atualização dos nomes dos menus">
+        <sql>
+            UPDATE acessos.tb_item_menu SET descricao_detalhada = 'Evento de Risco', descricao_resumida = 'Evento de Risco'
+            WHERE descricao_detalhada = 'Evento' AND id_modulo = (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001');
+
+            UPDATE acessos.tb_item_menu SET descricao_detalhada = 'Causas de Eventos de Risco', descricao_resumida = 'Causas de Eventos de Risco'
+            WHERE descricao_detalhada = 'Causa' AND id_modulo = (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001');
+
+            UPDATE acessos.tb_item_menu SET descricao_detalhada = 'Consequência de Eventos de Risco', descricao_resumida = 'Consequência de Eventos de Risco'
+            WHERE descricao_detalhada = 'Consequência' AND id_modulo = (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001');
+
+            UPDATE acessos.tb_item_menu SET descricao_detalhada = 'Categoria de Risco', descricao_resumida = 'Categoria de Risco'
+            WHERE descricao_detalhada = 'Categoria' AND id_modulo = (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001');
+
+            UPDATE acessos.tb_item_menu SET descricao_detalhada = 'Natureza de Risco', descricao_resumida = 'Natureza de Risco'
+            WHERE descricao_detalhada = 'Natureza' AND id_modulo = (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001');
+
+            UPDATE acessos.tb_item_menu SET descricao_detalhada = 'Controle de Risco', descricao_resumida = 'Controle de Risco'
+            WHERE descricao_detalhada = 'Controle' AND id_modulo = (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001');
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,9 @@
+version: '2'
+services:
+
+  mpog-gestaoriscos-backend:
+    container_name: mpog-gestaoriscos-backend
+    image: mpog-gestaoriscos-backend
+    volumes:
+      - ./config:/config
+    network_mode: "mpog-net"

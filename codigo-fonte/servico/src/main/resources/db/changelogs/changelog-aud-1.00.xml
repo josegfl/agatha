@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="1.00" labels="Criação da trilha de audição">
+        <sql splitStatements="false">
+
+            CREATE SEQUENCE gestaoriscos.hibernate_sequence;
+
+            create table gestaoriscos.revinfo
+            (
+            rev integer not null
+            constraint revinfo_pkey
+            primary key,
+            no_responsavel varchar(255),
+            nu_cpf_usuario varchar(255),
+            nu_ip_usuario varchar(255),
+            revtstmp bigint
+            );
+
+
+            CREATE TABLE aud_gestaoriscos."tb_agrupamento_taxonomia_aud" (
+            "id_agrupamento_taxonomia" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "id_taxonomia_padrao" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_analise_aud" (
+            "id_analise" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "ic_atribuicoes" bool,
+            "ic_estrutura" bool,
+            "ic_etica" bool,
+            "ic_missao" bool,
+            "ic_normas_internas" bool,
+            "ic_objetivos" bool,
+            "ic_recursos_humanos" bool,
+            "ic_visao" bool,
+            "id_orgao" int8,
+            "id_secretaria" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_arquivo_anexo_aud" (
+            "id_arquivo_anexo" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "dt_upload" timestamp(6),
+            "no_arquivo" varchar(200) COLLATE "pg_catalog"."default",
+            "no_documento" varchar(200) COLLATE "pg_catalog"."default",
+            "nu_tamanho" int4,
+            "fl_conteudo" bytea
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_avaliacao_aud" (
+            "id_avaliacao" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "ic_ignorar_risco_inerente" bool DEFAULT false
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_calculadora_aud" (
+            "id_calculadora" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "id_processo" int8,
+            "id_tipo_calculadora" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_calculo_risco_aud" (
+            "id_calculo_risco" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "nu_frequencia" int4,
+            "nu_media_peso" numeric(19,2),
+            "nu_nivel" numeric(19,2)
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_categoria_aud" (
+            "id_categoria" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "ds_categoria" varchar(255) COLLATE "pg_catalog"."default",
+            "ic_ativo" bool DEFAULT true,
+            "ds_search" varchar(1000) COLLATE "pg_catalog"."default",
+            "id_natureza" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_causa_aud" (
+            "id_causa" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "ds_causa" varchar(255) COLLATE "pg_catalog"."default",
+            "ic_ativo" bool DEFAULT true,
+            "ds_search" varchar(1000) COLLATE "pg_catalog"."default",
+            "id_orgao" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_consequencia_aud" (
+            "id_consequencia" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "ds_consequencia" varchar(255) COLLATE "pg_catalog"."default",
+            "ic_ativo" bool DEFAULT true,
+            "ds_search" varchar(1000) COLLATE "pg_catalog"."default",
+            "id_orgao" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_controle_evento_aud" (
+            "id_controle_evento" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "id_evento_risco" int8,
+            "id_controle" int8,
+            "id_desenho" int8,
+            "id_operacao" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_desenho_aud" (
+            "id_desenho" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "ds_desenho" varchar(255) COLLATE "pg_catalog"."default",
+            "ic_ativo" bool DEFAULT true,
+            "ds_search" varchar(1000) COLLATE "pg_catalog"."default",
+            "id_orgao" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_evento_aud" (
+            "id_evento" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "ds_evento" varchar(255) COLLATE "pg_catalog"."default",
+            "ic_ativo" bool DEFAULT true,
+            "ds_search" varchar(1000) COLLATE "pg_catalog"."default",
+            "id_orgao" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_evento_causa_aud" (
+            "id_evento_causa" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "id_evento_risco" int8,
+            "id_causa" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_evento_consequencia_aud" (
+            "id_evento_consequencia" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "id_evento_risco" int8,
+            "id_consequencia" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_evento_risco_aud" (
+            "id_evento_risco" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "ds_justificativa_resposta_risco" varchar(4000) COLLATE "pg_catalog"."default",
+            "id_calculo_risco_inerente" int8,
+            "id_calculo_risco_residual" int8,
+            "id_categoria" int8,
+            "id_evento" int8,
+            "id_identificacao" int8,
+            "id_resposta_risco" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_glossario_aud" (
+            "id_glossario" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "ds_glossario" varchar(255) COLLATE "pg_catalog"."default",
+            "ic_ativo" bool DEFAULT true,
+            "ds_descricao_search" varchar(1000) COLLATE "pg_catalog"."default",
+            "no_glossario" varchar(200) COLLATE "pg_catalog"."default",
+            "ds_termo_search" varchar(200) COLLATE "pg_catalog"."default"
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_identificacao_aud" (
+            "id_identificacao" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_impacto_calculadora_aud" (
+            "id_impacto_calculadora" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "no_impacto_calculadora" varchar(255) COLLATE "pg_catalog"."default",
+            "ic_desabilitado" bool DEFAULT true,
+            "nu_peso" int8,
+            "id_calculadora" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_macroprocesso_aud" (
+            "id_macroprocesso" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "ds_macroprocesso" varchar(255) COLLATE "pg_catalog"."default",
+            "ic_ativo" bool DEFAULT true,
+            "ds_search" varchar(1000) COLLATE "pg_catalog"."default"
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_matriz_swot_aud" (
+            "id_matriz_swot" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "ds_matriz_swot" varchar(200) COLLATE "pg_catalog"."default",
+            "id_analise" int8,
+            "id_tipo_matriz" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_operacao_aud" (
+            "id_operacao" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "ds_operacao" varchar(255) COLLATE "pg_catalog"."default",
+            "ic_ativo" bool DEFAULT true,
+            "ds_search" varchar(1000) COLLATE "pg_catalog"."default",
+            "id_orgao" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_permissao_aud" (
+            "id_permissao" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "dt_cadastro" timestamp(6),
+            "ic_excluido" bool DEFAULT false,
+            "id_perfil" int8,
+            "id_usuario" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_peso_evento_risco_aud" (
+            "id_peso_evento_risco" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "nu_peso" int4,
+            "id_calculo_risco" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_plano_controle_aud" (
+            "id_plano_controle" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "no_area_responsavel" varchar(200) COLLATE "pg_catalog"."default",
+            "dt_conclusao" timestamp(6),
+            "dt_inicio" timestamp(6),
+            "ds_implementacao" varchar(4000) COLLATE "pg_catalog"."default",
+            "no_interveniente" varchar(200) COLLATE "pg_catalog"."default",
+            "no_responsavel" varchar(200) COLLATE "pg_catalog"."default",
+            "id_evento_risco" int8,
+            "id_controle" int8,
+            "id_objetivo_controle" int8,
+            "id_tipo_controle" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_probabilidade_calculadora_aud" (
+            "id_probabilidade_calculadora" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "no_probabilidade_calculadora" varchar(255) COLLATE "pg_catalog"."default",
+            "nu_frequencia" int8,
+            "id_calculadora" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_processo_anexo_aud" (
+            "id_processo_anexo" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "id_arquivo_anexo" int8,
+            "id_processo" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_processo_aud" (
+            "id_processo" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "no_coordenacao" varchar(200) COLLATE "pg_catalog"."default",
+            "no_diretoria" varchar(200) COLLATE "pg_catalog"."default",
+            "dt_cadastro" timestamp(6),
+            "dt_fim" timestamp(6),
+            "dt_inicio" timestamp(6),
+            "ds_justificativa" varchar(250) COLLATE "pg_catalog"."default",
+            "no_lei" varchar(200) COLLATE "pg_catalog"."default",
+            "ds_objetivo" varchar(200) COLLATE "pg_catalog"."default",
+            "no_processo" varchar(200) COLLATE "pg_catalog"."default",
+            "ds_search" varchar(401) COLLATE "pg_catalog"."default",
+            "no_sistema" varchar(200) COLLATE "pg_catalog"."default",
+            "id_analise" int8,
+            "id_avaliacao" int8,
+            "id_decisao" int8,
+            "id_usuario" int8,
+            "id_identificacao" int8,
+            "id_macroprocesso" int8,
+            "id_status_processo" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_responsavel_aud" (
+            "id_responsavel" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "id_processo" int8,
+            "id_usuario" int8
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_resposta_risco_aud" (
+            "id_resposta_risco" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "no_resposta_risco" varchar(255) COLLATE "pg_catalog"."default"
+            );
+
+            CREATE TABLE aud_gestaoriscos."tb_taxonomia_aud" (
+            "id_taxonomia" int8 NOT NULL,
+            "rev" int4 NOT NULL,
+            "revtype" int2,
+            "ic_excluido" bool DEFAULT false,
+            "ds_taxonomia" varchar(200) COLLATE "pg_catalog"."default",
+            "dt_cadastro" timestamp(6),
+            "ds_justificativa" text COLLATE "pg_catalog"."default",
+            "ds_search" varchar(200) COLLATE "pg_catalog"."default",
+            "id_agrupamento_taxonomia" int8,
+            "id_causa" int8,
+            "id_consequencia" int8,
+            "id_controle" int8,
+            "id_evento" int8,
+            "id_orgao" int8,
+            "id_status_taxonomia" int8,
+            "id_tipo_taxonomia" int8
+            );
+
+            ALTER TABLE aud_gestaoriscos."tb_agrupamento_taxonomia_aud" ADD CONSTRAINT "tb_agrupamento_taxonomia_aud_pkey" PRIMARY KEY ("id_agrupamento_taxonomia", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_analise_aud" ADD CONSTRAINT "tb_analise_aud_pkey" PRIMARY KEY ("id_analise", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_arquivo_anexo_aud" ADD CONSTRAINT "tb_arquivo_anexo_aud_pkey" PRIMARY KEY ("id_arquivo_anexo", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_avaliacao_aud" ADD CONSTRAINT "tb_avaliacao_aud_pkey" PRIMARY KEY ("id_avaliacao", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_calculadora_aud" ADD CONSTRAINT "tb_calculadora_aud_pkey" PRIMARY KEY ("id_calculadora", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_calculo_risco_aud" ADD CONSTRAINT "tb_calculo_risco_aud_pkey" PRIMARY KEY ("id_calculo_risco", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_categoria_aud" ADD CONSTRAINT "tb_categoria_aud_pkey" PRIMARY KEY ("id_categoria", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_causa_aud" ADD CONSTRAINT "tb_causa_aud_pkey" PRIMARY KEY ("id_causa", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_consequencia_aud" ADD CONSTRAINT "tb_consequencia_aud_pkey" PRIMARY KEY ("id_consequencia", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_controle_evento_aud" ADD CONSTRAINT "tb_controle_evento_aud_pkey" PRIMARY KEY ("id_controle_evento", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_desenho_aud" ADD CONSTRAINT "tb_desenho_aud_pkey" PRIMARY KEY ("id_desenho", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_evento_aud" ADD CONSTRAINT "tb_evento_aud_pkey" PRIMARY KEY ("id_evento", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_evento_causa_aud" ADD CONSTRAINT "tb_evento_causa_aud_pkey" PRIMARY KEY ("id_evento_causa", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_evento_consequencia_aud" ADD CONSTRAINT "tb_evento_consequencia_aud_pkey" PRIMARY KEY ("id_evento_consequencia", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_evento_risco_aud" ADD CONSTRAINT "tb_evento_risco_aud_pkey" PRIMARY KEY ("id_evento_risco", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_glossario_aud" ADD CONSTRAINT "tb_glossario_aud_pkey" PRIMARY KEY ("id_glossario", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_identificacao_aud" ADD CONSTRAINT "tb_identificacao_aud_pkey" PRIMARY KEY ("id_identificacao", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_impacto_calculadora_aud" ADD CONSTRAINT "tb_impacto_calculadora_aud_pkey" PRIMARY KEY ("id_impacto_calculadora", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_macroprocesso_aud" ADD CONSTRAINT "tb_macroprocesso_aud_pkey" PRIMARY KEY ("id_macroprocesso", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_matriz_swot_aud" ADD CONSTRAINT "tb_matriz_swot_aud_pkey" PRIMARY KEY ("id_matriz_swot", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_operacao_aud" ADD CONSTRAINT "tb_operacao_aud_pkey" PRIMARY KEY ("id_operacao", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_permissao_aud" ADD CONSTRAINT "tb_permissao_aud_pkey" PRIMARY KEY ("id_permissao", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_peso_evento_risco_aud" ADD CONSTRAINT "tb_peso_evento_risco_aud_pkey" PRIMARY KEY ("id_peso_evento_risco", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_plano_controle_aud" ADD CONSTRAINT "tb_plano_controle_aud_pkey" PRIMARY KEY ("id_plano_controle", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_probabilidade_calculadora_aud" ADD CONSTRAINT "tb_probabilidade_calculadora_aud_pkey" PRIMARY KEY ("id_probabilidade_calculadora", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_processo_anexo_aud" ADD CONSTRAINT "tb_processo_anexo_aud_pkey" PRIMARY KEY ("id_processo_anexo", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_processo_aud" ADD CONSTRAINT "tb_processo_aud_pkey" PRIMARY KEY ("id_processo", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_responsavel_aud" ADD CONSTRAINT "tb_responsavel_aud_pkey" PRIMARY KEY ("id_responsavel", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_resposta_risco_aud" ADD CONSTRAINT "tb_resposta_risco_aud_pkey" PRIMARY KEY ("id_resposta_risco", "rev");
+
+            ALTER TABLE aud_gestaoriscos."tb_taxonomia_aud" ADD CONSTRAINT "tb_taxonomia_aud_pkey" PRIMARY KEY ("id_taxonomia", "rev");
+
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.00.1" labels="Correção das tabelas de audição">
+
+        <sql splitStatements="false">
+
+            CREATE SEQUENCE aud_gestaoriscos.hibernate_sequence;
+            create table aud_gestaoriscos.tb_revisao
+            (
+            rev integer not null
+            constraint revinfo_pkey
+            primary key,
+            no_responsavel varchar(255),
+            nu_cpf_usuario varchar(255),
+            nu_ip_usuario varchar(255),
+            revtstmp bigint
+            );
+
+            <!--Clona os resultados da tabela original de revisão-->
+            INSERT INTO aud_gestaoriscos.tb_revisao SELECT * FROM gestaoriscos.revinfo;
+
+            <!--Atualiza o valor da sequence-->
+            select setval('aud_gestaoriscos.hibernate_sequence', (SELECT COUNT(*) + 1 FROM aud_gestaoriscos.tb_revisao), false);
+
+            <!--Removando a coluna de exclusão-->
+            ALTER TABLE aud_gestaoriscos."tb_agrupamento_taxonomia_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_analise_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_arquivo_anexo_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_avaliacao_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_calculadora_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_calculo_risco_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_categoria_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_causa_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_consequencia_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_controle_evento_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_desenho_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_evento_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_evento_causa_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_evento_consequencia_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_evento_risco_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_glossario_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_identificacao_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_impacto_calculadora_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_macroprocesso_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_matriz_swot_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_operacao_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_permissao_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_peso_evento_risco_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_plano_controle_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_probabilidade_calculadora_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_processo_anexo_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_processo_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_responsavel_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_resposta_risco_aud" DROP ic_excluido;
+            ALTER TABLE aud_gestaoriscos."tb_taxonomia_aud" DROP ic_excluido;
+
+        </sql>
+
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.00.2" labels="Correção das tabelas de audição">
+
+        <sql splitStatements="false">
+
+            DROP TABLE gestaoriscos.revinfo;
+
+        </sql>
+
+    </changeSet>
+
+</databaseChangeLog>

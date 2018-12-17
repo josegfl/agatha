@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="gestao_riscos" id="Project_2dea9af9" template="Default" database="PostgreSQL" >
+	<schema name="gestao_riscos" schemaname="gestao_riscos" >
+		<table name="tb_causa" >
+			<comment><![CDATA[Tabela responsável por armazenar os dados de causas de eventos de riscos.]]></comment>
+			<column name="id_causa" type="serial" jt="4" mandatory="y" >
+				<comment><![CDATA[Identificador da causa de evento de risco]]></comment>
+			</column>
+			<column name="ds_causa" type="varchar" length="200" jt="12" mandatory="y" >
+				<comment><![CDATA[Descrição da causa de eventos de riscos]]></comment>
+			</column>
+			<column name="ic_ativo" type="bool" jt="-7" mandatory="y" >
+				<defo>true</defo>
+				<comment><![CDATA[Situação da causa]]></comment>
+			</column>
+			<column name="ic_excluido" type="bool" jt="-7" mandatory="y" >
+				<defo>false</defo>
+				<comment><![CDATA[Identifica se o registro está excluído]]></comment>
+			</column>
+			<index name="pk_tb_consequencia_0" unique="PRIMARY_KEY" >
+				<column name="id_causa" />
+			</index>
+		</table>
+		<table name="tb_consequencia" >
+			<comment><![CDATA[Tabela responsável por armazenar os dados de consequência de eventos de riscos.]]></comment>
+			<column name="id_consequencia" type="serial" jt="4" mandatory="y" >
+				<comment><![CDATA[Identificador da consequência de evento de risco]]></comment>
+			</column>
+			<column name="ds_consequencia" type="varchar" length="200" jt="12" mandatory="y" >
+				<comment><![CDATA[Descrição da consequência de eventos de riscos]]></comment>
+			</column>
+			<column name="ic_ativo" type="bool" jt="-7" mandatory="y" >
+				<defo>true</defo>
+				<comment><![CDATA[Situação da consequência]]></comment>
+			</column>
+			<column name="ic_excluido" type="bool" jt="-7" mandatory="y" >
+				<defo>false</defo>
+				<comment><![CDATA[Identifica se o registro está excluído]]></comment>
+			</column>
+			<index name="pk_tb_consequencia" unique="PRIMARY_KEY" >
+				<column name="id_consequencia" />
+			</index>
+		</table>
+		<table name="tb_evento" >
+			<comment><![CDATA[Tabela responsável por armazenar os dados de eventos de risco.]]></comment>
+			<column name="id_evento" type="serial" jt="4" mandatory="y" >
+				<comment><![CDATA[Identificador do evento de risco]]></comment>
+			</column>
+			<column name="ds_evento" type="varchar" length="200" jt="12" mandatory="y" >
+				<comment><![CDATA[Descrição do evento de risco]]></comment>
+			</column>
+			<column name="ic_ativo" type="bool" jt="-7" mandatory="y" >
+				<defo>true</defo>
+				<comment><![CDATA[Situação da evento]]></comment>
+			</column>
+			<column name="ic_excluido" type="bool" jt="-7" mandatory="y" >
+				<defo>false</defo>
+				<comment><![CDATA[Identifica se o registro está excluído]]></comment>
+			</column>
+			<index name="pk_tb_consequencia_1" unique="PRIMARY_KEY" >
+				<column name="id_evento" />
+			</index>
+		</table>
+		<table name="tb_perfil" >
+			<comment><![CDATA[Tabela responsável por armazenar os dados de perfil]]></comment>
+			<column name="id_perfil" type="serial" jt="4" mandatory="y" >
+				<comment><![CDATA[Identificador do perfil]]></comment>
+			</column>
+			<column name="no_perfil" type="varchar" length="100" jt="12" mandatory="y" >
+				<comment><![CDATA[Nome do perfil]]></comment>
+			</column>
+			<index name="pk_tb_consequencia_2" unique="PRIMARY_KEY" >
+				<column name="id_perfil" />
+			</index>
+		</table>
+		<sequence name="sk_causa" start="1" />
+		<sequence name="sk_consequencia" start="1" />
+		<sequence name="sk_evento" start="1" />
+		<sequence name="sk_perfil" start="1" />
+	</schema>
+	<layout name="GestaoRiscos" id="Layout_2b46c5f5" show_relation="columns" >
+		<comment><![CDATA[GestaoRiscos]]></comment>
+		<entity schema="gestao_riscos" name="tb_causa" color="bcd5f1" x="48" y="48" />
+		<entity schema="gestao_riscos" name="tb_consequencia" color="bcd5f1" x="208" y="48" />
+		<entity schema="gestao_riscos" name="tb_evento" color="bcd5f1" x="384" y="48" />
+		<entity schema="gestao_riscos" name="tb_perfil" color="bcd5f1" x="128" y="208" />
+		<script name="Sql" id="Query_27bd1f2d" language="SQL" >
+			<string><![CDATA[CREATE SCHEMA gestao_riscos;
+
+CREATE TABLE gestao_riscos.tb_causa ( 
+	id_causa             serial  NOT NULL,
+	ds_causa             varchar(200)  NOT NULL,
+	ic_ativo             bool DEFAULT true NOT NULL,
+	CONSTRAINT pk_tb_consequencia_0 PRIMARY KEY ( id_causa )
+ );
+
+COMMENT ON TABLE gestao_riscos.tb_causa IS 'Tabela responsável por armazenar os dados de causas de eventos de riscos.';
+
+COMMENT ON COLUMN gestao_riscos.tb_causa.id_causa IS 'Identificador da causa de evento de risco';
+
+COMMENT ON COLUMN gestao_riscos.tb_causa.ds_causa IS 'Descrição da causa de eventos de riscos';
+
+COMMENT ON COLUMN gestao_riscos.tb_causa.ic_ativo IS 'Situação da causa';
+
+CREATE TABLE gestao_riscos.tb_consequencia ( 
+	id_consequencia      serial  NOT NULL,
+	ds_consequencia      varchar(200)  NOT NULL,
+	ic_ativo             bool DEFAULT true NOT NULL,
+	CONSTRAINT pk_tb_consequencia PRIMARY KEY ( id_consequencia )
+ );
+
+COMMENT ON TABLE gestao_riscos.tb_consequencia IS 'Tabela responsável por armazenar os dados de consequência de eventos de riscos.';
+
+COMMENT ON COLUMN gestao_riscos.tb_consequencia.id_consequencia IS 'Identificador da consequência de evento de risco';
+
+COMMENT ON COLUMN gestao_riscos.tb_consequencia.ds_consequencia IS 'Descrição da consequência de eventos de riscos';
+
+COMMENT ON COLUMN gestao_riscos.tb_consequencia.ic_ativo IS 'Situação da consequência';
+
+CREATE TABLE gestao_riscos.tb_evento ( 
+	id_evento            serial  NOT NULL,
+	ds_evento            varchar(200)  NOT NULL,
+	ic_ativo             bool DEFAULT true NOT NULL,
+	CONSTRAINT pk_tb_consequencia_1 PRIMARY KEY ( id_evento )
+ );
+
+COMMENT ON TABLE gestao_riscos.tb_evento IS 'Tabela responsável por armazenar os dados de eventos de risco.';
+
+COMMENT ON COLUMN gestao_riscos.tb_evento.id_evento IS 'Identificador do evento de risco';
+
+COMMENT ON COLUMN gestao_riscos.tb_evento.ds_evento IS 'Descrição do evento de risco';
+
+COMMENT ON COLUMN gestao_riscos.tb_evento.ic_ativo IS 'Situação da evento';
+
+]]></string>
+		</script>
+		<script name="perfil" id="Query_150a7b58" language="SQL" >
+			<string><![CDATA[INSERT INTO tb_perfil (id_perfil, no_perfil) VALUES (nextval('sk_perfil'), ''); ]]></string>
+		</script>
+	</layout>
+	<layout name="GestaoRiscos_001" id="Layout_76e3bf9" show_relation="columns" >
+		<comment><![CDATA[GestaoRiscos_001]]></comment>
+		<entity schema="gestao_riscos" name="tb_causa" color="bcd5f1" x="48" y="48" />
+		<entity schema="gestao_riscos" name="tb_consequencia" color="bcd5f1" x="208" y="48" />
+		<entity schema="gestao_riscos" name="tb_evento" color="bcd5f1" x="384" y="48" />
+	</layout>
+	<layout name="US014_Manter_Eventos_de_Risco" id="Layout_5b6fa6a" show_relation="columns" >
+		<entity schema="gestao_riscos" name="tb_evento" color="bcd5f1" x="48" y="48" />
+	</layout>
+	<layout name="US015_Manter_Causas_de_Eventos_de_Risco" id="Layout_ac735c4" show_relation="columns" >
+		<comment><![CDATA[US015_Manter_Causas_de_Eventos_de_Risco]]></comment>
+		<entity schema="gestao_riscos" name="tb_causa" color="bcd5f1" x="48" y="48" />
+	</layout>
+	<layout name="US016_Manter_Conseqüências_de_Eventos_de_Risco" id="Layout_2c00706f" show_relation="columns" >
+		<entity schema="gestao_riscos" name="tb_consequencia" color="bcd5f1" x="48" y="48" />
+	</layout>
+</project>

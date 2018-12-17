@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="1.05">
+        <sql splitStatements="false">
+            <![CDATA[
+
+            ALTER TABLE tb_categoria ADD ic_editavel BOOLEAN DEFAULT true NOT NULL;
+            COMMENT ON COLUMN tb_categoria.ic_editavel IS 'Identifica se o registro pode ser alterado e/ou excluído';
+
+            ALTER TABLE tb_natureza ADD ic_editavel BOOLEAN DEFAULT true NOT NULL;
+            COMMENT ON COLUMN tb_natureza.ic_editavel IS 'Identifica se o registro pode ser alterado e/ou excluído';
+
+            INSERT INTO tb_categoria(id_categoria, ic_excluido, ic_ativo, ic_editavel, ds_categoria, ds_search) VALUES (1, false, true, false, 'Estratégico' , 'Estrategico');
+            INSERT INTO tb_categoria(id_categoria, ic_excluido, ic_ativo, ic_editavel, ds_categoria, ds_search) VALUES (2, false, true, false, 'Operacional' , 'Operacional');
+            INSERT INTO tb_categoria(id_categoria, ic_excluido, ic_ativo, ic_editavel, ds_categoria, ds_search) VALUES (3, false, true, false, 'Orçamentário' , 'Orcamentario');
+            INSERT INTO tb_categoria(id_categoria, ic_excluido, ic_ativo, ic_editavel, ds_categoria, ds_search) VALUES (4, false, true, false, 'Reputação' , 'Reputacao');
+            INSERT INTO tb_categoria(id_categoria, ic_excluido, ic_ativo, ic_editavel, ds_categoria, ds_search) VALUES (5, false, true, false, 'Integridade' , 'Integridade');
+            INSERT INTO tb_categoria(id_categoria, ic_excluido, ic_ativo, ic_editavel, ds_categoria, ds_search) VALUES (6, false, true, false, 'Fiscal' , 'Fiscal');
+
+            INSERT INTO tb_natureza(id_natureza, ic_excluido, ic_ativo, ic_editavel, ds_natureza, ds_search) VALUES (1, false, true, false, 'Orçamentário Financeiro' , 'Orcamentario Financeiro');
+            INSERT INTO tb_natureza(id_natureza, ic_excluido, ic_ativo, ic_editavel, ds_natureza, ds_search) VALUES (2, false, true, false, 'Não Orçamentário Financeiro' , 'Nao Orcamentario Financeiro');
+            ]]>
+        </sql>
+    </changeSet>
+</databaseChangeLog>

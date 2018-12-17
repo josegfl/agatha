@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="1.07" labels="Criação das tabelas de Desenho e Operação">
+        <sql splitStatements="false">
+
+            CREATE SEQUENCE sk_desenho START WITH 1;
+            CREATE TABLE tb_desenho
+            (
+            id_desenho BIGINT PRIMARY KEY NOT NULL,
+            ds_desenho VARCHAR(200) NOT NULL,
+            ic_ativo BOOLEAN DEFAULT true NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            ds_search VARCHAR(200) NOT NULL,
+            id_orgao BIGINT NULL
+            ) ;
+
+            COMMENT ON TABLE tb_desenho IS 'Tabela responsável por armazenar os dados de desenhos de controle.' ;
+            COMMENT ON COLUMN tb_desenho.id_desenho IS 'Identificador do desenho de controle' ;
+            COMMENT ON COLUMN tb_desenho.ds_desenho IS 'Descrição do desenho de controle' ;
+            COMMENT ON COLUMN tb_desenho.ic_ativo IS 'Situação da desenho' ;
+            COMMENT ON COLUMN tb_desenho.ic_excluido IS 'Identifica se o registro está excluído' ;
+            COMMENT ON COLUMN tb_desenho.ds_search IS 'Descrição utilizada na busca do autocomplete' ;
+            COMMENT ON COLUMN tb_desenho.id_orgao IS 'Identificador do órgão';
+
+            CREATE SEQUENCE sk_operacao START WITH 1;
+            CREATE TABLE tb_operacao
+            (
+            id_operacao BIGINT PRIMARY KEY NOT NULL,
+            ds_operacao VARCHAR(200) NOT NULL,
+            ic_ativo BOOLEAN DEFAULT true NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            ds_search VARCHAR(200) NOT NULL,
+            id_orgao BIGINT NULL
+            );
+
+            COMMENT ON TABLE tb_operacao IS 'Tabela responsável por armazenar os dados de operações de controle.';
+            COMMENT ON COLUMN tb_operacao.id_operacao IS 'Identificador da operação de controle';
+            COMMENT ON COLUMN tb_operacao.ds_operacao IS 'Descrição da operação de controle';
+            COMMENT ON COLUMN tb_operacao.ic_ativo IS 'Situação da operação';
+            COMMENT ON COLUMN tb_operacao.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_operacao.ds_search IS 'Descrição utilizada na busca do autocomplete';
+            COMMENT ON COLUMN tb_operacao.id_orgao IS 'Identificador do órgão';
+
+
+            ALTER TABLE tb_desenho ADD CONSTRAINT fk_tb_desenho_tb_orgao FOREIGN KEY (id_orgao) REFERENCES tb_orgao (id_orgao);
+
+            ALTER TABLE tb_operacao ADD CONSTRAINT fk_tb_operacao_tb_orgao FOREIGN KEY (id_orgao) REFERENCES tb_orgao (id_orgao);
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.07.2" labels="Alteração da tabela de Controle">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_controle ADD id_orgao BIGINT NULL;
+            COMMENT ON COLUMN tb_controle.id_orgao IS 'Identificador do órgão';
+
+            ALTER TABLE tb_controle ADD CONSTRAINT fk_tb_controle_tb_orgao FOREIGN KEY (id_orgao) REFERENCES tb_orgao (id_orgao);
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.07.3" labels="Criação das tabelas Calculadora, Tipo de Calculadora, Impacto de Calculadora e Probabilidade de Calculadora">
+        <sql splitStatements="false">
+
+            CREATE SEQUENCE sk_tipo_calculadora START WITH 1;
+            CREATE TABLE tb_tipo_calculadora
+            (
+            id_tipo_calculadora BIGINT PRIMARY KEY NOT NULL,
+            no_tipo_calculadora VARCHAR(200) NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL
+            ) ;
+
+            COMMENT ON TABLE tb_tipo_calculadora IS 'Tabela responsável por armazenar os tipos de calculadora' ;
+            COMMENT ON COLUMN tb_tipo_calculadora.id_tipo_calculadora IS 'Identificador do tipo de calculadora' ;
+            COMMENT ON COLUMN tb_tipo_calculadora.no_tipo_calculadora IS 'Nome do tipo de calculadora' ;
+            COMMENT ON COLUMN tb_tipo_calculadora.ic_excluido IS 'Identifica se o registro está excluído' ;
+
+            INSERT INTO tb_tipo_calculadora(id_tipo_calculadora, no_tipo_calculadora, ic_excluido) VALUES (1, 'Calculadora do Risco Inerente', false);
+            INSERT INTO tb_tipo_calculadora(id_tipo_calculadora, no_tipo_calculadora, ic_excluido) VALUES (2, 'Calculadora do Risco Residual', false);
+
+            CREATE SEQUENCE sk_impacto_calculadora START WITH 1;
+            CREATE TABLE tb_impacto_calculadora
+            (
+            id_impacto_calculadora BIGINT PRIMARY KEY NOT NULL,
+            no_impacto_calculadora VARCHAR(200) NOT NULL,
+            nu_peso BIGINT NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_calculadora BIGINT NOT NULL
+            ) ;
+
+            COMMENT ON TABLE tb_impacto_calculadora IS 'Tabela responsável por armazenar os impactos de uma calculadora' ;
+            COMMENT ON COLUMN tb_impacto_calculadora.id_impacto_calculadora IS 'Identificador do impacto' ;
+            COMMENT ON COLUMN tb_impacto_calculadora.no_impacto_calculadora IS 'Nome do impacto' ;
+            COMMENT ON COLUMN tb_impacto_calculadora.nu_peso IS 'Peso do impacto' ;
+            COMMENT ON COLUMN tb_impacto_calculadora.ic_excluido IS 'Identifica se o registro está excluído' ;
+            COMMENT ON COLUMN tb_impacto_calculadora.id_calculadora IS 'Identificador da calculadora' ;
+
+            CREATE SEQUENCE sk_probabilidade_calculadora START WITH 1;
+            CREATE TABLE tb_probabilidade_calculadora
+            (
+            id_probabilidade_calculadora BIGINT PRIMARY KEY NOT NULL,
+            no_probabilidade_calculadora VARCHAR(200) NOT NULL,
+            nu_frequencia BIGINT NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_calculadora BIGINT NOT NULL
+            ) ;
+
+            COMMENT ON TABLE tb_probabilidade_calculadora IS 'Tabela responsável por armazenar as probabilidades de uma calculadora' ;
+            COMMENT ON COLUMN tb_probabilidade_calculadora.id_probabilidade_calculadora IS 'Identificador da probabilidade' ;
+            COMMENT ON COLUMN tb_probabilidade_calculadora.no_probabilidade_calculadora IS 'Nome da probabilidade' ;
+            COMMENT ON COLUMN tb_probabilidade_calculadora.nu_frequencia IS 'Peso da probabilidade' ;
+            COMMENT ON COLUMN tb_probabilidade_calculadora.ic_excluido IS 'Identifica se o registro está excluído' ;
+            COMMENT ON COLUMN tb_probabilidade_calculadora.id_calculadora IS 'Identificador da calculadora' ;
+
+            CREATE SEQUENCE sk_calculadora START WITH 1;
+            CREATE TABLE tb_calculadora
+            (
+            id_calculadora BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_tipo_calculadora BIGINT NOT NULL,
+            id_processo BIGINT NULL
+            ) ;
+
+            COMMENT ON TABLE tb_calculadora IS 'Tabela responsável por armazenar as probabilidades de uma calculadora' ;
+            COMMENT ON COLUMN tb_calculadora.id_calculadora IS 'Identificador da calculadora' ;
+            COMMENT ON COLUMN tb_calculadora.ic_excluido IS 'Identifica se o registro está excluído' ;
+            COMMENT ON COLUMN tb_calculadora.id_tipo_calculadora IS 'Identificador do tipo da calculadora' ;
+            COMMENT ON COLUMN tb_calculadora.id_processo IS 'Identificador do processo' ;
+
+            CREATE SEQUENCE sk_peso_evento_risco START WITH 1;
+            CREATE TABLE tb_peso_evento_risco
+            (
+            id_peso_evento_risco BIGINT PRIMARY KEY NOT NULL,
+            nu_peso INTEGER NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_calculo_risco BIGINT NOT NULL
+            ) ;
+
+            COMMENT ON TABLE tb_peso_evento_risco IS 'Tabela responsável por armazenar os pesos de um evento de risco em um cálculo do risco' ;
+            COMMENT ON COLUMN tb_peso_evento_risco.id_peso_evento_risco IS 'Identificador do peso' ;
+            COMMENT ON COLUMN tb_peso_evento_risco.nu_peso IS 'Valor do peso' ;
+            COMMENT ON COLUMN tb_peso_evento_risco.ic_excluido IS 'Identifica se o registro está excluído' ;
+            COMMENT ON COLUMN tb_peso_evento_risco.id_calculo_risco IS 'Identificador do cálculo de risco' ;
+
+            CREATE SEQUENCE sk_calculo_risco START WITH 1;
+            CREATE TABLE tb_calculo_risco
+            (
+            id_calculo_risco BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            nu_media_peso DECIMAL NOT NULL,
+            nu_frequencia INTEGER NOT NULL,
+            nu_nivel DECIMAL NOT NULL
+            ) ;
+
+            COMMENT ON TABLE tb_calculo_risco IS 'Tabela responsável por armazenar os dados de uma operação de um cálculo de risco' ;
+            COMMENT ON COLUMN tb_calculo_risco.id_calculo_risco IS 'Identificador do registro' ;
+            COMMENT ON COLUMN tb_calculo_risco.ic_excluido IS 'Identifica se o registro está excluído' ;
+            COMMENT ON COLUMN tb_calculo_risco.nu_media_peso IS 'Média dos pesos de um evento de risco' ;
+            COMMENT ON COLUMN tb_calculo_risco.nu_frequencia IS 'Frequência de um evento de risco' ;
+            COMMENT ON COLUMN tb_calculo_risco.nu_nivel IS 'Nível de risco de um evento de risco' ;
+
+            CREATE SEQUENCE sk_controle_evento START WITH 1;
+            CREATE TABLE tb_controle_evento
+            (
+            id_controle_evento BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            id_controle BIGINT NOT NULL,
+            id_desenho BIGINT NOT NULL,
+            id_operacao BIGINT NOT NULL,
+            id_evento_risco BIGINT NOT NULL
+            ) ;
+
+            COMMENT ON TABLE tb_controle_evento IS 'Tabela responsável por armazenar os dados de um controle de evento de risco' ;
+            COMMENT ON COLUMN tb_controle_evento.id_controle_evento IS 'Identificador do registro' ;
+            COMMENT ON COLUMN tb_controle_evento.ic_excluido IS 'Identifica se o registro está excluído' ;
+            COMMENT ON COLUMN tb_controle_evento.id_controle IS 'Identificador do controle' ;
+            COMMENT ON COLUMN tb_controle_evento.id_desenho IS 'Identificador do desenho' ;
+            COMMENT ON COLUMN tb_controle_evento.id_operacao IS 'Identificador da operação' ;
+            COMMENT ON COLUMN tb_controle_evento.id_evento_risco IS 'Identificador do evento de risco' ;
+
+
+            ALTER TABLE tb_evento_risco ADD id_calculo_risco BIGINT NULL;
+            COMMENT ON COLUMN tb_evento_risco.id_calculo_risco IS 'Identificador do cálculo de risco';
+
+
+            ALTER TABLE tb_impacto_calculadora ADD CONSTRAINT fk_tb_impacto_calculadora_tb_calculadora FOREIGN KEY (id_calculadora) REFERENCES tb_calculadora (id_calculadora);
+
+
+            ALTER TABLE tb_probabilidade_calculadora ADD CONSTRAINT fk_tb_probabilidade_calculadora_tb_calculadora FOREIGN KEY (id_calculadora) REFERENCES tb_calculadora (id_calculadora);
+
+
+            ALTER TABLE tb_calculadora ADD CONSTRAINT fk_tb_calculadora_tb_tipo_calculadora FOREIGN KEY (id_tipo_calculadora) REFERENCES tb_tipo_calculadora (id_tipo_calculadora);
+
+            ALTER TABLE tb_calculadora ADD CONSTRAINT fk_tb_calculadora_tb_processo FOREIGN KEY (id_processo) REFERENCES tb_processo (id_processo);
+
+
+            ALTER TABLE tb_peso_evento_risco ADD CONSTRAINT fk_tb_peso_evento_risco_tb_calculo_risco FOREIGN KEY (id_calculo_risco) REFERENCES tb_calculo_risco (id_calculo_risco);
+
+
+            ALTER TABLE tb_evento_risco ADD CONSTRAINT fk_tb_evento_risco_tb_calculo_risco FOREIGN KEY (id_calculo_risco) REFERENCES tb_calculo_risco (id_calculo_risco);
+
+
+            ALTER TABLE tb_controle_evento ADD CONSTRAINT fk_tb_controle_evento_tb_controle FOREIGN KEY (id_controle) REFERENCES tb_controle (id_controle);
+
+            ALTER TABLE tb_controle_evento ADD CONSTRAINT fk_tb_controle_evento_tb_desenho FOREIGN KEY (id_desenho) REFERENCES tb_desenho (id_desenho);
+
+            ALTER TABLE tb_controle_evento ADD CONSTRAINT fk_tb_controle_evento_tb_operacao FOREIGN KEY (id_operacao) REFERENCES tb_operacao (id_operacao);
+
+            ALTER TABLE tb_controle_evento ADD CONSTRAINT fk_tb_controle_evento_tb_evento_risco FOREIGN KEY (id_evento_risco) REFERENCES tb_evento_risco (id_evento_risco);
+
+        </sql>
+    </changeSet>
+    <changeSet author="fabrica.wgl" id="1.07.4" labels="Insersão de dados na calculadora">
+        <sql splitStatements="false">
+
+            INSERT INTO tb_calculadora(id_calculadora, ic_excluido, id_tipo_calculadora) VALUES (nextval('sk_calculadora'), false, 1);
+            INSERT INTO tb_calculadora(id_calculadora, ic_excluido, id_tipo_calculadora) VALUES (nextval('sk_calculadora'), false, 2);
+
+            INSERT INTO tb_impacto_calculadora(id_impacto_calculadora, no_impacto_calculadora, nu_peso, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_impacto_calculadora'), 'Esforço de Gestão', 15, false, 1);
+
+            INSERT INTO tb_impacto_calculadora(id_impacto_calculadora, no_impacto_calculadora, nu_peso, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_impacto_calculadora'), 'Regulação', 17, false, 1);
+
+            INSERT INTO tb_impacto_calculadora(id_impacto_calculadora, no_impacto_calculadora, nu_peso, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_impacto_calculadora'), 'Reputação', 12, false, 1);
+
+            INSERT INTO tb_impacto_calculadora(id_impacto_calculadora, no_impacto_calculadora, nu_peso, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_impacto_calculadora'), 'Negócios/Serviços à Sociedade', 18, false, 1);
+
+            INSERT INTO tb_impacto_calculadora(id_impacto_calculadora, no_impacto_calculadora, nu_peso, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_impacto_calculadora'), 'Intervenção Hierárquica', 13, false, 1);
+
+            INSERT INTO tb_impacto_calculadora(id_impacto_calculadora, no_impacto_calculadora, nu_peso, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_impacto_calculadora'), 'Valor Orçamentário', 25, false, 1);
+
+
+            INSERT INTO tb_probabilidade_calculadora(id_probabilidade_calculadora, no_probabilidade_calculadora, nu_frequencia, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_probabilidade_calculadora'), 'Evento esperado que ocorra na maioria das circunstâncias', 10, false, 1);
+
+            INSERT INTO tb_probabilidade_calculadora(id_probabilidade_calculadora, no_probabilidade_calculadora, nu_frequencia, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_probabilidade_calculadora'), 'Evento provavelmente ocorra na maioria das circunstâncias', 30, false, 1);
+
+            INSERT INTO tb_probabilidade_calculadora(id_probabilidade_calculadora, no_probabilidade_calculadora, nu_frequencia, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_probabilidade_calculadora'), 'Evento deve ocorrer em algum momento', 50, false, 1);
+
+            INSERT INTO tb_probabilidade_calculadora(id_probabilidade_calculadora, no_probabilidade_calculadora, nu_frequencia, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_probabilidade_calculadora'), 'Evento pode ocorrer em algum momento', 90, false, 1);
+
+            INSERT INTO tb_probabilidade_calculadora(id_probabilidade_calculadora, no_probabilidade_calculadora, nu_frequencia, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_probabilidade_calculadora'), 'Evento pode ocorrer apenas em circunstâncias excepcionais', 91, false, 1);
+
+            INSERT INTO tb_impacto_calculadora(id_impacto_calculadora, no_impacto_calculadora, nu_peso, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_impacto_calculadora'), 'Esforço de Gestão', 15, false, 2);
+
+            INSERT INTO tb_impacto_calculadora(id_impacto_calculadora, no_impacto_calculadora, nu_peso, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_impacto_calculadora'), 'Regulação', 17, false, 2);
+
+            INSERT INTO tb_impacto_calculadora(id_impacto_calculadora, no_impacto_calculadora, nu_peso, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_impacto_calculadora'), 'Reputação', 12, false, 2);
+
+            INSERT INTO tb_impacto_calculadora(id_impacto_calculadora, no_impacto_calculadora, nu_peso, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_impacto_calculadora'), 'Negócios/Serviços à Sociedade', 18, false, 2);
+
+            INSERT INTO tb_impacto_calculadora(id_impacto_calculadora, no_impacto_calculadora, nu_peso, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_impacto_calculadora'), 'Intervenção Hierárquica', 13, false, 2);
+
+            INSERT INTO tb_impacto_calculadora(id_impacto_calculadora, no_impacto_calculadora, nu_peso, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_impacto_calculadora'), 'Valor Orçamentário', 25, false, 2);
+
+
+            INSERT INTO tb_probabilidade_calculadora(id_probabilidade_calculadora, no_probabilidade_calculadora, nu_frequencia, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_probabilidade_calculadora'), 'Evento esperado que ocorra na maioria das circunstâncias', 10, false, 2);
+
+            INSERT INTO tb_probabilidade_calculadora(id_probabilidade_calculadora, no_probabilidade_calculadora, nu_frequencia, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_probabilidade_calculadora'), 'Evento provavelmente ocorra na maioria das circunstâncias', 30, false, 2);
+
+            INSERT INTO tb_probabilidade_calculadora(id_probabilidade_calculadora, no_probabilidade_calculadora, nu_frequencia, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_probabilidade_calculadora'), 'Evento deve ocorrer em algum momento', 50, false, 2);
+
+            INSERT INTO tb_probabilidade_calculadora(id_probabilidade_calculadora, no_probabilidade_calculadora, nu_frequencia, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_probabilidade_calculadora'), 'Evento pode ocorrer em algum momento', 90, false, 2);
+
+            INSERT INTO tb_probabilidade_calculadora(id_probabilidade_calculadora, no_probabilidade_calculadora, nu_frequencia, ic_excluido, id_calculadora)
+            VALUES (nextval('sk_probabilidade_calculadora'), 'Evento pode ocorrer apenas em circunstâncias excepcionais', 91, false, 2);
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.07.5" labels="Correção da tabela de evento de risco">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_evento_risco DROP CONSTRAINT fk_tb_evento_risco_tb_calculo_risco;
+
+            ALTER TABLE tb_evento_risco RENAME id_calculo_risco TO id_calculo_risco_inerente;
+            COMMENT ON COLUMN tb_evento_risco.id_calculo_risco_inerente IS 'Identificador do cálculo de risco inerente';
+
+            ALTER TABLE tb_evento_risco ADD id_calculo_risco_residual BIGINT NULL;
+            COMMENT ON COLUMN tb_evento_risco.id_calculo_risco_residual IS 'Identificador do cálculo de risco residual';
+
+            ALTER TABLE tb_evento_risco ADD CONSTRAINT fk_tb_evento_risco_tb_calculo_risco_inerente FOREIGN KEY (id_calculo_risco_inerente) REFERENCES tb_calculo_risco (id_calculo_risco);
+
+            ALTER TABLE tb_evento_risco ADD CONSTRAINT fk_tb_evento_risco_tb_calculo_risco_residual FOREIGN KEY (id_calculo_risco_residual) REFERENCES tb_calculo_risco (id_calculo_risco);
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.07.6" labels="Adição da coluna Ignorar em Avaliação">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_avaliacao ADD ic_ignorar_risco_inerente BOOLEAN DEFAULT false NULL;
+            COMMENT ON COLUMN tb_avaliacao.ic_ignorar_risco_inerente IS 'Identifica se a etapa de cálculo de risco inerente poderá ser ignorada';
+
+            UPDATE tb_avaliacao SET ic_ignorar_risco_inerente = false;
+
+            ALTER TABLE tb_avaliacao ALTER COLUMN ic_ignorar_risco_inerente SET NOT NULL;
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

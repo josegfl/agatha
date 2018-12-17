@@ -1,0 +1,310 @@
+<md-content flex>
+    <div class="sgr-container" style="min-width: 1400px">
+
+        <div class="sgr-container-header" layout="row">
+            <div class="md-toolbar-tools">
+                <h3 style="font-size: 18px">
+                    <sgr-glossario termo="Manter Calculadora"></sgr-glossario>
+                </h3>
+            </div>
+        </div>
+
+        <div layout="row" layout-xs="column">
+
+            <div class="md-block m-t-20 m-b-20 m-l-20 m-r-20" flex-gt-xs>
+                <md-radio-group ng-model="scope.tipoCalculadora" ng-change="scope.handleTipoChange()" required>
+
+                    <md-radio-button ng-value="item.id" class="md-primary radio-column p-r-20" ng-repeat="item in scope._tipos">{{item.nome}}</md-radio-button>
+
+                </md-radio-group>
+            </div>
+
+        </div>
+
+        <form ng-cloak name="formRegistro" ng-submit="scope.persistir(scope.registro)" novalidate>
+
+            <div layout="row" layout-xs="column">
+
+                <div class="md-block" flex-gt-xs flex="55" style="border: 2px solid #ccc;">
+
+                    <div layout="row" layout-xs="column" style="background: #4CAF50; color: white">
+
+                        <div class="md-block" flex-gt-xs flex="100">
+                            <h3 class="text-center">
+                                <sgr-glossario termo="Impacto - Fatores de Análise"></sgr-glossario>
+                            </h3>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column">
+
+                        <div class="md-block" flex-gt-xs flex="90">
+
+                            <div layout="row" layout-xs="column" style="border-bottom: 2px solid #ccc;">
+
+                                <div class="md-block" flex-gt-xs flex="100" style="display: flex">
+                                    <h3 class="text-center" style="width: 100%; align-self: center">
+                                        <sgr-glossario termo="Aspectos Avaliativos"></sgr-glossario>
+                                    </h3>
+                                </div>
+
+                            </div>
+
+                            <div layout="row" layout-xs="column" style="border-bottom: 2px solid #ccc;">
+
+                                <div class="md-block" flex-gt-xs flex="80" style="border-right: 2px solid #ccc; display: flex">
+                                    <h3 class="text-center" style="width: 100%; align-self: center">
+                                        <sgr-glossario termo="Estratégico - Operacional"></sgr-glossario>
+                                    </h3>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20">
+                                    <h3 class="text-center">
+                                        <sgr-glossario termo="Econômico - Financeiro"></sgr-glossario>
+                                    </h3>
+                                </div>
+
+                            </div>
+
+                            <div layout="row" layout-xs="column" style="border-bottom: 2px solid #ccc;">
+
+                                <div class="md-block" flex-gt-xs flex="16" style="border-right: 2px solid #ccc;">
+                                    <textarea class="calculadora-input" ng-model="scope.registro.impactos[0].nome" rows="3"></textarea>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="16" style="border-right: 2px solid #ccc;">
+                                    <textarea class="calculadora-input" ng-model="scope.registro.impactos[1].nome" rows="3"></textarea>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="16" style="border-right: 2px solid #ccc;">
+                                    <textarea class="calculadora-input" ng-model="scope.registro.impactos[2].nome" rows="3"></textarea>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="16" style="border-right: 2px solid #ccc;">
+                                    <textarea class="calculadora-input" ng-model="scope.registro.impactos[3].nome" rows="3"></textarea>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="16" style="border-right: 2px solid #ccc;">
+                                    <textarea class="calculadora-input" ng-model="scope.registro.impactos[4].nome" rows="3"></textarea>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20">
+                                    <textarea class="calculadora-input" ng-model="scope.registro.impactos[5].nome" rows="3"></textarea>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="10" style="border-bottom: 2px solid #ccc;border-left: 2px solid #ccc; display: flex">
+                            <h3 class="text-center" style="width: 100%; align-self: center">
+                                <sgr-glossario termo="Pesos"></sgr-glossario>
+                            </h3>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column">
+
+                        <div class="md-block" flex-gt-xs flex="90">
+
+                            <div layout="row" layout-xs="column" style="border-bottom: 2px solid #ccc;">
+
+                                <div class="md-block" flex-gt-xs flex="16" style="border-right: 2px solid #ccc; height: 40px">
+                                    <input class="calculadora-input" ng-model="scope.registro.impactos[0].peso" ui-number-mask="0" ui-hide-group-sep/>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="16" style="border-right: 2px solid #ccc; height: 40px">
+                                    <input class="calculadora-input" ng-model="scope.registro.impactos[1].peso" ui-number-mask="0" ui-hide-group-sep/>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="16" style="border-right: 2px solid #ccc; height: 40px">
+                                    <input class="calculadora-input" ng-model="scope.registro.impactos[2].peso" ui-number-mask="0" ui-hide-group-sep/>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="16" style="border-right: 2px solid #ccc; height: 40px">
+                                    <input class="calculadora-input" ng-model="scope.registro.impactos[3].peso" ui-number-mask="0" ui-hide-group-sep/>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="16" style="border-right: 2px solid #ccc; height: 40px">
+                                    <input class="calculadora-input" ng-model="scope.registro.impactos[4].peso" ui-number-mask="0" ui-hide-group-sep/>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20" style=" height: 40px">
+                                    <input class="calculadora-input" ng-model="scope.registro.impactos[5].peso" ui-number-mask="0" ui-hide-group-sep/>
+                                </div>
+
+                            </div>
+
+                            <div layout="row" layout-xs="column" class="text-center">
+                                <div class="md-block" flex-gt-xs flex="100">
+                                    <h3 class="text-center" style="margin: 15px">
+                                        <sgr-glossario termo="Pesos Atribuídos ao Impacto (Análise Hierárquica de Processo - AHP)"></sgr-glossario>
+                                    </h3>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="10" style="border-left: 2px solid #ccc;display: flex" ng-class="
+                                (scope.registro.impactos[0].peso +
+                                scope.registro.impactos[1].peso +
+                                scope.registro.impactos[2].peso +
+                                scope.registro.impactos[3].peso +
+                                scope.registro.impactos[4].peso +
+                                scope.registro.impactos[5].peso) > 100 ? 'bg-error' : ''">
+
+                            <h3 class="text-center" style="width: 100%; align-self: center">
+                                {{ scope.registro.impactos[0].peso +
+                                scope.registro.impactos[1].peso +
+                                scope.registro.impactos[2].peso +
+                                scope.registro.impactos[3].peso +
+                                scope.registro.impactos[4].peso +
+                                scope.registro.impactos[5].peso }}%</h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="md-block" flex-gt-xs></div>
+                <div class="md-block" flex-gt-xs flex="40" style="border: 2px solid #ccc;align-self: baseline">
+                    <div layout="row" layout-xs="column" style="background: #4CAF50; color: white">
+
+                        <div class="md-block" flex-gt-xs flex="100">
+                            <h3 class="text-center">
+                                <sgr-glossario termo="Probabilidade - Frequência Observada/Esperada"></sgr-glossario>
+                            </h3>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column" style="border-bottom: 2px solid #ccc;">
+
+                        <div class="md-block" flex-gt-xs flex="100">
+                            <h3 class="text-center">
+                                <sgr-glossario termo="Aspectos Avaliativos"></sgr-glossario>
+                            </h3>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column" style="border-bottom: 2px solid #ccc;">
+
+                        <div class="md-block" flex-gt-xs flex="100">
+
+                            <div layout="row" layout-xs="column">
+
+                                <div class="md-block" flex-gt-xs flex="20" style="border-right: 2px solid #ccc;">
+                                    <textarea class="calculadora-input" ng-model="scope.registro.probabilidades[0].nome" rows="6"></textarea>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20" style="border-right: 2px solid #ccc;">
+                                    <textarea class="calculadora-input" ng-model="scope.registro.probabilidades[1].nome" rows="6"></textarea>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20" style="border-right: 2px solid #ccc;">
+                                    <textarea class="calculadora-input" ng-model="scope.registro.probabilidades[2].nome" rows="6"></textarea>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20" style="border-right: 2px solid #ccc;">
+                                    <textarea class="calculadora-input" ng-model="scope.registro.probabilidades[3].nome" rows="6"></textarea>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20">
+                                    <textarea class="calculadora-input" ng-model="scope.registro.probabilidades[4].nome" rows="6"></textarea>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column" style="border-bottom: 2px solid #ccc;">
+
+                        <div class="md-block" flex-gt-xs flex="100">
+
+                            <div layout="row" layout-xs="column">
+
+                                <div class="md-block" flex-gt-xs flex="20" style="border-right: 2px solid #ccc;height: 40px">
+                                    <input class="calculadora-input" ng-model="scope.registro.probabilidades[0].frequencia" ui-number-mask="0" ui-hide-group-sep/>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20" style="border-right: 2px solid #ccc;">
+                                    <input class="calculadora-input" ng-model="scope.registro.probabilidades[1].frequencia" ui-number-mask="0" ui-hide-group-sep/>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20" style="border-right: 2px solid #ccc;">
+                                    <input class="calculadora-input" ng-model="scope.registro.probabilidades[2].frequencia" ui-number-mask="0" ui-hide-group-sep/>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20" style="border-right: 2px solid #ccc;">
+                                    <input class="calculadora-input" ng-model="scope.registro.probabilidades[3].frequencia" ui-number-mask="0" ui-hide-group-sep/>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20">
+                                    <input class="calculadora-input" ng-model="scope.registro.probabilidades[4].frequencia" ui-number-mask="0" ui-hide-group-sep/>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div layout="row" layout-xs="column">
+
+                        <div class="md-block" flex-gt-xs flex="100">
+
+                            <div layout="row" layout-xs="column">
+
+                                <div class="md-block" flex-gt-xs flex="20" style="border-right: 2px solid #ccc;">
+                                    <h3 class="text-center">1 Rara</h3>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20" style="border-right: 2px solid #ccc;">
+                                    <h3 class="text-center">2 Improvável</h3>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20" style="border-right: 2px solid #ccc;">
+                                    <h3 class="text-center">3 Possível</h3>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20" style="border-right: 2px solid #ccc;">
+                                    <h3 class="text-center">4 Provável</h3>
+                                </div>
+
+                                <div class="md-block" flex-gt-xs flex="20">
+                                    <h3 class="text-center">5 Quase Certo</h3>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="sgr-container-buttons m-t-20" layout="row" layout-align="end">
+                <section layout="row center" layout-sm="column" layout-wrap>
+                    <div layout="row" layout-align="space-around center">
+                        <md-button class="md-primary" type="button" ng-click="scope.cancelar()">
+                            <md-icon md-font-set="material-icons">clear</md-icon>
+                            <sgr-glossario termo="Cancelar"></sgr-glossario>
+                        </md-button>
+                        <md-button class="md-primary md-raised" type="submit">
+                            <md-icon md-font-set="material-icons">{{scope.registro.id ? 'check' : 'add'}}</md-icon>
+                            <sgr-glossario termo="Salvar"></sgr-glossario>
+                        </md-button>
+                    </div>
+                </section>
+            </div>
+
+        </form>
+    </div>
+
+</md-content>
+

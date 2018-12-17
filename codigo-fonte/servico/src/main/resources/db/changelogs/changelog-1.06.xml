@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="1.06">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_analise ADD id_orgao BIGINT NULL;
+            COMMENT ON COLUMN tb_analise.id_orgao IS 'Identificador do Órgão da Análise';
+
+            ALTER TABLE tb_analise ADD id_secretaria BIGINT NULL;
+            COMMENT ON COLUMN tb_analise.id_secretaria IS 'Identificador da Secretaria da Análise';
+
+            ALTER TABLE tb_analise ADD CONSTRAINT fk_tb_analise_tb_orgao FOREIGN KEY (id_orgao) REFERENCES tb_orgao (id_orgao);
+
+            ALTER TABLE tb_analise ADD CONSTRAINT fk_tb_analise_tb_orgao_secretaria FOREIGN KEY (id_secretaria) REFERENCES tb_orgao (id_orgao);
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.06.2">
+        <sql splitStatements="false">
+
+            ALTER TABLE gestaoriscos.tb_permissao DROP ic_ativo;
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.06.3" labels="Correção da tabela de status da etapa">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_analise DROP CONSTRAINT fk_mhw1yyymcefj87tmy2s90ae4m;
+
+            ALTER SEQUENCE sk_status_processo RENAME TO sk_status_etapa;
+
+            ALTER TABLE tb_status_processo RENAME TO tb_status_etapa;
+
+            ALTER TABLE tb_status_etapa RENAME id_status_processo TO id_status_etapa;
+            COMMENT ON COLUMN tb_status_etapa.id_status_etapa IS 'Identificador do status da etapa';
+
+            COMMENT ON COLUMN tb_status_etapa.no_status IS 'Nome do status da etapa';
+
+
+            ALTER TABLE tb_analise RENAME id_status_processo TO id_status_etapa;
+            COMMENT ON COLUMN tb_analise.id_status_etapa IS 'Status da etapa de análise do processo';
+
+            ALTER TABLE tb_avaliacao RENAME id_status_processo TO id_status_etapa;
+            COMMENT ON COLUMN tb_avaliacao.id_status_etapa IS 'Status da etapa de avaliação do processo';
+
+            ALTER TABLE tb_identificacao RENAME id_status_processo TO id_status_etapa;
+            COMMENT ON COLUMN tb_identificacao.id_status_etapa IS 'Status da etapa de identificação do processo';
+
+            ALTER TABLE tb_informacao RENAME id_status_processo TO id_status_etapa;
+            COMMENT ON COLUMN tb_informacao.id_status_etapa IS 'Status da etapa de informação do processo';
+
+            ALTER TABLE tb_resposta RENAME id_status_processo TO id_status_etapa;
+            COMMENT ON COLUMN tb_resposta.id_status_etapa IS 'Status da etapa de resposta do processo';
+
+
+            ALTER TABLE tb_analise ADD CONSTRAINT fk_tb_analise_tb_status_etapa FOREIGN KEY (id_status_etapa) REFERENCES tb_status_etapa (id_status_etapa);
+
+            ALTER TABLE tb_avaliacao ADD CONSTRAINT fk_tb_avaliacao_tb_status_etapa FOREIGN KEY (id_status_etapa) REFERENCES tb_status_etapa (id_status_etapa);
+
+            ALTER TABLE tb_identificacao ADD CONSTRAINT fk_tb_identificacao_tb_status_etapa FOREIGN KEY (id_status_etapa) REFERENCES tb_status_etapa (id_status_etapa);
+
+            ALTER TABLE tb_informacao ADD CONSTRAINT fk_tb_informacao_tb_status_etapa FOREIGN KEY (id_status_etapa) REFERENCES tb_status_etapa (id_status_etapa);
+
+            ALTER TABLE tb_resposta ADD CONSTRAINT fk_tb_resposta_tb_status_etapa FOREIGN KEY (id_status_etapa) REFERENCES tb_status_etapa (id_status_etapa);
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.06.4" labels="Criação da tabela de status do processo">
+        <sql splitStatements="false">
+
+            CREATE SEQUENCE sk_status_processo START WITH 1;
+            CREATE TABLE tb_status_processo
+            (
+            id_status_processo BIGINT PRIMARY KEY NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            no_status VARCHAR(200) NOT NULL
+            );
+            COMMENT ON COLUMN tb_status_processo.id_status_processo IS 'Identificador do status do processo';
+            COMMENT ON COLUMN tb_status_processo.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_status_processo.no_status IS 'Nome do status do processo';
+
+            INSERT INTO tb_status_processo(id_status_processo, ic_excluido, no_status) VALUES (1, false, 'Não Finalizado');
+            INSERT INTO tb_status_processo(id_status_processo, ic_excluido, no_status) VALUES (2, false, 'Finalizado');
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.06.5" labels="Adição das fks do status do processo">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_processo ADD id_status_processo BIGINT NULL;
+            COMMENT ON COLUMN tb_processo.id_status_processo IS 'Identificador do status do processo';
+
+            ALTER TABLE tb_processo ADD CONSTRAINT fk_tb_processo_tb_status_processo FOREIGN KEY (id_status_processo) REFERENCES tb_status_processo (id_status_processo);
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.06.6" labels="Adição de status aos processos já existentes">
+        <sql splitStatements="false">
+
+            UPDATE tb_processo SET id_status_processo = 1;
+
+            ALTER TABLE tb_processo ALTER COLUMN id_status_processo SET NOT NULL;
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.06.7" labels="Adição da coluna de search ao processo">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_processo ADD ds_search VARCHAR(401) NULL;
+            COMMENT ON COLUMN tb_processo.ds_search IS 'Descrição utilizada na busca do autocomplete';
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.06.8" labels="Criação da tabela de anexos e adição ao processo">
+        <sql splitStatements="false">
+
+            CREATE SEQUENCE sk_arquivo_anexo START WITH 1;
+            CREATE TABLE tb_arquivo_anexo
+            (
+            id_arquivo_anexo BIGINT PRIMARY KEY NOT NULL,
+            no_arquivo VARCHAR(100) NOT NULL,
+            no_tipo VARCHAR(5) NOT NULL,
+            no_documento VARCHAR(50) NOT NULL,
+            fl_conteudo bytea NOT NULL,
+            dt_upload TIMESTAMP NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL
+            );
+            COMMENT ON TABLE tb_arquivo_anexo IS 'Armazena arquivos anexos no sistema. Incluindo foto de perfil, documentos e outros.';
+            COMMENT ON COLUMN tb_arquivo_anexo.id_arquivo_anexo IS 'Identificador do arquivo anexado';
+            COMMENT ON COLUMN tb_arquivo_anexo.no_arquivo IS 'Nome do arquivo';
+            COMMENT ON COLUMN tb_arquivo_anexo.no_tipo IS 'Tipo do arquivo, sua extensão.';
+            COMMENT ON COLUMN tb_arquivo_anexo.no_documento IS 'Nome do documento. Nome do arquivo deve ser exibido para o usuário';
+            COMMENT ON COLUMN tb_arquivo_anexo.fl_conteudo IS 'Contéudo do arquivo anexado';
+            COMMENT ON COLUMN tb_arquivo_anexo.dt_upload IS 'Data que o arquivo foi inserido';
+            COMMENT ON COLUMN tb_arquivo_anexo.ic_excluido IS 'Identifica se o registro está excluído';
+
+            ALTER TABLE tb_processo ADD id_arquivo_anexo BIGINT NULL;
+            COMMENT ON COLUMN tb_processo.id_arquivo_anexo IS 'Identificador do arquivo anexado';
+
+            ALTER TABLE tb_processo ADD CONSTRAINT fk_tb_processo_tb_arquivo_anexo FOREIGN KEY (id_arquivo_anexo) REFERENCES tb_arquivo_anexo (id_arquivo_anexo);
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

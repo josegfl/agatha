@@ -1,0 +1,44 @@
+<!-- Menu -->
+<!-- md-is-locked-open="$mdMedia('gt-sm')" -->
+<md-sidenav class="site-sidenav md-fg-600 md-sidenav-left md-whiteframe-z2"
+            md-component-id="left" layout="column" flex>
+  <!--<div id="search-menu-container" layout="row">-->
+    <!--<input type="text" name="menu-pesquisa" placeholder="Busca inteligente" class="search-input" />-->
+    <!--<md-icon md-font-set="material-icons" class="icone48">search</md-icon>-->
+  <!--</div>-->
+    <div layout="column" style="width: 100%;">
+        <md-menu-bar role="menubar">
+            <md-menu md-position-mode ng-repeat="item in menuAcessos">
+                <md-button ng-click="$mdOpenMenu()">
+                    <div layout="row" flex>
+                        {{item.descricaoResumida}}
+                        <span flex></span>
+             				<span>
+             					<i style="vertical-align: middle;" class="material-icons">chevron_right</i>
+             				</span>
+                    </div>
+                </md-button>
+                <md-menu-content >
+                    <md-menu-item>
+                        <div layout="column">
+                            <ul ng-repeat="subItemPai in item.nos" >
+                                <li>
+                                    <h3 class="menu-section-title">
+                                        {{subItemPai.descricaoResumida}}
+                                    </h3>
+                                    <ul class="listaitens"  >
+                                        <li class="itensmenu" ng-repeat="subItemFilho in subItemPai.nos">
+                                            <md-button href="{{subItemFilho.url}}" ng-click="closeMenu()">
+                                                {{subItemFilho.descricaoResumida}}
+                                            </md-button>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </md-menu-bar>
+    </div>
+</md-sidenav>

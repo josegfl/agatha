@@ -1,0 +1,11 @@
+version: '2'
+services:
+
+  mpog-gestaoriscos-frontend:
+    container_name: mpog-gestaoriscos-frontend
+    image: mpog-gestaoriscos-frontend
+    ports:
+      - "80:80"
+    network_mode: "mpog-net"
+    environment:
+      - ENDERECO_API=mpog-gestaoriscos-backend:8080

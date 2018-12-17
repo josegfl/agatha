@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="2.02.1" labels="Adição da coluna status em Impacto da Calculadora">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_impacto_calculadora ADD ic_desabilitado BOOLEAN DEFAULT true NULL;
+            COMMENT ON COLUMN tb_impacto_calculadora.ic_desabilitado IS 'Status do impacto da calculadora';
+
+            UPDATE tb_impacto_calculadora SET ic_desabilitado = false;
+
+            ALTER TABLE tb_impacto_calculadora ALTER COLUMN ic_desabilitado SET NOT NULL;
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

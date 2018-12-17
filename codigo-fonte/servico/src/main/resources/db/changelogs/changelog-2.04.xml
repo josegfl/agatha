@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="2.04.1" labels="Adição da coluna Natureza em Categoria">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_categoria ADD id_natureza BIGINT NULL;
+            COMMENT ON COLUMN tb_categoria.id_natureza IS 'Identificador da Natureza de Risco';
+
+            ALTER TABLE tb_categoria ADD CONSTRAINT fk_tb_categoria_tb_natureza FOREIGN KEY (id_natureza) REFERENCES tb_natureza (id_natureza);
+
+
+            ALTER TABLE tb_evento_risco DROP id_natureza;
+
+            DELETE FROM tb_natureza;
+
+            INSERT INTO tb_natureza(id_natureza, ic_excluido, ic_ativo, ds_natureza, ds_search) VALUES (nextval('sk_natureza'), false, true, 'Administrativo' , 'Administrativo');
+            INSERT INTO tb_natureza(id_natureza, ic_excluido, ic_ativo, ds_natureza, ds_search) VALUES (nextval('sk_natureza'), false, true, 'Não Orçamentário' , 'Nao Orcamentario');
+            INSERT INTO tb_natureza(id_natureza, ic_excluido, ic_ativo, ds_natureza, ds_search) VALUES (nextval('sk_natureza'), false, true, 'Financeiro' , 'Financeiro');
+            INSERT INTO tb_natureza(id_natureza, ic_excluido, ic_ativo, ds_natureza, ds_search) VALUES (nextval('sk_natureza'), false, true, 'Orçamentário Financeiro' , 'Orcamentario Financeiro');
+
+            UPDATE tb_categoria SET id_natureza = (SELECT id_natureza FROM tb_natureza WHERE ds_natureza = 'Administrativo');
+
+            ALTER TABLE tb_categoria ALTER COLUMN id_natureza SET NOT NULL;
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="2.04.2" labels="Correção das naturezas existentes">
+        <sql splitStatements="false">
+
+            UPDATE tb_categoria SET id_natureza = (SELECT id_natureza FROM tb_natureza WHERE ds_natureza = 'Não Orçamentário');
+
+            DELETE FROM tb_natureza WHERE ds_natureza = 'Administrativo';
+            DELETE FROM tb_natureza WHERE ds_natureza = 'Financeiro';
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

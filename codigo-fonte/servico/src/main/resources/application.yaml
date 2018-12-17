@@ -1,0 +1,21 @@
+ecidadao:
+  client-id: SOLICITAR-MP
+  client-secret: SOLICITAR-MP
+  pre-established-redirect-uri: http://dns_definido/gestaoriscos/api/login/openid
+  sistema:
+    dominio: dns_definido
+    url-pattern-protegido: /**
+    redireciona-login-sucesso: http://dns_definido
+    redireciona-logout-sucesso: http://dns_definido
+
+  # URIS dO AMBIENTE DE TESTES
+  access-token-uri: SOLICITAR-MP
+  user-authorization-uri: SOLICITAR-MP
+  use-current-uri: false
+  scope: openid
+
+
+
+# URIS DO AMBIENTE DE PRODUÇÃO
+#  access-token-uri: SOLICITAR-MP
+#  user-authorization-uri: SOLICITAR-MP

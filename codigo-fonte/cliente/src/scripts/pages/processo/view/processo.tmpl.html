@@ -1,0 +1,61 @@
+<md-content>
+    <md-tabs md-dynamic-height md-border-bottom md-selected="scope.currentTab">
+        <md-tab label="Análise de Ambiente e de Fixação de Objetivos" ng-click="scope.changeToAnalise()"></md-tab>
+        <md-tab label="Identificação de Eventos de Risco" ng-click="scope.changeToIdentificacao()" ng-disabled="scope.etapas.identificacao"></md-tab>
+        <md-tab label="Avaliação de Riscos e Controles" ng-click="scope.changeToAvaliacao()" ng-disabled="!scope.etapas.avaliacao"></md-tab>
+        <md-tab label="Resposta a Risco" ng-click="scope.changeToResposta()" ng-disabled="!scope.etapas.resposta"></md-tab>
+        <md-tab label="Plano de Controle" ng-click="scope.changeToPlanoControle()" ng-disabled="!scope.etapas.plano"></md-tab>
+        <md-tab label="Validação" ng-click="scope.changeTovalidacao()" ng-if="scope.gestor" ng-disabled="!scope.etapas.validacao"></md-tab>
+    </md-tabs>
+
+    <div class="sgr-container">
+
+        <div class="sgr-container-body">
+            <div ng-show="scope.currentTab != 0">
+                <div layout="row" layout-xs="column" class="processo-info p-b-0">
+                    <div class="md-block" flex-gt-xs flex="100">
+                        <strong>
+                            <sgr-glossario termo="Macroprocesso"></sgr-glossario>
+                        </strong>
+                    </div>
+                </div>
+                <div layout="row" layout-xs="column" class="processo-info">
+                    <div class="md-block" flex-gt-xs flex="100">
+                        <span>{{scope.registro.macroprocesso.descricao}}</span>
+                    </div>
+                </div>
+
+                <div layout="row" layout-xs="column" class="processo-info p-b-0">
+                    <div class="md-block" flex-gt-xs flex="100">
+                        <strong>
+                            <sgr-glossario termo="Processo"></sgr-glossario>
+                        </strong>
+                    </div>
+                </div>
+                <div layout="row" layout-xs="column" class="processo-info">
+                    <div class="md-block" flex-gt-xs flex="100">
+                        <span>{{scope.registro.processo}}</span>
+                    </div>
+                </div>
+
+                <div layout="row" layout-xs="column" class="processo-info p-b-0">
+                    <div class="md-block" flex-gt-xs flex="30">
+                        <strong>
+                            <sgr-glossario termo="Objetivo do Macroprocesso/Processo"></sgr-glossario>
+                        </strong>
+                    </div>
+                </div>
+                <div layout="row" layout-xs="column" class="processo-info">
+                    <div class="md-block" flex-gt-xs flex="30">
+                        <span>{{scope.registro.objetivo}}</span>
+                    </div>
+                </div>
+
+                <hr color="#4CAF50" width="99%" size="2px"/>
+            </div>
+
+            <ui-view></ui-view>
+
+        </div>
+    </div>
+</md-content>

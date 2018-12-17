@@ -1,0 +1,118 @@
+<div layout="row" layout-xs="column">
+    <h3 style="margin-bottom: 10px; padding-left: 7px;">
+        <sgr-glossario termo="Evento de Risco"></sgr-glossario>
+    </h3>
+</div>
+<div class="md-block" flex-gt-xs style="margin-left: 7px;">
+    <span>{{scope._eventoRisco.evento.descricao}}</span>
+</div>
+
+<div layout="row" layout-xs="column">
+    <h3 style="margin-bottom: 0; padding-left: 7px;">
+        <sgr-glossario termo="Causas"></sgr-glossario>
+    </h3>
+</div>
+
+<div class="sgr-container-table" layout="column" flex-gt-xs flex="100">
+    <md-card>
+        <md-table-container>
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                    <th md-column class="text-right" width="60px">
+                        <sgr-glossario termo="Item"></sgr-glossario>
+                    </th>
+                    <th md-column>
+                        <sgr-glossario termo="Causa do Risco"></sgr-glossario>
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody md-body>
+                <tr md-row ng-repeat="item in scope._eventoRisco.causas | orderBy: 'causa.descricao'">
+                    <td md-cell class="text-right">
+                        <span ng-bind="$index + 1"></span>
+                    </td>
+                    <td md-cell>
+                        <span ng-bind="item.causa.descricao"></span>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-card>
+</div>
+
+<div layout="row" layout-xs="column">
+    <h3 style="margin-bottom: 0; padding-left: 7px;">
+        <sgr-glossario termo="Consequências"></sgr-glossario>
+    </h3>
+</div>
+
+<div class="sgr-container-table" layout="column" flex-gt-xs flex="100">
+    <md-card>
+        <md-table-container>
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                    <th md-column class="text-right" width="60px">
+                        <sgr-glossario termo="Item"></sgr-glossario>
+                    </th>
+                    <th md-column>
+                        <sgr-glossario termo="Consequência do Risco"></sgr-glossario>
+                    </th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="item in scope._eventoRisco.consequencias | orderBy: 'consequencia.descricao'">
+                    <td md-cell class="text-right">
+                        <span ng-bind="$index + 1"></span>
+                    </td>
+                    <td md-cell>
+                        <span ng-show="!item.$update" ng-bind="item.consequencia.descricao"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </md-card>
+</div>
+
+
+<form name="formRegistro" novalidate>
+
+    <div layout="row" layout-xs="column">
+
+        <md-input-container class="md-block" flex-gt-xs flex="50">
+            <label>
+                <sgr-glossario termo="Resposta ao Risco"></sgr-glossario>
+            </label>
+            <md-select ng-model="scope.registro.respostaRisco" required>
+                <md-option ng-value="item" ng-repeat="item in scope._tiposResposta">{{ item.nome }}</md-option>
+            </md-select>
+        </md-input-container>
+
+    </div>
+
+    <md-input-container class="md-block" flex-gt-xs flex="50">
+        <label>Justificativa</label>
+        <textarea style="border: solid 1px #DADAE0" ng-model="scope.registro.justificativaRespostaRisco" maxlength="250" md-maxlength="250" rows="3" md-select-on-focus ></textarea>
+    </md-input-container>
+
+    <div class="sgr-container-buttons m-t-10 m-b-10" layout="row" layout-align="end">
+        <section layout="row center" layout-sm="column" layout-wrap>
+            <div layout="row" layout-align="space-around center">
+                <md-button class="md-primary" ui-sref="processo.respostaRisco.alterar({id : scope.processoId})">
+                    <md-icon md-font-set="material-icons">close</md-icon>
+                    <sgr-glossario termo="Cancelar"></sgr-glossario>
+                </md-button>
+                <md-button class="md-primary md-raised" ng-click="scope.persistir(scope.registro)">
+                    <md-icon md-font-set="material-icons">done</md-icon>
+                    <sgr-glossario termo="Salvar"></sgr-glossario>
+                </md-button>
+            </div>
+        </section>
+    </div>
+</form>
+

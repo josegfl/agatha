@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="fabrica.wgl" id="1.10.1" labels="Adição da coluna de data do cadastro na tabela de permissão">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_permissao ADD dt_cadastro TIMESTAMP NULL;
+            COMMENT ON COLUMN tb_permissao.dt_cadastro IS 'Data em que o registro foi cadastrado';
+
+            UPDATE tb_permissao SET dt_cadastro = '2017-06-01 00:00:00';
+
+            ALTER TABLE tb_permissao ALTER COLUMN dt_cadastro SET NOT NULL;
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.10.2" labels="Alteração do tamanho das colunas de descrição em Glossário">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_glossario ALTER COLUMN ds_glossario TYPE VARCHAR(1000);
+
+            ALTER TABLE tb_glossario ALTER COLUMN ds_descricao_search TYPE VARCHAR(1000);
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.10.3" labels="Insert de macroprocesso">
+        <sql splitStatements="false">
+
+            CREATE SEQUENCE sk_macroprocesso START WITH 1;
+            CREATE TABLE tb_macroprocesso
+            (
+            id_macroprocesso BIGINT PRIMARY KEY NOT NULL,
+            ds_macroprocesso VARCHAR(200) NOT NULL,
+            ic_ativo BOOLEAN DEFAULT true NOT NULL,
+            ic_excluido BOOLEAN DEFAULT false NOT NULL,
+            ds_search VARCHAR(200) NOT NULL
+            );
+
+            COMMENT ON TABLE tb_macroprocesso IS 'Tabela responsável por armazenar os dados de macroprocessos do sistema.';
+            COMMENT ON COLUMN tb_macroprocesso.id_macroprocesso IS 'Identificador do registro';
+            COMMENT ON COLUMN tb_macroprocesso.ds_macroprocesso IS 'Descrição da macroprocesso';
+            COMMENT ON COLUMN tb_macroprocesso.ic_ativo IS 'Situação da macroprocesso';
+            COMMENT ON COLUMN tb_macroprocesso.ic_excluido IS 'Identifica se o registro está excluído';
+            COMMENT ON COLUMN tb_macroprocesso.ds_search IS 'Descrição utilizada na busca do autocomplete';
+
+
+            ALTER TABLE tb_processo DROP no_macroprocesso;
+
+            ALTER TABLE tb_processo ADD id_macroprocesso BIGINT NULL;
+            COMMENT ON COLUMN tb_processo.id_macroprocesso IS 'Identificador do macroprocesso';
+
+
+            ALTER TABLE tb_processo ADD CONSTRAINT fk_tb_processo_tb_macroprocesso   FOREIGN KEY (id_macroprocesso) REFERENCES tb_macroprocesso (id_macroprocesso);
+
+        </sql>
+    </changeSet>
+
+    <changeSet author="fabrica.wgl" id="1.10.4" labels="Alter table Controle Evento">
+        <sql splitStatements="false">
+
+            ALTER TABLE tb_resposta_risco ADD no_area_responsavel VARCHAR(200) NULL;
+            COMMENT ON COLUMN tb_resposta_risco.no_area_responsavel IS 'Nome da Área Responsável';
+
+            ALTER TABLE tb_resposta_risco ADD no_responsavel VARCHAR(200) NULL;
+            COMMENT ON COLUMN tb_resposta_risco.no_responsavel IS 'Nome do Responsável';
+
+            ALTER TABLE tb_resposta_risco ADD no_interveniente VARCHAR(200) NULL;
+            COMMENT ON COLUMN tb_resposta_risco.no_interveniente IS 'Nome do Interveniente';
+
+            ALTER TABLE tb_resposta_risco ADD ds_implementacao VARCHAR(4000) NULL;
+            COMMENT ON COLUMN tb_resposta_risco.ds_implementacao IS 'Descrição de como será a implementação';
+
+            ALTER TABLE tb_resposta_risco ADD dt_inicio TIMESTAMP NULL;
+            COMMENT ON COLUMN tb_resposta_risco.dt_inicio IS 'Data do início do Plano de Controle';
+
+            ALTER TABLE tb_resposta_risco ADD dt_conclusao TIMESTAMP NULL;
+            COMMENT ON COLUMN tb_resposta_risco.dt_conclusao IS 'Data da conclusão do Plano de Controle';
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

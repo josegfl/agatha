@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="5.0.1" author="fabrica.wgl" labels="Insert do Menu e das Permissões para a Taxonomia">
+        <sql>
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.nucleo.taxonomia', 'Taxonomia', 'Taxonomia', 'http://gestaoriscos.tst.basis.com.br/#/taxonomia', NULL, (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), (SELECT id_item_menu from acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo.gestao'), 'Taxonomia', 'Taxonomia', 'Taxonomia', NULL, NULL, false);
+
+            INSERT INTO acessos.tb_item_menu_permissao (id_permissao,id_item_menu)
+            SELECT (SELECT id_permissao from acessos.tb_permissao WHERE id_modulo = (SELECT id_modulo from acessos.tb_modulo WHERE codigo_modulo = 'sgr_m0001')), id_item_menu FROM acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo.taxonomia';
+        </sql>
+    </changeSet>
+
+    <changeSet id="5.0.2" author="fabrica.wgl" labels="Insert do Menu e das Permissões para o Glossário">
+        <sql>
+            INSERT INTO acessos.tb_item_menu (id_item_menu, codigo_identificador, descricao_detalhada, descricao_resumida, url, icone, id_modulo, id_item_menu_superior, template_url, controller, apelido_controller, id_icone, posicao, excluido)
+            VALUES(nextval('acessos.tb_item_menu_seq'), 'menu.sgr.nucleo.glossario', 'Glossário', 'Glossário', 'http://gestaoriscos.tst.basis.com.br/#/manterGlossario', NULL, (SELECT id_modulo from acessos.tb_modulo where codigo_modulo = 'sgr_m0001'), (SELECT id_item_menu from acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo.gestao'), 'Glossário', 'Glossário', 'Glossário', NULL, NULL, false);
+
+            INSERT INTO acessos.tb_item_menu_permissao (id_permissao,id_item_menu)
+            SELECT (SELECT id_permissao from acessos.tb_permissao WHERE id_modulo = (SELECT id_modulo from acessos.tb_modulo WHERE codigo_modulo = 'sgr_m0001')), id_item_menu FROM acessos.tb_item_menu WHERE codigo_identificador = 'menu.sgr.nucleo.glossario';
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

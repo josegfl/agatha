@@ -1,0 +1,68 @@
+<div layout="row" layout-xs="column">
+    <div class="sgr-container-table" layout="column" flex-gt-xs flex="100">
+        <md-card>
+            <md-table-container>
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column class="text-right" width="30px">
+                            <sgr-glossario termo="Item"></sgr-glossario>
+                        </th>
+                        <th md-column width="25%">
+                            <sgr-glossario termo="Evento de Risco"></sgr-glossario>
+                        </th>
+                        <th md-column width="20%">
+                            <sgr-glossario termo="Controle Existente"></sgr-glossario>
+                        </th>
+                        <th md-column width="20%">
+                            <sgr-glossario termo="Desenho de Controle"></sgr-glossario>
+                        </th>
+                        <th md-column width="20%">
+                            <sgr-glossario termo="Operação de Controle"></sgr-glossario>
+                        </th>
+                        <th md-column class="text-center" width="150px" ng-show="scope.permissao.criarEventoRisco && !scope.apenasLeitura">
+                            <sgr-glossario termo="Ação"></sgr-glossario>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody md-body>
+                    <tr md-row ng-repeat="item in scope._eventosRisco">
+                        <td md-cell class="text-right">
+                            <span>{{scope.filtros.page*scope.filtros.size+$index+1}}</span>
+                        </td>
+                        <td md-cell>
+                            <span>{{item.evento.descricao}}</span>
+                        </td>
+                        <td md-cell ng-class="{'border-none': item.controleEventos.length > 0}" style="padding: 0 !important; margin: 0 !important; height: 52px !important;" colspan="3">
+                            <table md-table style="height: 100% !important;">
+                                <tr md-row style="background: transparent" ng-repeat="row in item.controleEventos">
+                                    <td md-cell width="200px">
+                                        <span ng-bind="row.controle.descricao"></span>
+                                    </td>
+                                    <td md-cell width="200px">
+                                        <span ng-bind="row.desenho.descricao"></span>
+                                    </td>
+                                    <td md-cell width="200px">
+                                        <span ng-bind="row.operacao.descricao"></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td md-cell class="text-center cell-options" width="60px" ng-show="scope.permissao.criarEventoRisco && !scope.apenasLeitura">
+                            <a ui-sref="controleEvento({id: scope.processoId, eventoRiscoId: item.id})">
+                                <md-tooltip md-direction="top">
+                                    Alterar
+                                </md-tooltip>
+                                <ng-md-icon icon="create"></ng-md-icon>
+                            </a>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination md-on-paginate="scope.filtrar" md-limit="scope.tamanhoLimite" md-limit-options="[20, 50, 100]" md-page="scope.registroInicial" md-total="{{scope.totalItems}}" md-page-select></md-table-pagination>
+        </md-card>
+    </div>
+</div>

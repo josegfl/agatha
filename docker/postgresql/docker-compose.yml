@@ -1,0 +1,11 @@
+version: '2'
+services:
+
+  mpog-gestaoriscos-bd:
+    container_name: mpog-gestaoriscos-bd
+    build: .
+    ports:
+      - "50002:5432"
+    network_mode: "mpog-net"
+    volumes:
+      - ./data:/var/lib/postgresql/data

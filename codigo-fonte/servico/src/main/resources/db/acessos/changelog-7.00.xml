@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="7.00.1" author="fabrica.wgl" labels="Alteração da ordem do menu">
+        <sql>
+
+            UPDATE acessos.tb_item_menu SET acessos.tb_item_menu.posicao = 1 WHERE codigo_identificador = 'menu.sgr.nucleo.evento';
+
+            UPDATE acessos.tb_item_menu SET acessos.tb_item_menu.posicao = 2 WHERE codigo_identificador = 'menu.sgr.nucleo.causa';
+
+            UPDATE acessos.tb_item_menu SET acessos.tb_item_menu.posicao = 3 WHERE codigo_identificador = 'menu.sgr.nucleo.consequencia';
+
+            UPDATE acessos.tb_item_menu SET acessos.tb_item_menu.posicao = 4 WHERE codigo_identificador = 'menu.sgr.nucleo.categoria';
+
+            UPDATE acessos.tb_item_menu SET acessos.tb_item_menu.posicao = 5 WHERE codigo_identificador = 'menu.sgr.nucleo.natureza';
+
+            UPDATE acessos.tb_item_menu SET acessos.tb_item_menu.posicao = 6 WHERE codigo_identificador = 'menu.sgr.nucleo.calculadora';
+
+            UPDATE acessos.tb_item_menu SET acessos.tb_item_menu.posicao = 7 WHERE codigo_identificador = 'menu.sgr.nucleo.controle';
+
+            UPDATE acessos.tb_item_menu SET acessos.tb_item_menu.posicao = 8 WHERE codigo_identificador = 'menu.sgr.nucleo.desenho';
+
+            UPDATE acessos.tb_item_menu SET acessos.tb_item_menu.posicao = 9 WHERE codigo_identificador = 'menu.sgr.nucleo.operacao';
+
+            UPDATE acessos.tb_item_menu SET acessos.tb_item_menu.posicao = 10 WHERE codigo_identificador = 'menu.sgr.nucleo.taxonomia';
+
+            UPDATE acessos.tb_item_menu SET acessos.tb_item_menu.posicao = 11 WHERE codigo_identificador = 'menu.sgr.nucleo.glossario';
+
+            UPDATE acessos.tb_item_menu SET acessos.tb_item_menu.posicao = 12 WHERE codigo_identificador = 'menu.sgr.nucleo.macroprocesso';
+
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

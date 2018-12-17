@@ -1,0 +1,206 @@
+<md-content flex>
+
+    <form name="formRegistro" novalidate>
+        <fieldset class="sgr-container" style="border: solid 1px #dddddd">
+            <legend>
+                <sgr-glossario termo="Macroprocesso/Processo"></sgr-glossario>
+            </legend>
+
+            <div class="sgr-container-body" layout="row" layout-xs="column">
+
+                <md-input-container class="md-block" flex-gt-xs flex="50" ng-show="!scope.permissao.consultarUnidade">
+                    <label>
+                        <sgr-glossario termo="Órgão/Unidade"></sgr-glossario>
+                    </label>
+                    <input ng-model="scope.permissao.orgao.nome" type="text" ng-disabled="true"/>
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-xs flex="50" ng-show="scope.permissao.consultarUnidade">
+                    <label>
+                        <sgr-glossario termo="Órgão/Unidade"></sgr-glossario>
+                    </label>
+                    <md-select name="secretariaUnidade" ng-model="scope.filtros.orgao" md-selected-text="">
+                        <md-option ng-repeat="secretaria in scope.orgaos" ng-value="secretaria.nome">
+                            {{secretaria.sigla}} - {{secretaria.nome}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+
+                <md-input-container class="md-block" flex-gt-xs flex="50">
+                    <label>
+                        <sgr-glossario termo="Status do Processo"></sgr-glossario>
+                    </label>
+                    <md-select ng-model="scope.filtros.statusId" placeholder="Status do Processo">
+                        <md-option ng-value="item.id" ng-repeat="item in scope._status">{{ item.nome }}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+
+            <div class="sgr-container-body" layout="row" layout-xs="column">
+                <md-input-container class="md-block" flex-gt-xs flex="50">
+                    <label>
+                        <sgr-glossario termo="Descrição do Macroprocesso/Processo"></sgr-glossario>
+                    </label>
+                    <md-autocomplete id="processo-search" class="md-autocomplete-icon" md-floating-label="" md-no-cache="true" md-search-text-change="scope.getDescricaoBySearch(scope.filtros.descricao)" md-search-text="scope.filtros.descricao" md-selected-item-change="scope.filtros.descricao = item" md-item-text="scope.filtros.descricao"
+                                     md-items="item in scope.descricoes"
+                                     md-min-length="2">
+                        <md-item-template>
+                            <span md-highlight-text="scope.filtros.descricao" md-highlight-flags="^i">{{item}}</span>
+                        </md-item-template>
+                    </md-autocomplete>
+                </md-input-container>
+
+                <div class="md-block" flex-gt-xs flex="50">
+                    <div layout="row" layout-xs="column">
+
+                        <div class="md-block" flex-gt-xs flex="50">
+                            <span class="fs-11">
+                                <sgr-glossario termo="Período de cadastro"></sgr-glossario>
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column">
+                        <div class="md-block" flex-gt-xs>
+                            <md-datepicker-custom name="dtInicio" ng-model="scope.filtros.dtInicio" md-max-date="scope.filtros.dtFim"
+
+                                                  md-custom-required="false" md-custom-mask="39/19/9999" md-custom-clean-mask="false" md-custom-restrict="reject"></md-datepicker-custom>
+
+                            <md-datepicker-custom name="dtFim" ng-model="scope.filtros.dtFim" md-min-date="scope.filtros.dtInicio"
+
+                                                  md-custom-required="false" md-custom-mask="39/19/9999" md-custom-clean-mask="false" md-custom-restrict="reject"></md-datepicker-custom>
+
+                            <div class="validation-messages" style="color:red; font-size: 12px">
+                                <div ng-show="formRegistro.dtInicio.$error.valid">Escolha uma data válida!</div>
+                                <div ng-show="formRegistro.dtInicio.$error.maxdate">Escolha uma data menor que a data fim</div>
+
+                                <div ng-show="formRegistro.dtFim.$error.valid">Escolha uma data válida!</div>
+                                <div ng-show="formRegistro.dtFim.$error.mindate">Escolha uma data maior que a data de inicio</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="sgr-container-buttons" layout="row" layout-align="end">
+                <section layout="row center" layout-sm="column" layout-wrap>
+                    <div layout="row" layout-align="space-around center">
+                        <md-button class="md-primary" type="button" ng-click="scope.limparFiltros()">
+                            <md-icon md-font-set="material-icons">filter_list</md-icon>
+                            <sgr-glossario termo="Limpar"></sgr-glossario>
+                        </md-button>
+                        <md-button class="md-primary" type="button" ng-click="scope.filtrar()">
+                            <md-icon md-font-set="material-icons">search</md-icon>
+                            <sgr-glossario termo="Consultar"></sgr-glossario>
+                        </md-button>
+                    </div>
+                </section>
+            </div>
+
+        </fieldset>
+    </form>
+
+    <hr color="#4CAF50" width="100%" size="2px"/>
+
+    <div class="sgr-container-buttons" layout="row">
+        <section layout="row center" layout-sm="column" layout-wrap>
+            <md-button class="md-primary" ui-sref="processo.analiseAmbiente.incluir" ng-show="scope.permissao.criar">
+                <md-icon md-font-set="material-icons">add</md-icon>
+                <sgr-glossario termo="Novo mapeamento"></sgr-glossario>
+            </md-button>
+        </section>
+    </div>
+
+    <div class="sgr-container-table" layout="column">
+        <md-card>
+            <md-table-container>
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column class="text-right" width="30px">
+                            <sgr-glossario termo="Item"></sgr-glossario>
+                        </th>
+                        <th md-column class="text-center" width="100px">
+                            <sgr-glossario termo="Data de Cadastro"></sgr-glossario>
+                        </th>
+                        <th md-column width="40%">
+                            <sgr-glossario termo="Macroprocesso"></sgr-glossario>
+                        </th>
+                        <th md-column width="40%">
+                            <sgr-glossario termo="Processo"></sgr-glossario>
+                        </th>
+                        <th md-column class="text-center" width="60px">
+                            <sgr-glossario termo="Status"></sgr-glossario>
+                        </th>
+                        <th md-column class="text-center" width="100px">
+                            <sgr-glossario termo="Ações"></sgr-glossario>
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody md-body>
+                    <tr md-row ng-repeat="item in scope._registros">
+                        <td md-cell class="text-right">
+                            {{scope.filtros.page*scope.filtros.size+$index+1}}
+                        </td>
+                        <td md-cell class="text-center">
+                            {{item.dtCadastro | date : 'dd/MM/yyyy'}}
+                        </td>
+                        <td md-cell>
+                            {{item.macroprocesso}}
+                        </td>
+                        <td md-cell>
+                            {{item.processo}}
+                        </td>
+                        <td md-cell class="text-center">
+                            <span>
+                                <md-tooltip md-direction="top">
+                                    {{item.status}}
+                                </md-tooltip>
+                                <ng-md-icon icon="warning" style="fill: #ffc800" ng-show="item.status == 'Não Finalizado'"></ng-md-icon>
+                                <ng-md-icon icon="screen_rotation" style="fill: #616161" ng-show="item.status == 'Enviado para Validação'"></ng-md-icon>
+                                <ng-md-icon icon="check_circle" style="fill: #1cd203" ng-show="item.status == 'Finalizado'"></ng-md-icon>
+                            </span>
+                        </td>
+                        <td md-cell class="text-center">
+                            <a ui-sref="processo.analiseAmbiente.consultar({id : item.id})">
+                                <md-tooltip md-direction="top">
+                                    Visualizar
+                                </md-tooltip>
+                                <ng-md-icon icon="search"></ng-md-icon>
+                            </a>
+
+                            <a ui-sref="processo.analiseAmbiente.alterar({id : item.id})" ng-show="scope.permissao.criar && (item.isGestor || item.isAnalista)">
+                                <md-tooltip md-direction="top">
+                                    Alterar
+                                </md-tooltip>
+                                <ng-md-icon icon="create"></ng-md-icon>
+                            </a>
+                            <a ng-click="scope.excluirRegistro(item)" class="cursor-pointer" ng-show="scope.permissao.excluir && item.status != 'Finalizado'">
+                                <md-tooltip md-direction="top">
+                                    Excluir
+                                </md-tooltip>
+                                <ng-md-icon icon="delete"></ng-md-icon>
+                            </a>
+                            <a ng-click="scope.gerarPdf(item.id)" class="cursor-pointer">
+                                <md-tooltip md-direction="top">
+                                    Gerar Relatório do Processo
+                                </md-tooltip>
+                                <ng-md-icon icon="file_download"></ng-md-icon>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination md-on-paginate="scope.filtrar" md-limit="scope.tamanhoLimite" md-limit-options="[20, 50, 100]" md-page="scope.registroInicial" md-total="{{scope.totalItems}}" md-page-select></md-table-pagination>
+        </md-card>
+    </div>
+
+    </fieldset>
+
+</md-content>
+

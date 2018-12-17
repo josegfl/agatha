@@ -1,0 +1,214 @@
+<md-content flex>
+    <div class="sgr-container">
+
+        <form name="formRegistro" novalidate>
+
+            <div class="sgr-container-header" layout="row">
+                <div class="md-toolbar-tools">
+                    <h3 style="font-size: 18px">
+                        <sgr-glossario termo="Detalhar Plano de Controle"></sgr-glossario>
+                    </h3>
+                </div>
+            </div>
+
+            <div class="sgr-container-body">
+
+                <fieldset>
+                    <legend class="LegendTamanhoTextoFieldset">
+                        <sgr-glossario termo="Evento de Risco"></sgr-glossario>
+                    </legend>
+
+                    <div layout="row" layout-xs="column" class="processo-info">
+
+                        <div class="md-block" flex-gt-xs flex="30">
+                            <strong>
+                                <sgr-glossario termo="Evento"></sgr-glossario>
+                            </strong>
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="70">
+                            <span>{{scope._eventoRisco.evento.descricao}}</span>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column" class="processo-info">
+
+                        <div class="md-block" flex-gt-xs flex="30">
+                            <strong>
+                                <sgr-glossario termo="Categoria"></sgr-glossario>
+                            </strong>
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="70">
+                            <span>{{scope._eventoRisco.categoria.descricao}}</span>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column" class="processo-info">
+
+                        <div class="md-block" flex-gt-xs flex="30">
+                            <strong>
+                                <sgr-glossario termo="Natureza"></sgr-glossario>
+                            </strong>
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="70">
+                            <span>{{scope._eventoRisco.categoria.natureza.descricao}}</span>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column" class="processo-info">
+
+                        <div class="md-block" flex-gt-xs flex="30">
+                            <strong>
+                                <sgr-glossario termo="Nível de Risco Residual"></sgr-glossario>
+                            </strong>
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="70">
+                            <span>{{scope._eventoRisco.calculoRiscoResidual.nivel | nivelRisco}} ({{scope._eventoRisco.calculoRiscoResidual.nivel}})</span>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+
+                <fieldset ng-repeat="item in scope._eventoRisco.controles">
+                    <legend class="LegendTamanhoTextoFieldset">
+                        <sgr-glossario termo="Controle Proposto"></sgr-glossario>
+                    </legend>
+
+                    <div layout="row" layout-xs="column" class="processo-info">
+
+                        <div class="md-block" flex-gt-xs flex="30">
+                            <strong>
+                                <sgr-glossario termo="Controle Proposto"></sgr-glossario>
+                            </strong>
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="70">
+                            <span>{{item.controle.descricao}}</span>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column" class="processo-info">
+
+                        <div class="md-block" flex-gt-xs flex="30">
+                            <strong>
+                                <sgr-glossario termo="Tipo de Controle"></sgr-glossario>
+                            </strong>
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="70">
+                            <span>{{item.tipoControle.nome}}</span>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column" class="processo-info">
+
+                        <div class="md-block" flex-gt-xs flex="30">
+                            <strong>
+                                <sgr-glossario termo="Objetivo do Controle"></sgr-glossario>
+                            </strong>
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="70">
+                            <span>{{item.objetivo.nome}}</span>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column" class="processo-info">
+
+                        <div class="md-block" flex-gt-xs flex="30">
+                            <strong>
+                                <sgr-glossario termo="Área Responsável"></sgr-glossario>
+                            </strong>
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="70">
+                            <span>{{item.areaResponsavel}}</span>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column" class="processo-info">
+
+                        <div class="md-block" flex-gt-xs flex="30">
+                            <strong>
+                                <sgr-glossario termo="Responsável"></sgr-glossario>
+                            </strong>
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="70">
+                            <span>{{item.responsavel}}</span>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column" class="processo-info">
+
+                        <div class="md-block" flex-gt-xs flex="30">
+                            <strong>
+                                <sgr-glossario termo="Como será implementado"></sgr-glossario>
+                            </strong>
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="70">
+                            <span>{{item.implementacao}}</span>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column" class="processo-info">
+
+                        <div class="md-block" flex-gt-xs flex="30">
+                            <strong>
+                                <sgr-glossario termo="Data de Início"></sgr-glossario>
+                            </strong>
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="70">
+                            <span>{{item.dtInicio | date:'dd/MM/yyyy'}}</span>
+                        </div>
+
+                    </div>
+
+                    <div layout="row" layout-xs="column" class="processo-info">
+
+                        <div class="md-block" flex-gt-xs flex="30">
+                            <strong>
+                                <sgr-glossario termo="Data de Conclusão"></sgr-glossario>
+                            </strong>
+                        </div>
+
+                        <div class="md-block" flex-gt-xs flex="70">
+                            <span>{{item.dtConclusao | date:'dd/MM/yyyy'}}</span>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+
+            </div>
+        </form>
+
+        <div class="sgr-container-buttons m-t-10 m-b-10" layout="row" layout-align="end">
+            <section layout="row center" layout-sm="column" layout-wrap>
+                <div layout="row" layout-align="space-around center">
+                    <md-button class="md-primary" ui-sref="processo.planoControle.alterar({id : scope.processoId})">
+                        <md-icon md-font-set="material-icons">close</md-icon>
+                        <sgr-glossario termo="Cancelar"></sgr-glossario>
+                    </md-button>
+                </div>
+            </section>
+        </div>
+
+    </div>
+</md-content>
+

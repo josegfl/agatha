@@ -1,0 +1,590 @@
+<div class="body">
+    <page size="A4">
+        <div layout="row">
+            <div flex-gt-xs flex="10" class="padding-bottom">
+                <img class="logo" src="assets/img/logo-relatorio.png"/>
+            </div>
+            <div class="padding-info" flex-gt-xs flex="90">
+                <div>
+                    <span>
+                        {{scope.registro.analise.orgao.nome}}
+                    </span>
+                </div>
+                <div>
+                    <span class="text-red">
+                        {{scope.registro.analise.secretaria.nome}}
+                    </span>
+                </div>
+                <div class="padding-top">
+                    <span>
+                        <sgr-glossario termo="Agatha - Sistema de Gestão de Riscos"></sgr-glossario>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div>
+
+            <div class="border-div background-titulo">
+                <span class="text-bold">
+                    <sgr-glossario termo="Informações sobre o Macroprocesso/processo"></sgr-glossario>
+                </span>
+            </div>
+
+            <div class="border-div">
+                <div>
+                    <div>
+                        <span class="text-underline text-bold">
+                            <sgr-glossario termo="Macroprocesso"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span>{{scope.registro.macroprocesso.descricao}}</span>
+                        <span class="text-red" ng-if="!scope.registro.macroprocesso.descricao">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="padding-top">
+                        <span class="text-underline text-bold">
+                            <sgr-glossario termo="Processo"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span>{{scope.registro.processo}}</span>
+                        <span class="text-red" ng-if="!scope.registro.processo">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="padding-top">
+                        <span class="text-underline text-bold">
+                            <sgr-glossario termo="Objetivo do Macroprocesso/Processo"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span>{{scope.registro.objetivo}}</span>
+                        <span class="text-red" ng-if="!scope.registro.objetivo">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="padding-top">
+                        <span class="text-underline text-bold">
+                            <sgr-glossario termo="Leis e Regulamentos"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span>{{scope.registro.lei}}</span>
+                        <span class="text-red" ng-if="!scope.registro.lei">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="padding-top">
+                        <span class="text-underline text-bold">
+                            <sgr-glossario termo="Secretaria"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span>{{scope.registro.analise.secretaria.nome}}</span>
+                        <span class="text-red" ng-if="!scope.registro.analise.secretaria.nome">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="padding-top">
+                        <span class="text-underline text-bold">
+                            <sgr-glossario termo="Sistemas"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span>{{scope.registro.sistema}}</span>
+                        <span class="text-red" ng-if="!scope.registro.sistema">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="padding-top">
+                        <span class="text-underline text-bold">
+                            <sgr-glossario termo="Gestor Responsável"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <span>{{scope.registro.gestor.nome}}</span>
+                        <span ng-if="!scope.registro.gestor.nome">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="padding-top">
+                        <span class="text-underline text-bold">
+                            <sgr-glossario termo="Responsável pela análise"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+                <div ng-repeat="row in scope.registro.responsaveis">
+                    <div>
+                        <span>{{row.usuario.nome}}</span>
+                    </div>
+                    <div ng-if="scope.registro.responsaveis.length == 0">
+                        <span class="text-red">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="border-div background-titulo">
+            <span class="text-bold">
+                <sgr-glossario termo="Análise SWOT"></sgr-glossario>
+            </span>
+        </div>
+
+        <div layout="row">
+            <div class="border-div" flex-gt-xs flex="50">
+                <span class="text-underline text-bold">
+                    <sgr-glossario termo="Forças"></sgr-glossario>
+                </span>
+                <div class="padding-info" ng-repeat="item in lista = (scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 1}})">
+                    <span>{{($index)+1}}. {{item.descricao}}</span>
+                </div>
+                <div ng-if="(scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 1}}).length == 0">
+                    <span class="text-red padding-info">
+                        <sgr-glossario termo="Não Informado"></sgr-glossario>
+                    </span>
+                </div>
+            </div>
+            <div class="border-div" flex-gt-xs flex="50">
+                <span class="text-underline text-bold">
+                    <sgr-glossario termo="Oportunidades"></sgr-glossario>
+                </span>
+                <div class="padding-info" ng-repeat="item in lista = (scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 2}})">
+                    <span>{{($index)+1}}. {{item.descricao}}</span>
+                </div>
+                <div ng-if="(scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 2}}).length == 0">
+                    <span class="text-red padding-info">
+                        <sgr-glossario termo="Não Informado"></sgr-glossario>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div layout="row" class="padding-bottom">
+            <div class="border-div" flex-gt-xs flex="50">
+                <span class="text-underline text-bold">
+                    <sgr-glossario termo="Fraquezas"></sgr-glossario>
+                </span>
+                <div class="padding-info" ng-repeat="item in lista = (scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 3}})">
+                    <span>{{($index)+1}}. {{item.descricao}}</span>
+                </div>
+                <div ng-if="(scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 3}}).length == 0">
+                    <span class="text-red padding-info">
+                        <sgr-glossario termo="Não Informado"></sgr-glossario>
+                    </span>
+                </div>
+            </div>
+            <div class="border-div" flex-gt-xs flex="50">
+                <span class="text-underline text-bold">
+                    <sgr-glossario termo="Ameaças"></sgr-glossario>
+                </span>
+                <div class="padding-info" ng-repeat="item in lista = (scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 4}})">
+                    <span>{{($index)+1}}. {{item.descricao}}</span>
+                </div>
+                <div ng-if="(scope.registro.analise.matrizes | filter : {tipoMatriz : {id : 4}}).length == 0">
+                    <span class="text-red padding-info">
+                        <sgr-glossario termo="Não Informado"></sgr-glossario>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-break"></div>
+
+        <div layout="row" ng-if="scope.registro.identificacao.eventos.length">
+            <div flex-gt-xs flex="10" class="padding-bottom">
+                <img class="logo" src="assets/img/logo-relatorio.png"/>
+            </div>
+            <div class="padding-info" flex-gt-xs flex="90">
+                <div>
+                    <span>
+                        {{scope.registro.analise.orgao.nome}}
+                    </span>
+                </div>
+                <div>
+                    <span class="text-red">
+                        {{scope.registro.analise.secretaria.nome}}
+                    </span>
+                </div>
+                <div class="padding-top">
+                    <span>
+                        <sgr-glossario termo="Agatha - Sistema de Gestão de Riscos"></sgr-glossario>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-div background-titulo" ng-if="scope.registro.identificacao.eventos.length">
+            <span class="text-bold">
+                <sgr-glossario termo="Eventos de risco"></sgr-glossario>
+            </span>
+        </div>
+
+        <div ng-repeat-start="item in scope.registro.identificacao.eventos">
+
+            <div class="border-div background-evento">
+                <div>
+                    <span class="text-bold">
+                        <sgr-glossario termo="{{item.evento.descricao}}"></sgr-glossario>
+                    </span>
+                </div>
+            </div>
+
+            <div layout="row">
+                <div class="border-div" flex-gt-xs flex="40">
+                    <span class="text-underline text-bold">
+                        <sgr-glossario termo="Categoria de risco"></sgr-glossario>
+                    </span>
+                    <div>
+                        <span>{{item.categoria.descricao}}</span>
+                        <span class="text-red" ng-if="!item.categoria.descricao">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="border-div" flex-gt-xs flex="30">
+                    <span class="text-underline text-bold">
+                        <sgr-glossario termo="Nível de risco"></sgr-glossario>
+                    </span>
+                    <div>
+                        <span>{{item.calculoRiscoResidual.nivel | nivelRisco}}</span>
+                        <span class="text-red" ng-if="!item.calculoRiscoResidual.nivel">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="border-div" flex-gt-xs flex="30">
+                    <span class="text-underline text-bold">
+                        <sgr-glossario termo="Resposta ao risco"></sgr-glossario>
+                    </span>
+                    <div>
+                        <span>{{item.respostaRisco.nome}}</span>
+                        <span class="text-red" ng-if="!item.respostaRisco.nome">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div layout="row">
+                <div class="border-div" flex-gt-xs flex="50">
+                    <span class="text-underline text-bold">
+                        <sgr-glossario termo="Causas"></sgr-glossario>
+                    </span>
+                    <div class="padding-info" ng-repeat="causa in item.causas">
+                        <span>{{($index)+1}}. {{causa.causa.descricao}}</span>
+                    </div>
+                    <div ng-if="item.causas.length == 0">
+                        <span class="text-red padding-info">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+                <div class="border-div" flex-gt-xs flex="50">
+                    <span class="text-underline text-bold">
+                        <sgr-glossario termo="Consequências"></sgr-glossario>
+                    </span>
+                    <div class="padding-info" ng-repeat="consequencia in item.consequencias">
+                        <span>{{($index)+1}}. {{consequencia.consequencia.descricao}}</span>
+                    </div>
+                    <div ng-if="item.consequencias.length == 0">
+                        <span class="text-red padding-info">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="border-div">
+                    <span class="text-underline text-bold">
+                        <sgr-glossario termo="Controles Atuais"></sgr-glossario>
+                    </span>
+                    <div class="padding-info" ng-repeat="controle in item.controleEventos">
+                        <span>{{($index)+1}}. {{controle.controle.descricao}}</span>
+                    </div>
+                    <div ng-if="item.controleEventos.length == 0">
+                        <span class="text-red padding-info">
+                            <sgr-glossario termo="Não Informado"></sgr-glossario>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="border-div background-plano">
+                <div>
+                    <span class="text-bold">
+                        <sgr-glossario termo="Plano de Ação"></sgr-glossario>
+                    </span>
+                </div>
+            </div>
+            <div layout="row">
+                <div class="border-div" flex-gt-xs flex="5">
+                    <div>
+                    </div>
+                </div>
+                <div class="border-div" flex-gt-xs flex="25">
+                    <div>
+                        <span>Descrição</span>
+                    </div>
+                </div>
+                <div class="border-div" flex-gt-xs flex="15">
+                    <div>
+                        <span>Tipo Controle</span>
+                    </div>
+                </div>
+                <div class="border-div" flex-gt-xs flex="15">
+                    <div>
+                        <span>Área responsável</span>
+                    </div>
+                </div>
+                <div class="border-div text-center" flex-gt-xs flex="15">
+                    <div>
+                        <span>Início</span>
+                    </div>
+                </div>
+                <div class="border-div text-center" flex-gt-xs flex="15">
+                    <div>
+                        <span>Fim</span>
+                    </div>
+                </div>
+                <div class="border-div text-center" flex-gt-xs flex="10">
+                    <div>
+                        <span>Status</span>
+                    </div>
+                </div>
+            </div>
+            <div layout="row" ng-repeat="controle in item.controles">
+                <div class="border-div" flex-gt-xs flex="5">
+                    <div>
+                        <span>{{($index)+1}}</span>
+                    </div>
+                </div>
+                <div class="border-div" flex-gt-xs flex="25">
+                    <div>
+                        <span>{{controle.controle.descricao}}</span>
+                    </div>
+                </div>
+                <div class="border-div" flex-gt-xs flex="15">
+                    <div>
+                        <span>{{controle.tipoControle.nome}}</span>
+                    </div>
+                </div>
+                <div class="border-div" flex-gt-xs flex="15">
+                    <div>
+                        <span>{{controle.areaResponsavel}}</span>
+                    </div>
+                </div>
+                <div class="border-div text-center" flex-gt-xs flex="15">
+                    <div>
+                        <span>{{controle.dtInicio | date:'dd/MM/yyyy'}}</span>
+                    </div>
+                </div>
+                <div class="border-div text-center" flex-gt-xs flex="15">
+                    <div>
+                        <span>{{controle.dtConclusao | date:'dd/MM/yyyy'}}</span>
+                    </div>
+                </div>
+                <div class="border-div text-center" flex-gt-xs flex="10">
+                    <div>
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="border-div" ng-if="item.controles.length == 0">
+                <div>
+                    <span class="text-red padding-info">
+                        <sgr-glossario termo="Não Informado"></sgr-glossario>
+                    </span>
+                </div>
+            </div>
+
+            <div class="text-center padding-top">
+                <span class="text-bold">
+                    <sgr-glossario termo="Legenda status:"></sgr-glossario>
+                </span>
+                <span>
+                    <sgr-glossario termo="Não iniciada:"></sgr-glossario>
+                    <div class="status status-black"></div>
+                    <sgr-glossario termo="Em andamento:"></sgr-glossario>
+                    <div class="status status-yellow"></div>
+                    <sgr-glossario termo="Concluída:"></sgr-glossario>
+                    <div class="status status-green"></div>
+                    <sgr-glossario termo="Atrasada:"></sgr-glossario>
+                    <div class="status status-red"></div>
+                </span>
+            </div>
+        </div>
+        <div ng-repeat-end>
+            <div class="page-break padding-bottom"></div>
+        </div>
+    </page>
+
+</div>
+
+<style>
+    .logo {
+        width: 80px;
+    }
+
+    .status {
+        display: inline-block;
+        height: 12px;
+        width: 12px;
+        border-radius: 100%;
+    }
+
+    .status-red {
+        background: #ff0000;
+    }
+
+    .status-yellow {
+        background: #ffff00;
+    }
+
+    .status-green {
+        background: #008000;
+    }
+
+    .status-black {
+        background-color: rgb(0, 0, 0);
+    }
+
+    .border-div {
+        border: 1px solid #000000;
+        padding: 10px;
+        word-wrap: break-word;
+    }
+
+    .text-red {
+        color: #ff0000;
+    }
+
+    .text-bold {
+        font-weight: bold;
+    }
+
+    .text-underline {
+        text-decoration: underline;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .body {
+        background: #ffffff;
+        counter-reset: page;
+
+    }
+
+    .padding-info {
+        padding: 10px 15px;
+    }
+
+    .padding-top {
+        padding-top: 10px;
+    }
+
+    .padding-bottom {
+        padding-bottom: 20px;
+    }
+
+    .background-titulo {
+        background: #E3F0D9;
+    }
+
+    .background-evento {
+        background: #f4f9f2;
+    }
+
+    .background-plano {
+        background: #E3DFDE;
+    }
+
+    .page-break {
+        page-break-after: left;
+    }
+
+    page[size="A4"] {
+        background: white;
+        width: 21cm;
+        /*height: 30.8cm;*/
+        display: block;
+        margin: 0 auto;
+
+    }
+
+    .print-foot {
+        display: none;
+    }
+
+    @media print {
+
+        page[size="A4"] {
+            margin: 0;
+            box-shadow: 0;
+            background: white;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+
+        }
+
+        /*@page {*/
+        /*size: auto;   !* auto is the initial value *!*/
+        /*margin: 0cm 0cm 0cm 0cm;  !* this affects the margin in the printer settings *!*/
+        /*}*/
+        div .print-foot {
+            display: block;
+            position: absolute;
+            top: 30.5cm;
+            width: 100%;
+            text-align: center;
+        }
+
+        div .print-foot:after {
+            counter-increment: page;
+            content: counter(page);
+        }
+    }
+
+</style>
