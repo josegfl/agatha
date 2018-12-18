@@ -9,4 +9,4 @@ RUN sh -c 'touch /app.jar'
 
 VOLUME ["/config"]
 EXPOSE 8080
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.config.location=/config/application.properties-jar /app.jar"]
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.config.location=/config/application.properties -jar /app.jar"]
