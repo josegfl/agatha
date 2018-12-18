@@ -5,5 +5,5 @@ COPY proxy.conf /etc/nginx/
 COPY env.sh /etc/nginx/
 ADD  dist.tar.gz /usr/share/nginx/html/
 
-RUN ./etc/nginx/env.sh
+RUN /etc/nginx/env.sh
 RUN nginx -g 'daemon off;'
